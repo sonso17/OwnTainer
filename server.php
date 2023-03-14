@@ -10,9 +10,7 @@ class Server
     public function serve()
     {
 
-        function UserValidation($userID,$UserApiKey){
 
-        }
 
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
@@ -76,17 +74,56 @@ class Server
                     echo json_encode($result);
                     header('HTTP/1.1 200 OK');
                 }
-
-            }
-            else { //si el mètode es qualsevol altre cosa que POST
+            } else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } 
-        else{//Ficar les funcions privades de l'API
-            
-        }
-        
+        else { //Ficar les funcions privades de l'API
+            if (UserValidation($recurs1)  && $recurs2 == "UserInfo") {
+                // echo "UserInfo";
+                if ($method == "GET") {
+                    if ($identificador != "") { //si hi ha un identificador d'usuari
+                        echo json_encode(selectOneUser($recurs1, $identificador));
+                    } else {
+                        header('HTTP/1.1 417 EXPECTATION FAILED');
+                        echo "User identifier needed";
+                    }
+                } else {
+                    header('HTTP/1.1 405 Method Not Allowed');
+                }
+            } 
+            else if (UserValidation($recurs1)  && $recurs2 == "ModifyUser") {
+                if ($method == "POST") {
+                    if ($identificador != "") { //si hi ha un identificador d'usuari
+                        $put = json_decode(file_get_contents('php://input'), true);
+                        //separo tot els valors JSON en diferents variables
+                        $Firstname = $put["data"][0]["UserName"];
+                        $LastName = $put["data"][0]["UserLastName"];
+                        $UserEmail = $put["data"][0]["UserEmail"];
+                        $passwd = $put["data"][0]["passwd"];
+                        //registro la funcio i agafo el resultat
+                        $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador);
 
+                        if ($missatge == true) {
+                            echo "user updated correctly";
+                            header('HTTP/1.1 200 OK');
+                        } else {
+                            echo "user update failed";
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                        }
+                    } else {
+                        header('HTTP/1.1 417 EXPECTATION FAILED');
+                        echo "User identifier needed";
+                    }
+                } else {
+                    header('HTTP/1.1 405 Method Not Allowed');
+                }
+            } 
+            else {
+                echo "api-key not valid";
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        }
     }
 }
 

@@ -22,5 +22,20 @@
     ]
 }
 
+-- prova veure user info 
+
+http://localhost/API/tV37Seq7T0XGwt2/UserInfo/1
 
 
+-- UpdateUser --
+
+{
+    "data": [
+        {
+            "UserName": "Aleix1",
+            "UserLastName": "aleix1",
+            "UserEmail": "aleix1@fedrick.cat",
+            "passwd": "aleix1234"
+        }
+    ]
+}
