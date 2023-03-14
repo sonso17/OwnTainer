@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /API
+options +FollowSymLinks
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* server.php/$0 [L]
+Header add Access-Control-Allow-Origin "*"

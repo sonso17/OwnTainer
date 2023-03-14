@@ -9,6 +9,11 @@ class Server
   */
     public function serve()
     {
+
+        function UserValidation($userID,$UserApiKey){
+
+        }
+
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
         $paths = explode('/', $uri);
@@ -20,7 +25,7 @@ class Server
         // echo $recurs1;
         $recurs2 = array_shift($paths);
         $identificador = array_shift($paths);
-      
+
         // http://owntainer.daw.institutmontilivi.cat/API/recurs1/recurs2/identificador
         // part pública ex. http://owntainer.daw.institutmontilivi.cat/API/register
         // part pública ex. http://owntainer.daw.institutmontilivi.cat/API/getPublicComponent/1
@@ -33,36 +38,54 @@ class Server
         if ($recurs1 == "register") {
             if ($method == 'POST') // validem que sigui per GET
             { //agafo tota la info de l'usuari en JSON
-                // echo "registre";
-                // header('HTTP/1.1 200 OK');
                 $put = json_decode(file_get_contents('php://input'), true);
-                // echo $put->;
-
+                //separo tot els valors JSON en diferents variables
                 $Firstname = $put["data"][0]["UserName"];
                 $LastName = $put["data"][0]["UserLastName"];
                 $UserEmail = $put["data"][0]["UserEmail"];
                 $passwd = $put["data"][0]["passwd"];
-               
-                $missatge = registerUser($Firstname,$LastName,$UserEmail,$passwd);
-                if($missatge == true){
-                    json_encode("user inserted correctly");
+                //registro la funcio i agafo el resultat
+                $missatge = registerUser($Firstname, $LastName, $UserEmail, $passwd);
+
+                if ($missatge == true) {
+                    echo "user inserted correctly";
                     header('HTTP/1.1 200 OK');
-                }
-                else{
-                    json_encode("user registration failed");
+                } else {
+                    echo "user registration failed";
                     header('HTTP/1.1 417 EXPECTATION FAILED');
                 }
-                // header('Location: http://localhost:8080/#/LlistaTasques');
-            } else {
+            } else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
-                echo json_encode("405");
             }
-        } else {
-            // echo $recurs1;
-            echo json_encode("res");
-        }
+        } 
+        else if ($recurs1 == "LogIn") {
+            if ($method == 'POST') // validem que sigui per GET
+            {
+                $put = json_decode(file_get_contents('php://input'), true);
 
-        //fer condicional de verificar l'apikey
+                $UserEmail = $put["data"][0]["UserEmail"];
+                $passwd = $put["data"][0]["passwd"];
+
+                $result = LogIn($UserEmail, $passwd);
+
+                if ($result == false) {
+                    echo "User not found";
+                    header('HTTP/1.1 417 EXPECTATION FAILED');
+                } else {
+                    echo "user found!";
+                    echo json_encode($result);
+                    header('HTTP/1.1 200 OK');
+                }
+
+            }
+            else { //si el mètode es qualsevol altre cosa que POST
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        } 
+        else{//Ficar les funcions privades de l'API
+            
+        }
+        
 
     }
 }

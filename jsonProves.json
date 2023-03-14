@@ -1,0 +1,26 @@
+-- prova registre usuari --
+
+{
+    "data": [
+        {
+            "UserName": "Frick",
+            "UserLastName": "fedrick",
+            "UserEmail": "fedrick@fedrick.cat",
+            "passwd": "fedrick1234"
+        }
+    ]
+}
+
+-- prova log in usuari --
+
+{
+    "data": [
+        {
+            "UserEmail": "fedrick@fedrick.cat",
+            "passwd": "fedrick1234"
+        }
+    ]
+}
+
+
+
