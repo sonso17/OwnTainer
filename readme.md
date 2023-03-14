@@ -1,3 +1,0 @@
-#OwnTainer 
-
-Funcions Api
