@@ -9,9 +9,6 @@ class Server
   */
     public function serve()
     {
-
-
-
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
         $paths = explode('/', $uri);
