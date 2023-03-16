@@ -71,54 +71,102 @@ class Server
                     echo json_encode($result);
                     header('HTTP/1.1 200 OK');
                 }
-            } else { //si el mètode es qualsevol altre cosa que POST
+            } 
+            else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } 
-        else { //Ficar les funcions privades de l'API
-            if (UserValidation($recurs1)  && $recurs2 == "UserInfo") {
-                // echo "UserInfo";
-                if ($method == "GET") {
-                    if ($identificador != "") { //si hi ha un identificador d'usuari
-                        echo json_encode(selectOneUser($recurs1, $identificador));
-                    } else {
-                        header('HTTP/1.1 417 EXPECTATION FAILED');
-                        echo "User identifier needed";
-                    }
-                } else {
-                    header('HTTP/1.1 405 Method Not Allowed');
-                }
-            } 
-            else if (UserValidation($recurs1)  && $recurs2 == "ModifyUser") {
-                if ($method == "POST") {
-                    if ($identificador != "") { //si hi ha un identificador d'usuari
-                        $put = json_decode(file_get_contents('php://input'), true);
-                        //separo tot els valors JSON en diferents variables
-                        $Firstname = $put["data"][0]["UserName"];
-                        $LastName = $put["data"][0]["UserLastName"];
-                        $UserEmail = $put["data"][0]["UserEmail"];
-                        $passwd = $put["data"][0]["passwd"];
-                        //registro la funcio i agafo el resultat
-                        $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador);
+        else if($recurs1 == "getComponentProperties"){
 
-                        if ($missatge == true) {
-                            echo "user updated correctly";
-                            header('HTTP/1.1 200 OK');
+            if($method == "GET"){
+                echo json_encode(getComponentProperties($recurs2));
+                header('HTTP/1.1 200 OK');
+            }
+            else {
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        }
+        else if($recurs1== "selectOneComponent"){
+            if($method == "GET"){
+                echo json_encode(selectOneComponent($recurs2));
+                header('HTTP/1.1 200 OK');
+            }
+            else {
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        }
+        else if($recurs1 == "selectPublicComponents"){
+            if($method == "GET"){
+                echo json_encode(selectPublicComponents());
+                header('HTTP/1.1 200 OK');
+            }
+            else {
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        }
+        else { //Ficar les funcions privades de l'API
+            if (UserValidation($recurs1) == true) {// si la validació de l'apikey retorna true
+                if ($recurs2 == "UserInfo") {
+                    // echo "UserInfo";
+                    if ($method == "GET") {
+                        if ($identificador != "") { //si hi ha un identificador d'usuari
+                            echo json_encode(selectOneUser($recurs1, $identificador));//li passo l'api-key i el UserID
                         } else {
-                            echo "user update failed";
                             header('HTTP/1.1 417 EXPECTATION FAILED');
+                            echo "User identifier needed";
                         }
                     } else {
-                        header('HTTP/1.1 417 EXPECTATION FAILED');
-                        echo "User identifier needed";
+                        header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } else {
-                    header('HTTP/1.1 405 Method Not Allowed');
+                } 
+                else if ($recurs2 == "ModifyUser") {
+                    if ($method == "POST") {
+                        if ($identificador != "") { //si hi ha un identificador d'usuari
+                            $put = json_decode(file_get_contents('php://input'), true);
+                            //separo tot els valors JSON en diferents variables
+                            $Firstname = $put["data"][0]["UserName"];
+                            $LastName = $put["data"][0]["UserLastName"];
+                            $UserEmail = $put["data"][0]["UserEmail"];
+                            $passwd = $put["data"][0]["passwd"];
+                            //registro la funcio i agafo el resultat
+                            $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador);
+
+                            if ($missatge == true) {
+                                echo "user updated correctly";
+                                header('HTTP/1.1 200 OK');
+                            } else {
+                                echo "user update failed";
+                                header('HTTP/1.1 417 EXPECTATION FAILED');
+                            }
+                        } else {
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                            echo "User identifier needed";
+                        }
+                    } else {
+                        header('HTTP/1.1 405 Method Not Allowed');
+                    }
+                }
+                else if($recurs2 == "RegisterComponent"){
+                    if($method == "POST"){
+
+                    }
+                    else {
+                        header('HTTP/1.1 405 Method Not Allowed');
+                    }
+                }
+                else if($recurs2 == "selectUserComponents"){
+                    if($method == "GET"){
+                        echo json_encode(selectUserComponents($identificador));
+                        header('HTTP/1.1 200 OK');
+                    }
+                    else {
+                        header('HTTP/1.1 405 Method Not Allowed');
+                    }
                 }
             } 
-            else {
+            else {//si l'API-KEY no és vàlida
                 echo "api-key not valid";
-                header('HTTP/1.1 405 Method Not Allowed');
+                header('HTTP/1.1 417 EXPECTATION FAILED');
             }
         }
     }

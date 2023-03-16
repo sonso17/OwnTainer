@@ -1,5 +1,7 @@
 <?php
 include 'connexioBDD.php';
+// $resultat = null;
+// $baseDades = new BdD;
 
 /*
         Function: userValidation()
@@ -19,7 +21,7 @@ include 'connexioBDD.php';
     */
 function UserValidation($UserApiKey)
         {
-            $resultat = null;
+            
             $baseDades = new BdD; //creo nova classe BDD
 
             try {
@@ -139,7 +141,7 @@ function generarApiKey($length = 15) // Funciona OK
     */
 function LogIn($UserEmail, $passwd)
 {
-    $resultat = null;
+    
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
@@ -190,7 +192,7 @@ function LogIn($UserEmail, $passwd)
  
     */
     function selectOneUser($APIKEY, $UserID){
-        $resultat = null;
+        
         $baseDades = new BdD; //creo nova classe BDD
 
         try {
@@ -273,5 +275,186 @@ function LogIn($UserEmail, $passwd)
         }
     }
 
+    /*
+        Function: getComponentProperties()
+
+            Funcio que passant-li un identificador de tipus de component, et retorna totes les propietats que necessita
+
+        Parameters:
+
+            $ComponentTypeID - Identificador de tipus de component
+
+        Returns:
+
+            Retorna totes les propietats que té aquell component
+ 
+    */
+    function getComponentProperties($componentTypeID){
+
+        $baseDades = new BdD; //creo nova classe BDD
+
+        try {
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //faig una sentencia on selecciono per cada propietat el id de tipus, nom tipus component, idPropietat, nomPropietat i propietat tipus fent 2 joins, un a cada taula on haig d'extreure la informacio
+            $sentencia = "
+                    SELECT componenttype.ComponentTypeID, componenttype.ComponentType, properties.propertyID, properties.PropertyName, properties.UnitType
+                    FROM componenttypexproperties
+                    RIGHT JOIN componenttype ON componenttypexproperties.ComponentTypeID = componenttype.ComponentTypeID
+                    LEFT JOIN properties on componenttypexproperties.PropertyID = properties.PropertyID
+                    WHERE componenttype.ComponentTypeID = :ComponentTypeID;
+            ";
+    
+            $bdd = $conn->prepare($sentencia);
+            $bdd->bindParam("ComponentTypeID", $componentTypeID); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultat = $bdd->fetchAll(); //guardo els resultats
+    
+            return $resultat;
+        } 
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
+            header('HTTP/1.1 405 Method Not Allowed');
+
+        }
+    }
+
+    /*
+        Function: selectOneComponent()
+
+            Funcio que passant-li un identificador d'un component et retorna tota la seva informació
+
+        Parameters:
+
+            $ComponentTypeID - Identificador de tipus de component
+
+        Returns:
+
+            Retorna totes les propietats que té aquell component
+ 
+    */
+    function selectOneComponent($componentID){
+        
+        $baseDades = new BdD; //creo nova classe BDD
+        // echo $componentID;
+        try {
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //faig una sentencia on selecciono per cada propietat el id de tipus, nom tipus component, idPropietat, nomPropietat i propietat tipus fent 2 joins, un a cada taula on haig d'extreure la informacio
+            $sentencia = "
+            SELECT components.UserID, components.Privacy, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
+            FROM propertiesxcomponents
+            RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
+            LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
+            WHERE components.componentID = :ComponentID;
+            ";
+    
+            $bdd = $conn->prepare($sentencia);
+            $bdd->bindParam("ComponentID", $componentID); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultat = $bdd->fetchAll(); //guardo els resultats
+    
+            return $resultat;
+        } 
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
+            header('HTTP/1.1 405 Method Not Allowed');
+
+        }
+    }
+
+    /*
+        Function: selectPublicComponents()
+
+            Funcio que ens retorna tots els components que son públics
+
+        Returns:
+
+            Retorna tots els components públics
+ 
+    */
+    function selectPublicComponents(){
+        
+        $baseDades = new BdD; //creo nova classe BDD
+
+        try {
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $sentencia = "
+            SELECT components.UserID, components.Privacy, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
+            FROM propertiesxcomponents
+            RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
+            LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
+            WHERE components.Privacy = 'false';
+            ";
+    
+            $bdd = $conn->prepare($sentencia);
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultat = $bdd->fetchAll(); //guardo els resultats
+    
+            return $resultat;
+        } 
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
+            header('HTTP/1.1 405 Method Not Allowed');
+
+        }
+    }
+
+/*
+        Function: selectUserComponents()
+
+            Funcio que passant-li un identificador d'un usuari et retorna tots els seus components
+
+        Parameters:
+
+            $UserID - Identificador d'usuari
+
+        Returns:
+
+            Retorna tots els components d'aquell usuari
+ 
+    */
+    function selectUserComponents($userID){
+        $baseDades = new BdD; //creo nova classe BDD
+echo $userID;
+        try {
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          
+            $sentencia = "
+            SELECT components.UserID, components.Privacy, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
+            FROM propertiesxcomponents
+            RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
+            LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
+            WHERE components.UserID = :UserID;
+            ";
+    
+            $bdd = $conn->prepare($sentencia);
+            $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultat = $bdd->fetchAll(); //guardo els resultats
+    
+            return $resultat;
+        } 
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
+            header('HTTP/1.1 405 Method Not Allowed');
+
+        }
+    }
 
 
