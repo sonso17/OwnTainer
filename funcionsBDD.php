@@ -336,7 +336,7 @@ function LogIn($UserEmail, $passwd)
             Retorna totes les propietats que té aquell component
  
     */
-    function selectOneComponent($componentID){
+    function selectOneComponent($componentID,$UserID){
         
         $baseDades = new BdD; //creo nova classe BDD
         // echo $componentID;
@@ -358,7 +358,19 @@ function LogIn($UserEmail, $passwd)
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
             $resultat = $bdd->fetchAll(); //guardo els resultats
     
-            return $resultat;
+
+            $UserIdComponent = $resultat[0]['UserID'];
+            $ComponentPrivacy = $resultat[0]['Privacy'];
+
+            if($UserIdComponent == $UserID || $ComponentPrivacy == 'false'){//si el usuari és propietari del component o el component és públic
+                return $resultat;
+            }
+            else{
+                return false;
+            }
+            // echo $resultat[];
+
+            
         } 
         catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -392,15 +404,66 @@ function LogIn($UserEmail, $passwd)
             FROM propertiesxcomponents
             RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
             LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
-            WHERE components.Privacy = 'false';
+            WHERE components.Privacy = 'false'
+            ORDER BY components.ComponentID ASC;
             ";
     
             $bdd = $conn->prepare($sentencia);
             $bdd->execute(); //executola sentencia
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
             $resultat = $bdd->fetchAll(); //guardo els resultats
-    
-            return $resultat;
+
+            //carrego dos arrays buits 
+            $arrAllComp = [];//en aquest hi guardaré tota la informació que hi vagi guardant(array general)
+            $arrComProp = [];//en aquest hi guardare totes les propietats de cada component
+
+            $arrIdsComps = []; # iterar valors query sql
+
+            foreach($resultat as $i) { //aquest foreach serveix unicament per a guardar els IDs de cada component
+              
+                $idCom = $i['ComponentID'];//agafo l'id
+                
+                if (!in_array($idCom, $arrIdsComps)) {//comprovo de que el id no estigui repetit
+
+                    array_push($arrIdsComps, $idCom);//si no esta repetit, el guardo
+                }
+            }
+
+            $lenId = sizeof($arrIdsComps);//aquest lenID ens guarda la longitud de tots els IDs guardats 
+            for ($i=0; $i < $lenId; $i++) { //iterem tots els IDs
+
+                $privacy = '';//resetejo tots els valors buits per el seguent component
+                $componentName = '';
+                $arrayTotUnComponent = [];
+                $arrComProp = [];
+
+                foreach($resultat as $el) { //iterem tota la consulta(ja que hi han moltes files amb el mateix componentID)
+
+                    $idCom = $el['ComponentID'];
+                    if ($idCom == $arrIdsComps[$i]) {//si el idCom és igual al valor de la posició de l'array d'IDs
+                        // 
+                        $arrayProp = array(//guarden les propietats del ID trobat a l'array indexat
+                            "name" => $el['PropertyName'],
+                            "value" => $el['Valuee']
+                        );
+                        
+                        array_push($arrComProp, $arrayProp);//guardem les propietats de cada component
+                        $privacy = $el['Privacy'];
+                        $componentName = $el['ComponentName'];
+                    }
+                }
+                $arrayTotUnComponent = array(//agafo les propietats no variables de cada component a l'array indexat
+                        "componentId" => $arrIdsComps[$i],
+                        "componentName" => $componentName,
+                        "privacy" => $privacy,
+                        "props" => $arrComProp 
+                );
+
+                array_push($arrAllComp, $arrayTotUnComponent);//aquest array.push representa tot un component
+               
+            }
+
+            return $arrAllComp;
         } 
         catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -427,7 +490,7 @@ function LogIn($UserEmail, $passwd)
     */
     function selectUserComponents($userID){
         $baseDades = new BdD; //creo nova classe BDD
-echo $userID;
+// echo $userID;
         try {
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

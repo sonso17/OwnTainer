@@ -1,0 +1,200 @@
+[
+    {
+        "componentId": 1,
+        "props": [
+            {
+                "name": "Company",
+                "value": "Intel"
+            },
+            {
+                "name": "Model",
+                "value": "i3 2405"
+            },
+            {
+                "name": "Clock",
+                "value": "2.5"
+            },
+            {
+                "name": "Cache",
+                "value": "23"
+            },
+            {
+                "name": "Soket",
+                "value": "LGA 1155"
+            },
+            {
+                "name": "Cores",
+                "value": "4"
+            },
+            {
+                "name": "CodeName",
+                "value": "cofee lake"
+            }
+        ]
+    },
+    {
+        "componentId": 3,
+        "props": [
+            {
+                "name": "Company",
+                "value": "Intel"
+            },
+            {
+                "name": "Model",
+                "value": "Core i5 6400"
+            },
+            {
+                "name": "Clock",
+                "value": "3.00"
+            },
+            {
+                "name": "Cache",
+                "value": "20"
+            },
+            {
+                "name": "Soket",
+                "value": "LGA1155"
+            },
+            {
+                "name": "Cores",
+                "value": "4"
+            },
+            {
+                "name": "CodeName",
+                "value": "noSeCodeName"
+            }
+        ]
+    }
+]
+
+
+
+
+[
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 1,
+        "PropertyName": "Company",
+        "Valuee": "Intel"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 2,
+        "PropertyName": "Model",
+        "Valuee": "i3 2405"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 3,
+        "PropertyName": "Clock",
+        "Valuee": "2.5"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 4,
+        "PropertyName": "Cache",
+        "Valuee": "23"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 5,
+        "PropertyName": "Soket",
+        "Valuee": "LGA 1155"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 6,
+        "PropertyName": "Cores",
+        "Valuee": "4"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador1",
+        "ComponentID": 1,
+        "PropertyID": 7,
+        "PropertyName": "CodeName",
+        "Valuee": "cofee lake"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 1,
+        "PropertyName": "Company",
+        "Valuee": "Intel"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 2,
+        "PropertyName": "Model",
+        "Valuee": "Core i5 6400"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 3,
+        "PropertyName": "Clock",
+        "Valuee": "3.00"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 4,
+        "PropertyName": "Cache",
+        "Valuee": "20"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 5,
+        "PropertyName": "Soket",
+        "Valuee": "LGA1155"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 6,
+        "PropertyName": "Cores",
+        "Valuee": "4"
+    },
+    {
+        "UserID": 12,
+        "Privacy": "false",
+        "ComponentName": "Processador3",
+        "ComponentID": 3,
+        "PropertyID": 7,
+        "PropertyName": "CodeName",
+        "Valuee": "noSeCodeName"
+    }
+]

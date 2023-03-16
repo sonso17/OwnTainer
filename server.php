@@ -52,8 +52,7 @@ class Server
             } else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } 
-        else if ($recurs1 == "LogIn") {
+        } else if ($recurs1 == "LogIn") {
             if ($method == 'POST') // validem que sigui per GET
             {
                 $put = json_decode(file_get_contents('php://input'), true);
@@ -71,46 +70,46 @@ class Server
                     echo json_encode($result);
                     header('HTTP/1.1 200 OK');
                 }
-            } 
-            else { //si el mètode es qualsevol altre cosa que POST
+            } else { //si el mètode es qualsevol altre cosa que POST
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        } else if ($recurs1 == "getComponentProperties") {
+
+            if ($method == "GET") {
+                echo json_encode(getComponentProperties($recurs2));
+                header('HTTP/1.1 200 OK');
+            } else {
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } 
-        else if($recurs1 == "getComponentProperties"){
+        else if ($recurs1 == "selectOneComponent") {
+            if ($method == "GET") { //fer condicio de verificar que hi ha component id i userID
+                if ($recurs2 != "") { //si hi ha component id i userID
+                    echo json_encode(selectOneComponent($recurs2, $identificador));
+                    header('HTTP/1.1 200 OK');
+                } else {
+                    header('HTTP/1.1 417 Method Not Allowed');
+                    echo "UserID or ComponentID required";
+                }
+            } else {
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        } else if ($recurs1 == "selectPublicComponents") {
+            if ($method == "GET") {
 
-            if($method == "GET"){
-                echo json_encode(getComponentProperties($recurs2));
+                $resultatCOMPonent = json_encode(selectPublicComponents());
+                echo $resultatCOMPonent;
                 header('HTTP/1.1 200 OK');
-            }
-            else {
+            } else {
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        }
-        else if($recurs1== "selectOneComponent"){
-            if($method == "GET"){
-                echo json_encode(selectOneComponent($recurs2));
-                header('HTTP/1.1 200 OK');
-            }
-            else {
-                header('HTTP/1.1 405 Method Not Allowed');
-            }
-        }
-        else if($recurs1 == "selectPublicComponents"){
-            if($method == "GET"){
-                echo json_encode(selectPublicComponents());
-                header('HTTP/1.1 200 OK');
-            }
-            else {
-                header('HTTP/1.1 405 Method Not Allowed');
-            }
-        }
-        else { //Ficar les funcions privades de l'API
-            if (UserValidation($recurs1) == true) {// si la validació de l'apikey retorna true
+        } else { //Ficar les funcions privades de l'API
+            if (UserValidation($recurs1) == true) { // si la validació de l'apikey retorna true
                 if ($recurs2 == "UserInfo") {
                     // echo "UserInfo";
                     if ($method == "GET") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
-                            echo json_encode(selectOneUser($recurs1, $identificador));//li passo l'api-key i el UserID
+                            echo json_encode(selectOneUser($recurs1, $identificador)); //li passo l'api-key i el UserID
                         } else {
                             header('HTTP/1.1 417 EXPECTATION FAILED');
                             echo "User identifier needed";
@@ -118,8 +117,7 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } 
-                else if ($recurs2 == "ModifyUser") {
+                } else if ($recurs2 == "ModifyUser") {
                     if ($method == "POST") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
                             $put = json_decode(file_get_contents('php://input'), true);
@@ -145,26 +143,20 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                }
-                else if($recurs2 == "RegisterComponent"){
-                    if($method == "POST"){
-
-                    }
-                    else {
+                } else if ($recurs2 == "RegisterComponent") {
+                    if ($method == "POST") {
+                    } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                }
-                else if($recurs2 == "selectUserComponents"){
-                    if($method == "GET"){
+                } else if ($recurs2 == "selectUserComponents") {
+                    if ($method == "GET") {
                         echo json_encode(selectUserComponents($identificador));
                         header('HTTP/1.1 200 OK');
-                    }
-                    else {
+                    } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
                 }
-            } 
-            else {//si l'API-KEY no és vàlida
+            } else { //si l'API-KEY no és vàlida
                 echo "api-key not valid";
                 header('HTTP/1.1 417 EXPECTATION FAILED');
             }
