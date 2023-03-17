@@ -66,7 +66,7 @@ class Server
                     echo "User not found";
                     header('HTTP/1.1 417 EXPECTATION FAILED');
                 } else {
-                    echo "user found!";
+                    // echo "user found!";
                     echo json_encode($result);
                     header('HTTP/1.1 200 OK');
                 }
@@ -104,12 +104,18 @@ class Server
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } else { //Ficar les funcions privades de l'API
-            if (UserValidation($recurs1) == true) { // si la validació de l'apikey retorna true
+
+            $id= explode('.', $recurs1);//divideixo el valor passat del recurs1(apikey + userID)
+           
+            $apikey = $id[0];
+            $userID = $id[1];
+
+            if (UserValidation($apikey, $userID) == true) { // si la validació de l'apikey retorna true
                 if ($recurs2 == "UserInfo") {
                     // echo "UserInfo";
                     if ($method == "GET") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
-                            echo json_encode(selectOneUser($recurs1, $identificador)); //li passo l'api-key i el UserID
+                            echo json_encode(selectOneUser($apikey, $identificador)); //li passo l'api-key i el UserID
                         } else {
                             header('HTTP/1.1 417 EXPECTATION FAILED');
                             echo "User identifier needed";
@@ -127,13 +133,13 @@ class Server
                             $UserEmail = $put["data"][0]["UserEmail"];
                             $passwd = $put["data"][0]["passwd"];
                             //registro la funcio i agafo el resultat
-                            $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador);
+                            $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador,$apikey);
 
                             if ($missatge == true) {
                                 echo "user updated correctly";
                                 header('HTTP/1.1 200 OK');
                             } else {
-                                echo "user update failed";
+                                echo "user update failed or you tried to update another user";
                                 header('HTTP/1.1 417 EXPECTATION FAILED');
                             }
                         } else {
