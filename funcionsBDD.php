@@ -21,7 +21,6 @@ include 'connexioBDD.php';
     */
 function UserValidation($UserApiKey, $userID)
 {
-
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
@@ -247,7 +246,7 @@ function modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador, 
 
     try {
         // var_dump(selectOneUser($apikey, $identificador));
-        if (UserValidation($apikey, $identificador)) {//valido de que la modificació de l'usuari, sigui el mateix usuari a modificar
+        if (UserValidation($apikey, $identificador)) { //valido de que la modificació de l'usuari, sigui el mateix usuari a modificar
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -266,8 +265,7 @@ function modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador, 
             // $resultat = $bdd->fetchAll(); //guardo els resultats
             // echo $resultat;
             return true;
-        }
-        else{//retorna aixo si un usuari amb id 5 intenta modificar un altre amb
+        } else { //retorna aixo si un usuari amb id 5 intenta modificar un altre amb
             echo "this user is not yours, cannot modify it ";
         }
         // $selectUser = selectOneUser($apikey,$identificador);
@@ -456,8 +454,7 @@ function selectPublicComponents()
                 "privacy" => $privacy,
                 "props" => $arrComProp
             );
-
-            array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
+            +array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
         }
 
         return $arrAllComp;
@@ -560,4 +557,179 @@ function selectUserComponents($userID)
         // echo "error insercio 1";
         return false;
     }
+}
+
+/*
+        Function: registerComponent()
+
+            Funcio que amb els valors passats, registra un component a la BDD
+
+        Parameters:
+
+            Propietats dels components + els valors a inserir
+
+        Returns:
+
+            Retorna true si el component s'ha inserit correctament o false si algo ha fallat
+ 
+    */
+function registerComponent($componentDades, $userID)
+{
+    // var_dump($componentDades);
+    // echo $userID;
+    //separo les dades a inserir a la taula Components
+    $componentName = $componentDades['data']['ComponentName'];
+    $componentType = $componentDades['data']['ComponentType'];
+    $componentPrivacy = $componentDades['data']['privacy'];
+
+    $componentProps = []; //array on vaig guardant els valors de les propietats dels components
+    $componentPropsNumber = []; //array on hi vaig guardant els IDs de les propietats dels components
+
+    $dataArrayLength = sizeof($componentDades['data']['props']);
+
+    for ($i = 0; $i < $dataArrayLength; $i++) { //Bucle on vaig guardant cada informació al seu lloc
+        array_push($componentProps, $componentDades['data']['props'][$i]['prop_val']);
+        array_push($componentPropsNumber, $componentDades['data']['props'][$i]['prop_id']);
+    }
+
+    //inserció de dades a la taula de components
+    $baseDades = new BdD; //creo nova classe BDD
+    try {
+        $boolEstat = true;
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sentenciaTComponent =
+            "
+        INSERT INTO components (UserID, ComponentName, ComponentTypeID, privacy)
+        VALUES (:UserID, :ComponentName, :ComponentTypeID, :privacy);
+        ";
+
+        $bdd = $conn->prepare($sentenciaTComponent);
+        $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+        $bdd->bindParam("ComponentName", $componentName);
+        $bdd->bindParam("ComponentTypeID", $componentType);
+        $bdd->bindParam("privacy", $componentPrivacy);
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultatTC = $bdd->fetchAll(); //guardo els resultats
+
+        if ($boolEstat == true) { //si la inserció s'ha fet correctament, farem un select del component recent incerit
+            $senteciaCompID =
+                "
+            SELECT ComponentID 
+            FROM components 
+            WHERE UserID = :UserID AND ComponentName = :ComponentName AND ComponentTypeID = :ComponentTypeID AND Privacy = :privacy
+            ";
+            $bdd = $conn->prepare($senteciaCompID);
+            $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+            $bdd->bindParam("ComponentName", $componentName);
+            $bdd->bindParam("ComponentTypeID", $componentType);
+            $bdd->bindParam("privacy", $componentPrivacy);
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultatCompID = $bdd->fetchAll(); //guardo els resultats
+            $componentID = $resultatCompID[0]['ComponentID'];
+            // echo $componentID;
+
+            for ($a = 0; $a < $dataArrayLength; $a++) {
+                $sentenciaCompProps =
+                    "
+                INSERT INTO propertiesxcomponents (PropertyID, ComponentID, Valuee)
+                VALUES (:PropertyID, :ComponentID, :Valuee);
+                ";
+                $bdd = $conn->prepare($sentenciaCompProps);
+                $bdd->bindParam("PropertyID", $componentPropsNumber[$a]); //aplico els parametres necessaris
+                $bdd->bindParam("ComponentID", $componentID);
+                $bdd->bindParam("Valuee", $componentProps[$a]);
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                $resultatCompID = $bdd->fetchAll(); //guardo els resultats
+            }
+            return $boolEstat;
+        } else {
+            // echo "hola";
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        // echo "error insercio 1";
+        return false;
+    }
+
+    // var_dump($componentProps);
+    // echo $componentProps;
+    // var_dump($componentPropsNumber);
+}
+
+/*
+        Function: modifyComponent()
+
+            Funcio que actualitza les dades del component passat
+
+        Parameters:
+
+            Propietats dels components + els valors a modificar
+
+        Returns:
+
+            Retorna true si el component s'ha inserit correctament o false si algo ha fallat
+ 
+    */
+function modifyComponent()
+{
+}
+
+/*
+        Function: deleteComponent()
+
+            Funcio que elimina el component que tingui l'ID passat
+
+        Parameters:
+
+            $componentID - Identificador del coponent
+
+        Returns:
+
+            Retorna true si el component s'ha eliminat correctament o false si algo ha fallat
+ 
+    */
+function deleteComponent($componentID)
+{
+}
+
+/*
+        Function: deleteUser()
+
+            Funcio que elimina l'usuari que tingui l'ID passat
+
+        Parameters:
+
+            $userID - Identificador de l'usuari
+
+        Returns:
+
+            Retorna true si l'usuari s'ha eliminat correctament o false si algo ha fallat
+ 
+    */
+function deleteUser($userID)
+{
+}
+
+/*
+        Function: addProperties()
+
+            Funcio que afegeix les porpietats per a crear un cou component (ex vull registrar una gràfica i encara no hi han les seves propietats posades)
+
+        Parameters:
+
+            $userID - Identificador de l'usuari
+
+        Returns:
+
+            Retorna true si les propietats s'han inserit correctament o false si algo ha fallat
+ 
+    */
+function addProperties()
+{
 }

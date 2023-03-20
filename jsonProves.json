@@ -39,3 +39,43 @@ http://localhost/API/tV37Seq7T0XGwt2/UserInfo/1
         }
     ]
 }
+
+{
+    "data": 
+        {
+            "ComponentName": "processador chulo1234",
+            "ComponentType": "1",
+            "privacy": "false",
+            "props": [
+                {
+                    "prop_id": 1,
+                    "prop_val": "Intel"
+                },
+                {
+                    "prop_id": 2,
+                    "prop_val": "i7 9450H"
+                },
+                {
+                    "prop_id": 3,
+                    "prop_val": "2,5"
+                },
+                {
+                    "prop_id": 4,
+                    "prop_val": "6"
+                },
+                {
+                    "prop_id": 5,
+                    "prop_val": "775"
+                },
+                {
+                    "prop_id": 6,
+                    "prop_val": "12"
+                },
+                {
+                    "prop_id": 7,
+                    "prop_val": "cofee Lake"
+                }
+            ]
+        }
+    
+}

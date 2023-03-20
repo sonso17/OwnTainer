@@ -66,7 +66,6 @@ class Server
                     echo "User not found";
                     header('HTTP/1.1 417 EXPECTATION FAILED');
                 } else {
-                    // echo "user found!";
                     echo json_encode($result);
                     header('HTTP/1.1 200 OK');
                 }
@@ -85,8 +84,14 @@ class Server
         else if ($recurs1 == "selectOneComponent") {
             if ($method == "GET") { //fer condicio de verificar que hi ha component id i userID
                 if ($recurs2 != "") { //si hi ha component id i userID
-                    echo json_encode(selectOneComponent($recurs2, $identificador));
-                    header('HTTP/1.1 200 OK');
+                    $resultatComponent = selectOneComponent($recurs2, $identificador);
+                    if($resultatComponent != "false"){
+                        echo json_encode($resultatComponent);
+                        header('HTTP/1.1 200 OK');
+                    }
+                    else{
+                        header('HTTP/1.1 417 private component');
+                    }
                 } else {
                     header('HTTP/1.1 417 Method Not Allowed');
                     echo "UserID or ComponentID required";
@@ -112,7 +117,6 @@ class Server
 
             if (UserValidation($apikey, $userID) == true) { // si la validació de l'apikey retorna true
                 if ($recurs2 == "UserInfo") {
-                    // echo "UserInfo";
                     if ($method == "GET") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
                             echo json_encode(selectOneUser($apikey, $identificador)); //li passo l'api-key i el UserID
@@ -151,6 +155,16 @@ class Server
                     }
                 } else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
+                        $put = json_decode(file_get_contents('php://input'), true);
+                        $missatge = registerComponent($put, $userID);
+
+                        if ($missatge == true) {
+                            echo "Component inserted correctly";
+                            header('HTTP/1.1 200 OK');
+                        } else {
+                            echo "Component registration failed";
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                        }
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
