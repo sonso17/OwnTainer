@@ -193,7 +193,7 @@ class Server
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
                 }
-                else if ($recurs2 == "selectUserComponents") {//Comprobar si hi ha identificador!!!
+                else if ($recurs2 == "SelectUserComponents") {//Comprobar si hi ha identificador!!!
                     if ($method == "GET") {
                         if ($identificador != "") {
                             echo json_encode(selectUserComponents($identificador));
@@ -205,6 +205,40 @@ class Server
                         }
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
+                    }
+                }
+                else if($recurs2 == "DeleteComponent"){
+                    if ($identificador != "") {
+                            $missatge = deleteComponent($identificador,$userID);
+
+                            if ($missatge == true) {
+                                echo "component deleted correctly";
+                                header('HTTP/1.1 200 OK');
+                            } else {
+                                echo "component deletion failed or that component was not yours";
+                                header('HTTP/1.1 417 EXPECTATION FAILED');
+                            }
+                    }
+                    else{
+                        header('HTTP/1.1 417 EXPECTATION FAILED');
+                        echo "Component identifier needed";
+                    }
+                }
+                else if($recurs2 == "DeleteUser"){
+                    if ($identificador != "") {
+                            $missatge = deleteUser($identificador,$userID,$apikey);
+
+                            if ($missatge == true) {
+                                echo "User deleted correctly";
+                                header('HTTP/1.1 200 OK');
+                            } else {
+                                echo "user deletion failed or that user was not yours";
+                                header('HTTP/1.1 417 EXPECTATION FAILED');
+                            }
+                    }
+                    else{
+                        header('HTTP/1.1 417 EXPECTATION FAILED');
+                        echo "Component identifier needed";
                     }
                 }
             } else { //si l'API-KEY no és vàlida

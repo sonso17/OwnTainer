@@ -728,45 +728,41 @@ function modifyComponent($componentDades, $componentID, $userID)
             for ($e = 0; $e < sizeof($resultatPKPXC); $e++) {
                 array_push($idPKPXC, $resultatPKPXC[$e]['PKPXC']);
             }
-                //Actualitzo els valors a la taula components
-                $sentenciaUpdateTComponent =
-                    "
+            //Actualitzo els valors a la taula components
+            $sentenciaUpdateTComponent =
+                "
                 UPDATE `components` 
                 SET ComponentName = :ComponentName, Privacy = :privacy
                 WHERE ComponentID = :ComponentID AND UserID = :UserID;
             ";
 
-                $bdd = $conn->prepare($sentenciaUpdateTComponent);
-                $bdd->bindParam("ComponentName", $componentName);
-                $bdd->bindParam("privacy", $componentPrivacy);
-                $bdd->bindParam("ComponentID", $componentID);
-                $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
-                $bdd->execute(); //executola sentencia
-                $bdd->setFetchMode(PDO::FETCH_ASSOC);
-                $resultatTC = $bdd->fetchAll(); //guardo els resultats
+            $bdd = $conn->prepare($sentenciaUpdateTComponent);
+            $bdd->bindParam("ComponentName", $componentName);
+            $bdd->bindParam("privacy", $componentPrivacy);
+            $bdd->bindParam("ComponentID", $componentID);
+            $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultatTC = $bdd->fetchAll(); //guardo els resultats
 
-
-                for ($a = 0; $a < $dataArrayLength; $a++) {
-                    $sentenciaTCompProps =
-                        "
+            for ($a = 0; $a < $dataArrayLength; $a++) {
+                $sentenciaTCompProps =
+                    "
                         UPDATE `propertiesxcomponents`
                         SET PropertyID = :PropertyID, Valuee = :Valuee
                         WHERE PKPXC = :PKPXC AND ComponentID = :ComponentID;
                     ";
 
-                    // INSERT INTO propertiesxcomponents (PropertyID, ComponentID, Valuee)
-                    // VALUES (:PropertyID, :ComponentID, :Valuee);
-                    $bdd = $conn->prepare($sentenciaTCompProps);
-                    $bdd->bindParam("PropertyID", $componentPropsNumber[$a]); //aplico els parametres necessaris
-                    $bdd->bindParam("Valuee", $componentProps[$a]);
-                    $bdd->bindParam("PKPXC", $idPKPXC[$a]);
-                    $bdd->bindParam("ComponentID", $componentID);
-                    $bdd->execute(); //executola sentencia
-                    $bdd->setFetchMode(PDO::FETCH_ASSOC);
-                    $resultatCompID = $bdd->fetchAll(); //guardo els resultats
-                }
-            // var_dump($componentPropsNumber);
-            // var_dump($componentProps);
+                $bdd = $conn->prepare($sentenciaTCompProps);
+                $bdd->bindParam("PropertyID", $componentPropsNumber[$a]); //aplico els parametres necessaris
+                $bdd->bindParam("Valuee", $componentProps[$a]);
+                $bdd->bindParam("PKPXC", $idPKPXC[$a]);
+                $bdd->bindParam("ComponentID", $componentID);
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                $resultatCompID = $bdd->fetchAll(); //guardo els resultats
+            }
+
             // si l'actualització del component s'ha fet correctament
             return true;
         } else { //si el component és d'un altre usuari
@@ -793,8 +789,59 @@ function modifyComponent($componentDades, $componentID, $userID)
             Retorna true si el component s'ha eliminat correctament o false si algo ha fallat
  
     */
-function deleteComponent($componentID)
+function deleteComponent($componentID, $userID)
 {
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        //varificar de que el IDusuari passat per paràmetre sigui el mateix 
+        //comprovar de que el component sigui de l'usuari
+        $senteciaVerificacioCompUser =
+            "
+            SELECT UserID FROM `components` where ComponentID = :ComponentID;
+            ";
+        $bdd = $conn->prepare($senteciaVerificacioCompUser);
+        $bdd->bindParam("ComponentID", $componentID); //aplico els parametres necessaris
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $UserCompID = $bdd->fetchAll(); //guardo els resultats
+        $UserCompIDBaseDades = $UserCompID[0]['UserID'];
+
+        // si els usuaris coincideixen
+        if ($userID == $UserCompIDBaseDades) {
+            //anar eliminant les taules, Començaré per propertiesxcomponents i despres el registre de la taula components
+            $sentenciaDeleteTCXP =
+                "
+            DELETE FROM `propertiesxcomponents` WHERE ComponentID = :ComponentID;
+            ";
+            $bdd = $conn->prepare($sentenciaDeleteTCXP);
+            $bdd->bindParam("ComponentID", $componentID); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+
+            $sentenciaDeleteTComponents = 
+            "
+            DELETE FROM `components` WHERE ComponentID = :ComponentID AND UserID = :UserID;
+            ";
+            $bdd = $conn->prepare($sentenciaDeleteTComponents);
+            $bdd->bindParam("ComponentID", $componentID); //aplico els parametres necessaris
+            $bdd->bindParam("UserID", $userID);
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+
+        } else {
+            return false;
+        }
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        // echo "error insercio 1";
+        return false;
+    }
 }
 
 /*
@@ -811,8 +858,10 @@ function deleteComponent($componentID)
             Retorna true si l'usuari s'ha eliminat correctament o false si algo ha fallat
  
     */
-function deleteUser($userID)
+function deleteUser($identificador,$userID,$apikey)
 {
+//consulta per extreure els ID dels components de l'usuari passat
+// Select ComponentID from components where UserID = 12;
 }
 
 /*
