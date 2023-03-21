@@ -120,6 +120,7 @@ class Server
                     if ($method == "GET") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
                             echo json_encode(selectOneUser($apikey, $identificador)); //li passo l'api-key i el UserID
+                            header('HTTP/1.1 200 OK');
                         } else {
                             header('HTTP/1.1 417 EXPECTATION FAILED');
                             echo "User identifier needed";
@@ -153,7 +154,8 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } else if ($recurs2 == "RegisterComponent") {
+                } 
+                else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
                         $missatge = registerComponent($put, $userID);
@@ -168,10 +170,39 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } else if ($recurs2 == "selectUserComponents") {
+                } 
+                else if ($recurs2 == "ModifyComponent") {
+                    if ($method == "POST") {
+                        if ($identificador != "") { //si hi ha un identificador d'usuari
+                            $put = json_decode(file_get_contents('php://input'), true);
+                           
+                            $missatge = modifyComponent($put, $identificador,$userID);
+
+                            if ($missatge == true) {
+                                echo "component updated correctly";
+                                header('HTTP/1.1 200 OK');
+                            } else {
+                                echo "component update failed or that component was not yours";
+                                header('HTTP/1.1 417 EXPECTATION FAILED');
+                            }
+                        } else {
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                            echo "Component identifier needed";
+                        }
+                    } else {
+                        header('HTTP/1.1 405 Method Not Allowed');
+                    }
+                }
+                else if ($recurs2 == "selectUserComponents") {//Comprobar si hi ha identificador!!!
                     if ($method == "GET") {
-                        echo json_encode(selectUserComponents($identificador));
-                        header('HTTP/1.1 200 OK');
+                        if ($identificador != "") {
+                            echo json_encode(selectUserComponents($identificador));
+                            header('HTTP/1.1 200 OK');
+                        }
+                        else{
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                            echo "Component identifier needed";
+                        }
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }

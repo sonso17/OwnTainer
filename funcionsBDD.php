@@ -646,9 +646,9 @@ function registerComponent($componentDades, $userID)
                 $bdd->setFetchMode(PDO::FETCH_ASSOC);
                 $resultatCompID = $bdd->fetchAll(); //guardo els resultats
             }
-            return $boolEstat;
+            return $boolEstat; //ha anat tot bé
         } else {
-            // echo "hola";
+            //algo ha fallat
             return false;
         }
     } catch (PDOException $e) {
@@ -656,10 +656,6 @@ function registerComponent($componentDades, $userID)
         // echo "error insercio 1";
         return false;
     }
-
-    // var_dump($componentProps);
-    // echo $componentProps;
-    // var_dump($componentPropsNumber);
 }
 
 /*
@@ -676,8 +672,111 @@ function registerComponent($componentDades, $userID)
             Retorna true si el component s'ha inserit correctament o false si algo ha fallat
  
     */
-function modifyComponent()
+function modifyComponent($componentDades, $componentID, $userID)
 {
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        //comprovar de que el component sigui de l'usuari
+        $senteciaVerificacioCompUser =
+            "
+            SELECT UserID FROM `components` where ComponentID = :ComponentID;
+            ";
+        $bdd = $conn->prepare($senteciaVerificacioCompUser);
+        $bdd->bindParam("ComponentID", $componentID); //aplico els parametres necessaris
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $UserCompID = $bdd->fetchAll(); //guardo els resultats
+        $UserCompIDBaseDades = $UserCompID[0]['UserID'];
+
+        //Comprovem de que el userID passat per parametre sigui el mateix usuariID que el del component de la BDD que es vol modificar
+        if ($userID == $UserCompIDBaseDades) {
+            //extreiem la informació que anirà a la taula de components
+            $componentName = $componentDades['data']['ComponentName'];
+            $componentPrivacy = $componentDades['data']['privacy'];
+
+            //tornem a separar la informació, el valor de les propietats en un array(componentProps) i els IDs de les propietats en un altre(componentPropsNumber)
+            $componentProps = []; //array on vaig guardant els valors de les propietats dels components
+            $componentPropsNumber = []; //array on hi vaig guardant els IDs de les propietats dels components
+
+            $dataArrayLength = sizeof($componentDades['data']['props']);
+
+            for ($i = 0; $i < $dataArrayLength; $i++) { //Bucle on vaig guardant cada informació al seu lloc
+                array_push($componentProps, $componentDades['data']['props'][$i]['prop_val']);
+                array_push($componentPropsNumber, $componentDades['data']['props'][$i]['prop_id']);
+            }
+
+            //Extrect totes les claus primàries dels registres dels valors del component(PKPXC)
+            $senteciaExtreurePKPXC =
+                "
+            SELECT PKPXC 
+            FROM `propertiesxcomponents`
+            WHERE ComponentID = :ComponentID;
+            ";
+            $bdd = $conn->prepare($senteciaExtreurePKPXC);
+            $bdd->bindParam("ComponentID", $componentID);
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $resultatPKPXC = $bdd->fetchAll(); //guardo els resultats
+
+            $idPKPXC = [];
+            //vaig guardant totes les claus primàries de la taula componentxproperties 
+            //per aixi saber quines posicions haig de modificar i que tots els registres no acabin amb el mateix valor
+            for ($e = 0; $e < sizeof($resultatPKPXC); $e++) {
+                array_push($idPKPXC, $resultatPKPXC[$e]['PKPXC']);
+            }
+                //Actualitzo els valors a la taula components
+                $sentenciaUpdateTComponent =
+                    "
+                UPDATE `components` 
+                SET ComponentName = :ComponentName, Privacy = :privacy
+                WHERE ComponentID = :ComponentID AND UserID = :UserID;
+            ";
+
+                $bdd = $conn->prepare($sentenciaUpdateTComponent);
+                $bdd->bindParam("ComponentName", $componentName);
+                $bdd->bindParam("privacy", $componentPrivacy);
+                $bdd->bindParam("ComponentID", $componentID);
+                $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                $resultatTC = $bdd->fetchAll(); //guardo els resultats
+
+
+                for ($a = 0; $a < $dataArrayLength; $a++) {
+                    $sentenciaTCompProps =
+                        "
+                        UPDATE `propertiesxcomponents`
+                        SET PropertyID = :PropertyID, Valuee = :Valuee
+                        WHERE PKPXC = :PKPXC AND ComponentID = :ComponentID;
+                    ";
+
+                    // INSERT INTO propertiesxcomponents (PropertyID, ComponentID, Valuee)
+                    // VALUES (:PropertyID, :ComponentID, :Valuee);
+                    $bdd = $conn->prepare($sentenciaTCompProps);
+                    $bdd->bindParam("PropertyID", $componentPropsNumber[$a]); //aplico els parametres necessaris
+                    $bdd->bindParam("Valuee", $componentProps[$a]);
+                    $bdd->bindParam("PKPXC", $idPKPXC[$a]);
+                    $bdd->bindParam("ComponentID", $componentID);
+                    $bdd->execute(); //executola sentencia
+                    $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                    $resultatCompID = $bdd->fetchAll(); //guardo els resultats
+                }
+            // var_dump($componentPropsNumber);
+            // var_dump($componentProps);
+            // si l'actualització del component s'ha fet correctament
+            return true;
+        } else { //si el component és d'un altre usuari
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        // echo "error insercio 1";
+        return false;
+    }
 }
 
 /*
