@@ -822,8 +822,8 @@ function deleteComponent($componentID, $userID)
             $bdd->execute(); //executola sentencia
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
 
-            $sentenciaDeleteTComponents = 
-            "
+            $sentenciaDeleteTComponents =
+                "
             DELETE FROM `components` WHERE ComponentID = :ComponentID AND UserID = :UserID;
             ";
             $bdd = $conn->prepare($sentenciaDeleteTComponents);
@@ -831,11 +831,9 @@ function deleteComponent($componentID, $userID)
             $bdd->bindParam("UserID", $userID);
             $bdd->execute(); //executola sentencia
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
-
         } else {
             return false;
         }
-
         return true;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -858,10 +856,76 @@ function deleteComponent($componentID, $userID)
             Retorna true si l'usuari s'ha eliminat correctament o false si algo ha fallat
  
     */
-function deleteUser($identificador,$userID,$apikey)
+function deleteUser($identificador, $userID, $apikey)
 {
-//consulta per extreure els ID dels components de l'usuari passat
-// Select ComponentID from components where UserID = 12;
+    if ($identificador == $userID) {
+        //consulta per extreure els ID dels components de l'usuari passat
+        
+        $baseDades = new BdD; //creo nova classe BDD
+        try {
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sentenciaExtreureComponentID =
+                "
+    SELECT ComponentID 
+    FROM `components`
+    LEFT JOIN `users` on components.UserID = users.UserID
+    WHERE users.UserID = :UserID AND users.APIKEY = :APIKEY;
+    ";
+
+            $bdd = $conn->prepare($sentenciaExtreureComponentID);
+            $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+            $bdd->bindParam("APIKEY", $apikey);
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $ComponentsIDs = $bdd->fetchAll(); //guardo els IDs de tots els components d'aquell usuari
+
+            $ComponentsIDsArr = [];
+
+            for ($e = 0; $e < sizeof($ComponentsIDs); $e++) { //vaig guardant tots els componentIDs en un array
+                array_push($ComponentsIDsArr, $ComponentsIDs[$e]['ComponentID']);
+            }
+
+            //si els dos arrays tenen el mateix length per assegurar-me de que hi hagin tots els IDs
+            //A partir d'aquí aniré eliminant component per component
+            if (sizeof($ComponentsIDs) == sizeof($ComponentsIDsArr)) {
+                for ($a = 0; $a < sizeof($ComponentsIDsArr); $a++) {
+                    $missatge = deleteComponent($ComponentsIDsArr[$a], $userID);
+
+                    if ($missatge = true) { // si ha eliminat el component correctament
+                        continue;
+                    } else {
+                        break;
+                        return false;
+                    }
+                }
+                //Un cop eliminats, eliminarem l'usuari de la taula users
+
+                $sentenciaDeleteUser =
+                    "
+                DELETE FROM `users`
+                WHERE UserID = :UserID AND APIKEY = :APIKEY;
+                ";
+                $bdd = $conn->prepare($sentenciaDeleteUser);
+                $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+                $bdd->bindParam("APIKEY", $apikey);
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+
+            } else {
+                return false;
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 /*
