@@ -83,7 +83,7 @@ function registerUser($Firstname, $LastName, $UserEmail, $passwd)
 
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
-        
+
         return true;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -857,7 +857,7 @@ function deleteUser($identificador, $userID, $apikey)
 {
     if ($identificador == $userID) {
         //consulta per extreure els ID dels components de l'usuari passat
-        
+
         $baseDades = new BdD; //creo nova classe BDD
         try {
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
@@ -909,7 +909,6 @@ function deleteUser($identificador, $userID, $apikey)
                 $bdd->bindParam("APIKEY", $apikey);
                 $bdd->execute(); //executola sentencia
                 $bdd->setFetchMode(PDO::FETCH_ASSOC);
-
             } else {
                 return false;
             }
@@ -946,7 +945,7 @@ function addComponentType($dadesPost)
 
     //fer bucle amb el segon insert a la taula propietats amb les propietats del nou component
     //a dins del bucle anar agafant cada id de propietat del component i guardar-lo en un array
-    
+
     // fer ultim bucle per a incerir els IDs a la taula typexproperties
 
     //Separo la informació de les dades POST en diferents variables/arrays
@@ -954,7 +953,7 @@ function addComponentType($dadesPost)
     $propNameComp = [];
     $propUnitComp = [];
     // echo $nomTipusComp;
-    for($i=0;$i<sizeof($dadesPost['data']['props']); $i++){
+    for ($i = 0; $i < sizeof($dadesPost['data']['props']); $i++) {
         array_push($propNameComp, $dadesPost['data']['props'][$i]['prop_Name']);
         array_push($propUnitComp, $dadesPost['data']['props'][$i]['prop_Unit']);
     }
@@ -964,27 +963,76 @@ function addComponentType($dadesPost)
     // echo sizeof($propNameComp);
     // echo sizeof($propUnitComp);
 
-    if(sizeof($propNameComp) == sizeof($propUnitComp)){
+    if (sizeof($propNameComp) == sizeof($propUnitComp)) {
         $baseDades = new BdD; //creo nova classe BDD
-        try{
+        try {
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $sentenciaTipusComp = 
-            "
-            INSERT INTO `componentType` (ComponentType)
+            // insereixo el nou component
+            $sentenciaInsertTipusComp =
+                "
+            INSERT INTO `componenttype` (ComponentType)
             VALUES (:ComponentType);
-
-            
             ";
+            $bdd = $conn->prepare($sentenciaInsertTipusComp);
+            $bdd->bindParam("ComponentType", $nomTipusComp); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+
+            //extrec el seu ID
+            $sentenciaSelectIdTipusComp =
+                "
+            SELECT ComponentTypeID 
+            FROM componenttype
+            where ComponentType = :ComponentType;
+            ";
+            $bdd = $conn->prepare($sentenciaSelectIdTipusComp);
+            $bdd->bindParam("ComponentType", $nomTipusComp); //aplico els parametres necessaris
+            $bdd->execute(); //executola sentencia
+            $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            $ComponentTypeIDSentencia = $bdd->fetchAll();
+            $componentTypeID = $ComponentTypeIDSentencia[0]['ComponentTypeID'];
+
+            $IDsProperties =[];
+            //vaig fent un insert per cada posició de l'array, cada  posició és una propietat diferent
+            for ($a = 0; $a < sizeof($propNameComp); $a++) {
+                $sentencaInsertProps =
+                    "
+                INSERT INTO `properties` (PropertyName, UnitType)
+                VALUES (:PropertyName, :UnitType);
+                ";
+                $bdd = $conn->prepare($sentencaInsertProps);
+                $bdd->bindParam("PropertyName", $propNameComp[$a]); //aplico els parametres necessaris
+                $bdd->bindParam("UnitType", $propUnitComp[$a]); //aplico els parametres necessaris
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                
+                //selecciono la propietat per poder-ne extreure el seu ID i aquest id, el guardo a un altre array
+                $sentenciaSelectIDsProperties =
+                "
+                SELECT PropertyID
+                FROM `properties`
+                WHERE PropertyName = :PropertyName AND UnitType = :UnitType;
+                ";
+                $bdd = $conn->prepare($sentenciaSelectIDsProperties);
+                $bdd->bindParam("PropertyName", $propNameComp[$a]); //aplico els parametres necessaris
+                $bdd->bindParam("UnitType", $propUnitComp[$a]); //aplico els parametres necessaris
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+                $ComponentTypeIDSentencia = $bdd->fetchAll();
+                
+                $propertyID = $ComponentTypeIDSentencia[0]['PropertyID'];
+                array_push($IDsProperties, $propertyID);
+                // echo $propertyID;
+            }
+            // var_dump($IDsProperties);
 
             return true;
         } catch (PDOException $e) {
-                echo "Error: " . $e->getMessage();
-                // echo "error insercio 1";
-                return false;
+            echo "Error: " . $e->getMessage();
+            // echo "error insercio 1";
+            return false;
         }
     }
-    
-
 }
