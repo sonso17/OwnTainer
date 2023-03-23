@@ -79,3 +79,38 @@ http://localhost/API/tV37Seq7T0XGwt2/UserInfo/1
         }
     
 }
+
+
+-- register component type
+
+{
+    "data": 
+        {
+            "ComponentType": "GPU",
+            "props": [
+                {
+                    "prop_Name": "Connection Bus",
+                    "prop_Unit": ""
+                },
+                {
+                    "prop_Name": "Graphical Memory",
+                    "prop_Unit": "Gb"
+                },
+                {
+                    "prop_Name": "Watt consume",
+                    "prop_Unit": "Watt"
+                },
+                {
+                    "prop_Name": "image",
+                    "prop_Unit": ""
+                },
+                {
+                    "prop_Name": "GPU Clock",
+                    "prop_Unit": "MHz"
+                }
+            ]
+        }
+    
+}
+
+

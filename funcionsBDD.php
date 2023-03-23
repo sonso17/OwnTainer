@@ -1,7 +1,5 @@
 <?php
 include 'connexioBDD.php';
-// $resultat = null;
-// $baseDades = new BdD;
 
 /*
         Function: userValidation()
@@ -85,8 +83,7 @@ function registerUser($Firstname, $LastName, $UserEmail, $passwd)
 
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
-        // $resultat = $bdd->fetchAll(); //guardo els resultats
-        // echo $resultat;
+        
         return true;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -929,19 +926,65 @@ function deleteUser($identificador, $userID, $apikey)
 }
 
 /*
-        Function: addProperties()
+        Function: addComponentType()
 
             Funcio que afegeix les porpietats per a crear un cou component (ex vull registrar una gràfica i encara no hi han les seves propietats posades)
 
         Parameters:
 
-            $userID - Identificador de l'usuari
+            $dades Post
 
         Returns:
 
             Retorna true si les propietats s'han inserit correctament o false si algo ha fallat
  
     */
-function addProperties()
+function addComponentType($dadesPost)
 {
+    //fer primer insert a la taula componentType
+    //agafar el id del nou tipus component
+
+    //fer bucle amb el segon insert a la taula propietats amb les propietats del nou component
+    //a dins del bucle anar agafant cada id de propietat del component i guardar-lo en un array
+    
+    // fer ultim bucle per a incerir els IDs a la taula typexproperties
+
+    //Separo la informació de les dades POST en diferents variables/arrays
+    $nomTipusComp = $dadesPost['data']['ComponentType'];
+    $propNameComp = [];
+    $propUnitComp = [];
+    // echo $nomTipusComp;
+    for($i=0;$i<sizeof($dadesPost['data']['props']); $i++){
+        array_push($propNameComp, $dadesPost['data']['props'][$i]['prop_Name']);
+        array_push($propUnitComp, $dadesPost['data']['props'][$i]['prop_Unit']);
+    }
+
+    // var_dump($propNameComp);
+    // var_dump($propUnitComp);
+    // echo sizeof($propNameComp);
+    // echo sizeof($propUnitComp);
+
+    if(sizeof($propNameComp) == sizeof($propUnitComp)){
+        $baseDades = new BdD; //creo nova classe BDD
+        try{
+            $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sentenciaTipusComp = 
+            "
+            INSERT INTO `componentType` (ComponentType)
+            VALUES (:ComponentType);
+
+            
+            ";
+
+            return true;
+        } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+                // echo "error insercio 1";
+                return false;
+        }
+    }
+    
+
 }

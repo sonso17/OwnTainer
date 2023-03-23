@@ -13,14 +13,14 @@ CREATE TABLE Users(
 );
 
 CREATE TABLE ComponentType(
-    ComponentTypeID INT NOT NULL AUTO_INCREMENT,
-    ComponentType VARCHAR(50) NOT NULL,
+    ComponentTypeID INT NOT NULL UNIQUE AUTO_INCREMENT,
+    ComponentType VARCHAR(50) NOT NULL UNIQUE,
     PRIMARY KEY(ComponentTypeID)
 );
 
 CREATE TABLE Properties(
-    PropertyID INT NOT NULL AUTO_INCREMENT,
-    PropertyName VARCHAR(75) NOT NULL,
+    PropertyID INT NOT NULL UNIQUE AUTO_INCREMENT,
+    PropertyName VARCHAR(75) NOT NULL UNIQUE,
     UnitType VARCHAR(15),
     PRIMARY KEY(PropertyID)
 );

@@ -80,16 +80,14 @@ class Server
             } else {
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } 
-        else if ($recurs1 == "selectOneComponent") {
+        } else if ($recurs1 == "selectOneComponent") {
             if ($method == "GET") { //fer condicio de verificar que hi ha component id i userID
                 if ($recurs2 != "") { //si hi ha component id i userID
                     $resultatComponent = selectOneComponent($recurs2, $identificador);
-                    if($resultatComponent != "false"){
+                    if ($resultatComponent != "false") {
                         echo json_encode($resultatComponent);
                         header('HTTP/1.1 200 OK');
-                    }
-                    else{
+                    } else {
                         header('HTTP/1.1 417 private component');
                     }
                 } else {
@@ -110,8 +108,8 @@ class Server
             }
         } else { //Ficar les funcions privades de l'API
 
-            $id= explode('.', $recurs1);//divideixo el valor passat del recurs1(apikey + userID)
-           
+            $id = explode('.', $recurs1); //divideixo el valor passat del recurs1(apikey + userID)
+
             $apikey = $id[0];
             $userID = $id[1];
 
@@ -138,7 +136,7 @@ class Server
                             $UserEmail = $put["data"][0]["UserEmail"];
                             $passwd = $put["data"][0]["passwd"];
                             //registro la funcio i agafo el resultat
-                            $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador,$apikey);
+                            $missatge = modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador, $apikey);
 
                             if ($missatge == true) {
                                 echo "user updated correctly";
@@ -154,8 +152,7 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } 
-                else if ($recurs2 == "RegisterComponent") {
+                } else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
                         $missatge = registerComponent($put, $userID);
@@ -170,13 +167,12 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                } 
-                else if ($recurs2 == "ModifyComponent") {
+                } else if ($recurs2 == "ModifyComponent") {
                     if ($method == "POST") {
                         if ($identificador != "") { //si hi ha un identificador d'usuari
                             $put = json_decode(file_get_contents('php://input'), true);
-                           
-                            $missatge = modifyComponent($put, $identificador,$userID);
+
+                            $missatge = modifyComponent($put, $identificador, $userID);
 
                             if ($missatge == true) {
                                 echo "component updated correctly";
@@ -192,53 +188,64 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                }
-                else if ($recurs2 == "SelectUserComponents") {//Comprobar si hi ha identificador!!!
+                } else if ($recurs2 == "SelectUserComponents") { //Comprobar si hi ha identificador!!!
                     if ($method == "GET") {
                         if ($identificador != "") {
                             echo json_encode(selectUserComponents($identificador));
                             header('HTTP/1.1 200 OK');
-                        }
-                        else{
+                        } else {
                             header('HTTP/1.1 417 EXPECTATION FAILED');
                             echo "Component identifier needed";
                         }
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                }
-                else if($recurs2 == "DeleteComponent"){
+                } else if ($recurs2 == "DeleteComponent") {
                     if ($identificador != "") {
-                            $missatge = deleteComponent($identificador,$userID);
+                        $missatge = deleteComponent($identificador, $userID);
 
-                            if ($missatge == true) {
-                                echo "component deleted correctly";
-                                header('HTTP/1.1 200 OK');
-                            } else {
-                                echo "component deletion failed or that component was not yours";
-                                header('HTTP/1.1 417 EXPECTATION FAILED');
-                            }
-                    }
-                    else{
+                        if ($missatge == true) {
+                            echo "component deleted correctly";
+                            header('HTTP/1.1 200 OK');
+                        } else {
+                            echo "component deletion failed or that component was not yours";
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                        }
+                    } else {
                         header('HTTP/1.1 417 EXPECTATION FAILED');
                         echo "Component identifier needed";
                     }
-                }
-                else if($recurs2 == "DeleteUser"){
+                } else if ($recurs2 == "DeleteUser") {
                     if ($identificador != "") {
-                            $missatge = deleteUser($identificador,$userID,$apikey);
+                        $missatge = deleteUser($identificador, $userID, $apikey);
 
-                            if ($missatge == true) {
-                                echo "User deleted correctly";
-                                header('HTTP/1.1 200 OK');
-                            } else {
-                                echo "user deletion failed or that user was not yours";
-                                header('HTTP/1.1 417 EXPECTATION FAILED');
-                            }
-                    }
-                    else{
+                        if ($missatge == true) {
+                            echo "User deleted correctly";
+                            header('HTTP/1.1 200 OK');
+                        } else {
+                            echo "user deletion failed or that user was not yours";
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                        }
+                    } else {
                         header('HTTP/1.1 417 EXPECTATION FAILED');
                         echo "Component identifier needed";
+                    }
+                } else if ($recurs2 == "AddComponentType") {
+                    if ($method == "POST") {
+
+                        $put = json_decode(file_get_contents('php://input'), true);
+
+                        $missatge = addComponentType($put);
+
+                        if ($missatge == true) {
+                            echo "component Type registered correctly";
+                            header('HTTP/1.1 200 OK');
+                        } else {
+                            echo "component type registration failed";
+                            header('HTTP/1.1 417 EXPECTATION FAILED');
+                        }
+                    } else {
+                        header('HTTP/1.1 405 Method Not Allowed');
                     }
                 }
             } else { //si l'API-KEY no és vàlida
