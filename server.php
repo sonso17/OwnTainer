@@ -106,7 +106,11 @@ class Server
             } else {
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } else { //Ficar les funcions privades de l'API
+        } 
+        else if(1==1){
+            // ficar aqui el get de seleccionar components relacionats
+        }
+        else { //Ficar les funcions privades de l'API
 
             $id = explode('.', $recurs1); //divideixo el valor passat del recurs1(apikey + userID)
 
