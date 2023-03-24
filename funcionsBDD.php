@@ -1028,6 +1028,20 @@ function addComponentType($dadesPost)
             }
             // var_dump($IDsProperties);
 
+            for($e=0;$e<sizeof($IDsProperties);$e++){
+
+                $sentenciaInsertIDs = 
+                "
+                INSERT INTO `componenttypexproperties` (ComponentTypeID, PropertyID)
+                VALUES (:ComponentTypeID, :PropertyID);
+                ";
+                $bdd = $conn->prepare($sentenciaInsertIDs);
+                $bdd->bindParam("ComponentTypeID", $componentTypeID); //aplico els parametres necessaris
+                $bdd->bindParam("PropertyID", $IDsProperties[$e]); //aplico els parametres necessaris
+                $bdd->execute(); //executola sentencia
+                $bdd->setFetchMode(PDO::FETCH_ASSOC);
+            }
+
             return true;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
