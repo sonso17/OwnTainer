@@ -940,14 +940,6 @@ function deleteUser($identificador, $userID, $apikey)
     */
 function addComponentType($dadesPost)
 {
-    //fer primer insert a la taula componentType
-    //agafar el id del nou tipus component
-
-    //fer bucle amb el segon insert a la taula propietats amb les propietats del nou component
-    //a dins del bucle anar agafant cada id de propietat del component i guardar-lo en un array
-
-    // fer ultim bucle per a incerir els IDs a la taula typexproperties
-
     //Separo la informació de les dades POST en diferents variables/arrays
     $nomTipusComp = $dadesPost['data']['ComponentType'];
     $propNameComp = [];
@@ -958,18 +950,14 @@ function addComponentType($dadesPost)
         array_push($propUnitComp, $dadesPost['data']['props'][$i]['prop_Unit']);
     }
 
-    // var_dump($propNameComp);
-    // var_dump($propUnitComp);
-    // echo sizeof($propNameComp);
-    // echo sizeof($propUnitComp);
-
     if (sizeof($propNameComp) == sizeof($propUnitComp)) {
         $baseDades = new BdD; //creo nova classe BDD
         try {
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // insereixo el nou component
+            //fer primer insert a la taula componentType
+            //agafar el id del nou tipus component
             $sentenciaInsertTipusComp =
                 "
             INSERT INTO `componenttype` (ComponentType)
@@ -994,6 +982,8 @@ function addComponentType($dadesPost)
             $ComponentTypeIDSentencia = $bdd->fetchAll();
             $componentTypeID = $ComponentTypeIDSentencia[0]['ComponentTypeID'];
 
+            //fer bucle amb el segon insert a la taula propietats amb les propietats del nou component
+            //a dins del bucle anar agafant cada id de propietat del component i guardar-lo en un array
             $IDsProperties =[];
             //vaig fent un insert per cada posició de l'array, cada  posició és una propietat diferent
             for ($a = 0; $a < sizeof($propNameComp); $a++) {
@@ -1026,8 +1016,9 @@ function addComponentType($dadesPost)
                 array_push($IDsProperties, $propertyID);
                 // echo $propertyID;
             }
-            // var_dump($IDsProperties);
 
+            // fer ultim bucle per a incerir els IDs a la taula typexproperties
+            //bucle que va inserint totes les propietats que té aquell tipus de component
             for($e=0;$e<sizeof($IDsProperties);$e++){
 
                 $sentenciaInsertIDs = 
