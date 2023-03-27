@@ -161,7 +161,7 @@ function LogIn($UserEmail, $passwd)
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
+        
         return false;
     }
 }
@@ -209,7 +209,7 @@ function selectOneUser($APIKEY, $UserID)
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
+        
         return false;
     }
 }
@@ -236,13 +236,11 @@ function selectOneUser($APIKEY, $UserID)
             Retorna true si el update s'ha fet correctament i false si algo ha fallat
  
     */
-
 function modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador, $apikey)
 {
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
-        // var_dump(selectOneUser($apikey, $identificador));
         if (UserValidation($apikey, $identificador)) { //valido de que la modificació de l'usuari, sigui el mateix usuari a modificar
             $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -259,14 +257,11 @@ function modifyUser($Firstname, $LastName, $UserEmail, $passwd, $identificador, 
 
             $bdd->execute(); //executola sentencia
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
-            // $resultat = $bdd->fetchAll(); //guardo els resultats
-            // echo $resultat;
+            
             return true;
         } else { //retorna aixo si un usuari amb id 5 intenta modificar un altre amb
             echo "this user is not yours, cannot modify it ";
         }
-        // $selectUser = selectOneUser($apikey,$identificador);
-        // var_dump($selectUser);
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -314,7 +309,6 @@ function getComponentProperties($componentTypeID)
         return $resultat;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
@@ -337,7 +331,7 @@ function selectOneComponent($componentID, $UserID)
 {
 
     $baseDades = new BdD; //creo nova classe BDD
-    // echo $componentID;
+   
     try {
         $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -356,7 +350,6 @@ function selectOneComponent($componentID, $UserID)
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
         $resultat = $bdd->fetchAll(); //guardo els resultats
 
-
         $UserIdComponent = $resultat[0]['UserID'];
         $ComponentPrivacy = $resultat[0]['Privacy'];
 
@@ -365,12 +358,10 @@ function selectOneComponent($componentID, $UserID)
         } else {
             return false;
         }
-        // echo $resultat[];
-
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
+       
         return false;
     }
 }
@@ -479,7 +470,7 @@ function selectPublicComponents()
 function selectUserComponents($userID)
 {
     $baseDades = new BdD; //creo nova classe BDD
-    // echo $userID;
+
     try {
         $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -499,7 +490,7 @@ function selectUserComponents($userID)
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
         $resultat = $bdd->fetchAll(); //guardo els resultats
 
-        // return $resultat;
+        
         //carrego dos arrays buits 
         $arrAllComp = []; //en aquest hi guardaré tota la informació que hi vagi guardant(array general)
         $arrComProp = []; //en aquest hi guardare totes les propietats de cada component
@@ -551,7 +542,7 @@ function selectUserComponents($userID)
         return $arrAllComp;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
+        
         return false;
     }
 }
@@ -627,7 +618,6 @@ function registerComponent($componentDades, $userID)
             $bdd->setFetchMode(PDO::FETCH_ASSOC);
             $resultatCompID = $bdd->fetchAll(); //guardo els resultats
             $componentID = $resultatCompID[0]['ComponentID'];
-            // echo $componentID;
 
             for ($a = 0; $a < $dataArrayLength; $a++) {
                 $sentenciaCompProps =
@@ -650,7 +640,6 @@ function registerComponent($componentDades, $userID)
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
@@ -835,7 +824,6 @@ function deleteComponent($componentID, $userID)
         return true;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
@@ -917,7 +905,6 @@ function deleteUser($identificador, $userID, $apikey)
             return true;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
-            // echo "error insercio 1";
             return false;
         }
     } else {
@@ -945,7 +932,7 @@ function addComponentType($dadesPost)
     $nomTipusComp = $dadesPost['data']['ComponentType'];
     $propNameComp = [];
     $propUnitComp = [];
-    // echo $nomTipusComp;
+
     for ($i = 0; $i < sizeof($dadesPost['data']['props']); $i++) {
         array_push($propNameComp, $dadesPost['data']['props'][$i]['prop_Name']);
         array_push($propUnitComp, $dadesPost['data']['props'][$i]['prop_Unit']);
@@ -1015,7 +1002,7 @@ function addComponentType($dadesPost)
 
                 $propertyID = $ComponentTypeIDSentencia[0]['PropertyID'];
                 array_push($IDsProperties, $propertyID);
-                // echo $propertyID;
+                
             }
 
             // fer ultim bucle per a incerir els IDs a la taula typexproperties
@@ -1037,7 +1024,6 @@ function addComponentType($dadesPost)
             return true;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
-            // echo "error insercio 1";
             return false;
         }
     }

@@ -110,7 +110,7 @@ class Server
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } 
-        else { //Ficar les funcions privades de l'API
+        else { //Ficar endpoints privades de l'API
 
             $id = explode('.', $recurs1); //divideixo el valor passat del recurs1(apikey + userID)
 
