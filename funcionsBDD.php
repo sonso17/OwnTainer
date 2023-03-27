@@ -572,12 +572,11 @@ function selectUserComponents($userID)
     */
 function registerComponent($componentDades, $userID)
 {
-    // var_dump($componentDades);
-    // echo $userID;
     //separo les dades a inserir a la taula Components
     $componentName = $componentDades['data']['ComponentName'];
     $componentType = $componentDades['data']['ComponentType'];
     $componentPrivacy = $componentDades['data']['privacy'];
+    $dependsOn = $componentDades['data']['dependsOn'];
 
     $componentProps = []; //array on vaig guardant els valors de les propietats dels components
     $componentPropsNumber = []; //array on hi vaig guardant els IDs de les propietats dels components
@@ -598,8 +597,8 @@ function registerComponent($componentDades, $userID)
 
         $sentenciaTComponent =
             "
-        INSERT INTO components (UserID, ComponentName, ComponentTypeID, privacy)
-        VALUES (:UserID, :ComponentName, :ComponentTypeID, :privacy);
+        INSERT INTO components (UserID, ComponentName, ComponentTypeID, privacy, dependsOn)
+        VALUES (:UserID, :ComponentName, :ComponentTypeID, :privacy, :dependsOn);
         ";
 
         $bdd = $conn->prepare($sentenciaTComponent);
@@ -607,6 +606,7 @@ function registerComponent($componentDades, $userID)
         $bdd->bindParam("ComponentName", $componentName);
         $bdd->bindParam("ComponentTypeID", $componentType);
         $bdd->bindParam("privacy", $componentPrivacy);
+        $bdd->bindParam("dependsOn", $dependsOn);
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
         $resultatTC = $bdd->fetchAll(); //guardo els resultats
@@ -691,9 +691,10 @@ function modifyComponent($componentDades, $componentID, $userID)
 
         //Comprovem de que el userID passat per parametre sigui el mateix usuariID que el del component de la BDD que es vol modificar
         if ($userID == $UserCompIDBaseDades) {
-            //extreiem la informació que anirà a la taula de components
+            //extreiem la informació que actualitzarem a la taula de components
             $componentName = $componentDades['data']['ComponentName'];
             $componentPrivacy = $componentDades['data']['privacy'];
+            $dependsOn = $componentDades['data']['dependsOn'];
 
             //tornem a separar la informació, el valor de les propietats en un array(componentProps) i els IDs de les propietats en un altre(componentPropsNumber)
             $componentProps = []; //array on vaig guardant els valors de les propietats dels components
@@ -729,13 +730,14 @@ function modifyComponent($componentDades, $componentID, $userID)
             $sentenciaUpdateTComponent =
                 "
                 UPDATE `components` 
-                SET ComponentName = :ComponentName, Privacy = :privacy
+                SET ComponentName = :ComponentName, Privacy = :privacy, dependsOn = :dependsOn
                 WHERE ComponentID = :ComponentID AND UserID = :UserID;
             ";
 
             $bdd = $conn->prepare($sentenciaUpdateTComponent);
             $bdd->bindParam("ComponentName", $componentName);
             $bdd->bindParam("privacy", $componentPrivacy);
+            $bdd->bindParam("dependsOn", $dependsOn);
             $bdd->bindParam("ComponentID", $componentID);
             $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
             $bdd->execute(); //executola sentencia
@@ -759,7 +761,6 @@ function modifyComponent($componentDades, $componentID, $userID)
                 $bdd->setFetchMode(PDO::FETCH_ASSOC);
                 $resultatCompID = $bdd->fetchAll(); //guardo els resultats
             }
-
             // si l'actualització del component s'ha fet correctament
             return true;
         } else { //si el component és d'un altre usuari
@@ -984,7 +985,7 @@ function addComponentType($dadesPost)
 
             //fer bucle amb el segon insert a la taula propietats amb les propietats del nou component
             //a dins del bucle anar agafant cada id de propietat del component i guardar-lo en un array
-            $IDsProperties =[];
+            $IDsProperties = [];
             //vaig fent un insert per cada posició de l'array, cada  posició és una propietat diferent
             for ($a = 0; $a < sizeof($propNameComp); $a++) {
                 $sentencaInsertProps =
@@ -997,10 +998,10 @@ function addComponentType($dadesPost)
                 $bdd->bindParam("UnitType", $propUnitComp[$a]); //aplico els parametres necessaris
                 $bdd->execute(); //executola sentencia
                 $bdd->setFetchMode(PDO::FETCH_ASSOC);
-                
+
                 //selecciono la propietat per poder-ne extreure el seu ID i aquest id, el guardo a un altre array
                 $sentenciaSelectIDsProperties =
-                "
+                    "
                 SELECT PropertyID
                 FROM `properties`
                 WHERE PropertyName = :PropertyName AND UnitType = :UnitType;
@@ -1011,7 +1012,7 @@ function addComponentType($dadesPost)
                 $bdd->execute(); //executola sentencia
                 $bdd->setFetchMode(PDO::FETCH_ASSOC);
                 $ComponentTypeIDSentencia = $bdd->fetchAll();
-                
+
                 $propertyID = $ComponentTypeIDSentencia[0]['PropertyID'];
                 array_push($IDsProperties, $propertyID);
                 // echo $propertyID;
@@ -1019,10 +1020,10 @@ function addComponentType($dadesPost)
 
             // fer ultim bucle per a incerir els IDs a la taula typexproperties
             //bucle que va inserint totes les propietats que té aquell tipus de component
-            for($e=0;$e<sizeof($IDsProperties);$e++){
+            for ($e = 0; $e < sizeof($IDsProperties); $e++) {
 
-                $sentenciaInsertIDs = 
-                "
+                $sentenciaInsertIDs =
+                    "
                 INSERT INTO `componenttypexproperties` (ComponentTypeID, PropertyID)
                 VALUES (:ComponentTypeID, :PropertyID);
                 ";

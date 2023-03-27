@@ -31,9 +31,12 @@ CREATE TABLE Components(
     ComponentName VARCHAR(40),
     ComponentTypeID INT NOT NULL,
     Privacy VARCHAR(5),
+    dependsOn INT,
     PRIMARY KEY(ComponentID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (ComponentTypeID) REFERENCES ComponentType(ComponentTypeID)
+    FOREIGN KEY (ComponentTypeID) REFERENCES ComponentType(ComponentTypeID),
+    FOREIGN KEY (dependsOn) REFERENCES Components(ComponentID),
+
 );
 
 CREATE TABLE ComponentTypeXProperties(

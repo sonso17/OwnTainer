@@ -14,10 +14,7 @@ class Server
         $paths = explode('/', $uri);
         array_shift($paths); // Hack; get rid of initials empty string
         array_shift($paths);
-        // echo '<pre>'; print_r($paths); echo '</pre>';
-
         $recurs1 = array_shift($paths);
-        // echo $recurs1;
         $recurs2 = array_shift($paths);
         $identificador = array_shift($paths);
 
@@ -73,12 +70,17 @@ class Server
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } else if ($recurs1 == "getComponentProperties") {
-
-            if ($method == "GET") {
-                echo json_encode(getComponentProperties($recurs2));
-                header('HTTP/1.1 200 OK');
-            } else {
-                header('HTTP/1.1 405 Method Not Allowed');
+            if($recurs2 != ""){
+                if ($method == "GET") {
+                    echo json_encode(getComponentProperties($recurs2));
+                    header('HTTP/1.1 200 OK');
+                } else {
+                    header('HTTP/1.1 405 Method Not Allowed');
+                }
+            }
+            else{
+                echo "Component property ID needed";
+                header('HTTP/1.1 417 EXPECTATION FAILED');
             }
         } else if ($recurs1 == "selectOneComponent") {
             if ($method == "GET") { //fer condicio de verificar que hi ha component id i userID
@@ -88,6 +90,7 @@ class Server
                         echo json_encode($resultatComponent);
                         header('HTTP/1.1 200 OK');
                     } else {
+                        echo "this component is private";
                         header('HTTP/1.1 417 private component');
                     }
                 } else {
@@ -107,9 +110,6 @@ class Server
                 header('HTTP/1.1 405 Method Not Allowed');
             }
         } 
-        else if(1==1){
-            // ficar aqui el get de seleccionar components relacionats
-        }
         else { //Ficar les funcions privades de l'API
 
             $id = explode('.', $recurs1); //divideixo el valor passat del recurs1(apikey + userID)
@@ -159,6 +159,7 @@ class Server
                 } else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
+                        var_dump($put);
                         $missatge = registerComponent($put, $userID);
 
                         if ($missatge == true) {
