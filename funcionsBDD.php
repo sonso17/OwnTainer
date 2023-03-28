@@ -306,7 +306,24 @@ function getComponentProperties($componentTypeID)
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
         $resultat = $bdd->fetchAll(); //guardo els resultats
 
-        return $resultat;
+        $arrayCompProps = array( //agafo les propietats no variables de cada component a l'array indexat
+            "componentTypeId" => $resultat[0]["ComponentTypeID"],
+            "componentType" => $resultat[0]["ComponentType"],
+            "props" => []
+        );
+
+        foreach($resultat as $i){
+            $arrayProps = array( //agafo les propietats no variables de cada component a l'array indexat
+                    "propertyID" => $i["propertyID"],
+                    "PropertyName" => $i["PropertyName"],
+                    "UnitType" => $i["UnitType"]
+                );
+
+            array_push($arrayCompProps["props"], $arrayProps);
+        }
+
+        return $arrayCompProps;
+
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return false;
@@ -402,11 +419,11 @@ function selectPublicComponents()
         //carrego dos arrays buits 
         $arrAllComp = []; //en aquest hi guardaré tota la informació de cada component que hi vagi guardant(array general)
         $arrComProp = []; //en aquest hi guardare totes les propietats de cada component
-        $arrIdsComps = []; //array unicament d'IDs
+        $arrIdsComps = []; //array unicament d'IDs de component
 
         foreach ($resultat as $i) { //aquest foreach serveix unicament per a guardar els IDs de cada component
 
-            $idCom = $i['ComponentID']; //agafo l'id
+            $idCom = $i['ComponentID']; //agafo l'id de component
 
             if (!in_array($idCom, $arrIdsComps)) { //comprovo de que el id no estigui repetit, in_array ens diu si el valor passat està a dins de l'array
                 array_push($arrIdsComps, $idCom); //si no esta repetit, el guardo
@@ -442,7 +459,7 @@ function selectPublicComponents()
                 "privacy" => $privacy,
                 "props" => $arrComProp
             );
-            +array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
+            array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
         }
 
         return $arrAllComp;
