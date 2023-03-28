@@ -1,10 +1,36 @@
 <template>
+  <capcalera-c />
+  <router-view>
+
+  </router-view>
+  <peuPagina />
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-  <router-view/>
 </template>
+<script>
+import CapcaleraC from './components/capcaleraC.vue';
+import peuPagina from './components/peuPagina.vue';
+export default {
+  name: "App",
+  components: { CapcaleraC, peuPagina}
+  // data() {
+  //   return {
+  //     diaList: {}
+  //   }
+  // },
+  // methods: {
+  //   getDia() {
+  //     axios.get("http://localhost/API/server.php")
+  //       .then(resultat => this.diaList = resultat.data)
+  //   }
+  // },
+  // created() {
+  // }
+}
+
+</script>
 
 <style>
 #app {
