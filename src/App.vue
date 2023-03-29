@@ -9,6 +9,7 @@ import peuPagina from './components/peuPagina.vue';
 export default {
   name: "App",
   components: { CapcaleraC, peuPagina }
+  
   // data() {
   //   return {
   //     diaList: {}
@@ -27,8 +28,9 @@ export default {
 </script>
 
 <style>
-.body{
-  background-color: #86dc3d;
+body{
+  /* background-color: #86dc3d; */
+  margin: 0;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

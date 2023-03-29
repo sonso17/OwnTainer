@@ -6,11 +6,11 @@
 
     <div id="UserInfo">
       <div>
-        <div id="capNomUsuari"> {{ usuari }}</div>
-        <div id="capRolUsuari">{{ Rol }}</div>
+        <div id="capNomUsuari"> {{ userID }}</div>
+        <div id="capRolUsuari">{{ APIKEY }}</div>
       </div>
-      <img  :hidden="!(this.usuari)" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
-      <button :hidden="(this.usuari)" @click="$event=>GoToLogIn()" class="btLogIn">Log In/Register</button>
+      <img  :hidden="!(this.userID)" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
+      <button :hidden="(this.userID)" @click="$event=>GoToLogIn()" class="btLogIn">Log In/Register</button>
     </div>
   </div>
 </template>
@@ -42,14 +42,14 @@ export default {
      /*
         Function: posardades()
 
-            funcio que mira si l'usuari que ha iniciat sessió és admin o gestor i guarda els valors en el data()
+            funcio que mira comproba si algú ha iniciat sessió i si és que si, guarda els valors en el data()
             
         */
     posardades(){
-      if (sessionStorage.Rol && sessionStorage.usuari)
+      if (sessionStorage.UserID && sessionStorage.APIKEY)
       {
-      this.userID=  sessionStorage.Rol;
-      this.apikey = sessionStorage.usuari 
+      this.userID=  sessionStorage.UserID;
+      this.apikey = sessionStorage.APIKEY;
       }
     },
     /*
@@ -58,11 +58,11 @@ export default {
       funcio que borra les dades de sessio del navegador i redirigeix a l'usuari al formulari de login
     */
     logout(){
-      this.Rol = null
-      this.usuari = null;
+      this.UserID = null
+      this.APIKEY = null;
       sessionStorage.clear()
       
-      router.push("/")
+      // router.push("/LogIn")
     },
   },
   created(){
