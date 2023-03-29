@@ -26,7 +26,14 @@ class Server
         // part privada ex. http://owntainer.daw.institutmontilivi.cat/API/API-KEY/modifyUser/1
         //                                                               //recurs1  recurs2   identificador
 
+        if($method == 'OPTIONS'){
+            header('HTTP/1.1 200 OK');
+            exit;
+        }
+
+
         //aqui anar posant endpoints publics
+
         if ($recurs1 == "register") {
             if ($method == 'POST') // validem que sigui per GET
             { //agafo tota la info de l'usuari en JSON
