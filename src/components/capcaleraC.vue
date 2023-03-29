@@ -1,15 +1,16 @@
 <template>
   
-  <div  id="capcaleraGeneral">
+  <div  id="generalHeader">
     <img src="@/assets/LogoFinal.png" id="capLogo" @click="GotoHome()" />
-    <!-- <img src="@/assets/girotaskLletres.png" id="capNomP" />  -->
+    <img src="@/assets/lletresOntainer.png" id="capNomP" /> 
 
-    <div id="capInfoUsuari">
+    <div id="UserInfo">
       <div>
         <div id="capNomUsuari"> {{ usuari }}</div>
         <div id="capRolUsuari">{{ Rol }}</div>
       </div>
       <img  :hidden="!(this.usuari)" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
+      <button :hidden="(this.usuari)" @click="$event=>GoToLogIn()" class="btLogIn">Log In/Register</button>
     </div>
   </div>
 </template>
@@ -22,8 +23,8 @@ export default {
   props: ["infoUsuari"],
   data(){
     return {
-      Rol: "",
-      usuari: ""
+      userID: "",
+      apikey: ""
     }
   },
   methods: {
@@ -33,7 +34,10 @@ export default {
             funcio que quan es crida, t'envia a la vista de llistaTasques
         */
     GotoHome() {
-      router.push("/LlistaTasques");
+      router.push("/");
+    },
+    GoToLogIn() {
+      router.push("/LogIn");
     },
      /*
         Function: posardades()
@@ -44,8 +48,8 @@ export default {
     posardades(){
       if (sessionStorage.Rol && sessionStorage.usuari)
       {
-      this.Rol=  sessionStorage.Rol;
-      this.usuari = sessionStorage.usuari 
+      this.userID=  sessionStorage.Rol;
+      this.apikey = sessionStorage.usuari 
       }
     },
     /*
@@ -68,22 +72,24 @@ export default {
 </script>
 
 <style>
-#capcaleraGeneral {
+#generalHeader {
   position: relative;
   display: flex;
   /* padding: 22px; */
   justify-content: space-around;
-  background: #fe7373;
+  background: #26580f;
   color: white;
   font-size: 25px;
   align-items: center;
+  height: 120px;
 }
 
 #capLogo {
   position: relative;
   height: 90px;
-  width: 90px;
+  width:171px;
   font-size: 25px;
+  left: -9%;
 }
 #capLogo:hover {
   cursor: pointer;
@@ -92,9 +98,14 @@ export default {
   position: relative;
   height: 100%;
   width: 250px;
+  left: -20%;
+}
+.btLogIn{
+  position: relative;
+  left: -10%;
 }
 
-#capInfoUsuari {
+#UserInfo {
   position: relative;
   height: 100%;
   width: 250px;

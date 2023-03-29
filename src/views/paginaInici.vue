@@ -1,0 +1,3 @@
+<template>
+    paginainici.vue
+</template>
