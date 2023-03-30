@@ -7,10 +7,12 @@
     <div id="UserInfo">
       <div>
         <div id="capNomUsuari"> {{ userID }}</div>
-        <div id="capRolUsuari">{{ APIKEY }}</div>
+        <div id="capRolUsuari">{{ apikey }}</div>
       </div>
-      <img  :hidden="!(this.userID)" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
-      <button :hidden="(this.userID)" @click="$event=>GoToLogIn()" class="btLogIn">Log In/Register</button>
+
+      <img v-if="this.btnLogout === true" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
+      <button v-if="this.btnLogout === false" @click="GoToLogIn()" class="btLogIn">Log In / Register</button>
+      
     </div>
   </div>
 </template>
@@ -24,7 +26,8 @@ export default {
   data(){
     return {
       userID: "",
-      apikey: ""
+      apikey: "",
+      btnLogout: true
     }
   },
   methods: {
@@ -50,6 +53,8 @@ export default {
       {
       this.userID=  sessionStorage.UserID;
       this.apikey = sessionStorage.APIKEY;
+      this.btnLogout = true;
+
       }
     },
     /*
@@ -58,16 +63,19 @@ export default {
       funcio que borra les dades de sessio del navegador i redirigeix a l'usuari al formulari de login
     */
     logout(){
-      this.UserID = null
-      this.APIKEY = null;
+      this.userID = null;
+      this.apikey = null;
       sessionStorage.clear()
-      
-      // router.push("/LogIn")
+
+      this.btnLogout = false;
+      router.push("/")
     },
   },
   created(){
     this.posardades()
-  }
+  },
+  
+
 };
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <capcalera-c />
-  <router-view />
+  <div id="contenidorGeneral">
+    <router-view />
+  </div>
   <peuPagina />
 </template>
 <script>
@@ -31,6 +33,7 @@ export default {
 body{
   /* background-color: #86dc3d; */
   margin: 0;
+  height: 100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -39,7 +42,8 @@ body{
   text-align: center;
   color: #2c3e50;
   background-color: #86dc3d;
-
+  display: flex;
+  flex-direction: column;
 }
 
 nav {

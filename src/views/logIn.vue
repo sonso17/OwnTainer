@@ -1,16 +1,18 @@
 <template>
-    <h1>Log In</h1>
-    <label class="labelLogin" for="emailUsuari">Correu</label>
-    <input class="inputlogin" id="emailUsuariinput" v-model="emailUsuari" type="email" name="emailUsuari">
-    <br>
-    <br>
-    <label class="labelLogin" for="passwd">Contrassenya</label>
-    <br>
-    <input class="inputlogin" type="password" id="passwdinput" v-model="passwd" name="passwd">
-    <br>
-    <br>
-    <button id="buttonlogin" @click="enviarDadesLogIn()" value="Log In">Log in</button>
-    <button id="buttonlogin" @click="goToRegister()" value="Log In">Register</button>
+    <div id="contenidor">
+        <h1>Log In</h1>
+        <label class="labelLogin" for="emailUsuari">Correu</label>
+        <input class="inputlogin" id="emailUsuariinput" v-model="emailUsuari" type="email" name="emailUsuari">
+        <br>
+        <br>
+        <label class="labelLogin" for="passwd">Contrassenya</label>
+        <br>
+        <input class="inputlogin" type="password" id="passwdinput" v-model="passwd" name="passwd">
+        <br>
+        <br>
+        <button id="buttonlogin" @click="enviarDadesLogIn()" :capcalera-c="this.isLogin" value="Log In">Log in</button>
+        <button id="buttonlogin" @click="goToRegister()" value="Log In">Register</button>
+    </div>
 </template>
 <script>
 import router from '@/router';
@@ -40,12 +42,16 @@ export default {
                     ]
                 }
             ).then((response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 sessionStorage.setItem('UserID', response.data[0].UserID);
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
+                this.isLogin = true;
                 router.push('/')
             })
             // console.log(response);
+        },
+        goToRegister(){
+            router.push('/register')
         }
     }
 }
@@ -53,4 +59,8 @@ export default {
 
 </script>
 
-<style></style>
+<style scoped>
+#contenirdor{
+    height: 100%;
+}
+</style>
