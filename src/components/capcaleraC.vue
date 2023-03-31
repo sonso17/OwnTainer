@@ -22,12 +22,10 @@ import router from "@/router";
 
 export default {
   name: "capcaleraC",
-  props: ["infoUsuari"],
+  props: ["infoUsuari", "userID", "apikey"],
   data(){
     return {
-      userID: "",
-      apikey: "",
-      btnLogout: true
+      btnLogout: false
     }
   },
   methods: {
@@ -51,10 +49,8 @@ export default {
     posardades(){
       if (sessionStorage.UserID && sessionStorage.APIKEY)
       {
-      this.userID=  sessionStorage.UserID;
-      this.apikey = sessionStorage.APIKEY;
       this.btnLogout = true;
-
+      console.log(this.btnLogout)
       }
     },
     /*
@@ -63,10 +59,9 @@ export default {
       funcio que borra les dades de sessio del navegador i redirigeix a l'usuari al formulari de login
     */
     logout(){
-      this.userID = null;
-      this.apikey = null;
       sessionStorage.clear()
-
+      this.$emit("userID", "")
+      this.$emit("apikey", "")
       this.btnLogout = false;
       router.push("/")
     },

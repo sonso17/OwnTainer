@@ -10,8 +10,8 @@
         <input class="inputlogin" type="password" id="passwdinput" v-model="passwd" name="passwd">
         <br>
         <br>
-        <button id="buttonlogin" @click="enviarDadesLogIn()" :capcalera-c="this.isLogin" value="Log In">Log in</button>
-        <button id="buttonlogin" @click="goToRegister()" value="Log In">Register</button>
+        <button id="buttonlogin" @click="enviarDadesLogIn()" :capcalera-c="isLogin" value="Log In">Log in</button>
+        <button id="buttonlogin" @click="goToRegister()">Register</button>
     </div>
 </template>
 <script>
@@ -24,7 +24,10 @@ export default {
     data() {
         return {
             emailUsuari: "",
-            passwd: ""
+            passwd: "",
+            isLogin: false,
+            userID: "",
+            apikey: ""
         }
     },
     methods: {
@@ -45,6 +48,10 @@ export default {
                 console.log(response.data);
                 sessionStorage.setItem('UserID', response.data[0].UserID);
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
+                this.userID = response.data[0].UserID;
+                this.apikey = response.data[0].APIKEY;
+                this.$emit("userID", this.userID)
+                this.$emit("apikey", this.apikey)
                 this.isLogin = true;
                 router.push('/')
             })

@@ -1,7 +1,7 @@
 <template>
-  <capcalera-c />
+  <capcalera-c :userID="userID" :apikey = "apikey"/>
   <div id="contenidorGeneral">
-    <router-view />
+    <router-view @userID ="notifica" />
   </div>
   <peuPagina />
 </template>
@@ -10,8 +10,21 @@ import CapcaleraC from './components/capcaleraC.vue';
 import peuPagina from './components/peuPagina.vue';
 export default {
   name: "App",
-  components: { CapcaleraC, peuPagina }
-  
+  components: { CapcaleraC, peuPagina },
+  data(){
+    return {
+      userID: "",
+      apikey: ""
+    }
+  },
+  methods: {
+    notifica(userID, apikey){
+      this.userID = userID
+      this.apikey = apikey
+      console.log(this.userID)
+      console.log(this.apikey)
+    }
+  }
   // data() {
   //   return {
   //     diaList: {}
