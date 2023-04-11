@@ -38,7 +38,7 @@ export default {
       router.push("/");
     },
     GoToLogIn() {
-      router.push("/LogIn");
+      router.push("/logIn");
     },
      /*
         Function: posardades()

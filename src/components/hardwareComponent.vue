@@ -1,19 +1,22 @@
 <template>
     <div class="HComponent">
-        {{ HComp.componentName }}
+        <div>{{ HComp.componentName }}</div>
+
+        <div> {{ HComp.props[0].value }}</div>
+        <div> {{ HComp.props[1].value }}</div>
+
     </div>
-    
 </template>
 
 <script>
 export default {
     name: "hardwareComp",
-    props:["HComp"]
+    props: ["HComp"]
 }
 </script>
 
 <style>
-.HComponent{
+.HComponent {
     position: relative;
     border: 1px solid black;
     padding: 2em 1em;
@@ -31,10 +34,9 @@ export default {
     transition: all 250ms;
 }
 
-.HComponent:hover{
+.HComponent:hover {
     top: -10px;
     left: -10px;
     box-shadow: 15px 15px 15px lightgrey;
 }
-
 </style>

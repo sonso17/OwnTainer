@@ -1,6 +1,6 @@
 <template>
     <div id="peuPaginaGeneral">
-        <div id="peuPaginaC"><a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a> OwnTainer</div>
+        <div id="peuPaginaC"><a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"> OwnTainer</a></div>
         <div id="peuPaginaC" @click="whoAmIRedirect()">Created by Aleix Poch</div>
     </div>
 </template>
