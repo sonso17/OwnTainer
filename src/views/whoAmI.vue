@@ -5,7 +5,7 @@
             <img src="../assets/toddyDaddy.png" alt="">
         </a>
         <div id="CreditText">
-            
+            <h1>CC BY-SA By Aleix Poch</h1>
         </div>
     </div>
 </template>

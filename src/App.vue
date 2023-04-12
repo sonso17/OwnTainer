@@ -1,8 +1,9 @@
 <template>
-  <capcalera-c :userID="userID" :apikey = "apikey"/>
+  <capcalera-c :userID="userID" :apikey="apikey" />
   <div id="contenidorGeneral">
-    <router-view @userID ="notifica" />
+    <router-view @userID="notifica" />
   </div>
+
   <peuPagina />
 </template>
 <script>
@@ -11,43 +12,48 @@ import peuPagina from './components/peuPagina.vue';
 export default {
   name: "App",
   components: { CapcaleraC, peuPagina },
-  data(){
+  data() {
     return {
       userID: "",
       apikey: ""
     }
   },
   methods: {
-    notifica(userID, apikey){
+    notifica(userID, apikey) {
       this.userID = userID
       this.apikey = apikey
       console.log(this.userID)
       console.log(this.apikey)
     }
   }
-  // data() {
-  //   return {
-  //     diaList: {}
-  //   }
-  // },
-  // methods: {
-  //   getDia() {
-  //     axios.get("http://localhost/API/server.php")
-  //       .then(resultat => this.diaList = resultat.data)
-  //   }
-  // },
-  // created() {
-  // }
 }
 
 </script>
 
 <style>
-body{
+html {
+  /* min-height: 100%; */
+}
+
+body {
   /* background-color: #86dc3d; */
   margin: 0;
   height: 100%;
 }
+
+#contenidorGeneral {
+  /* height: 100%; */
+  /* min-height: 100%;
+  height: auto !important;
+  height: 100%; */
+  /* height:100vh; 
+  margin:0; 
+  display:flex; 
+  flex-direction:column; */
+  /* margin: 0 auto -4em; */
+  /* padding-bottom: 50px; */
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -57,6 +63,10 @@ body{
   background-color: #86dc3d;
   display: flex;
   flex-direction: column;
+  /* display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%; */
+  min-height: 100vh;
 }
 
 nav {

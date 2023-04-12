@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="componentsHardware">
         <hardwareComponent v-for="(HComponent, i) in componentsJSON" :key="i" :HComp="HComponent">
         
         </hardwareComponent>
@@ -32,3 +32,13 @@ export default {
 
 }
 </script>
+
+<style scoped>
+div{
+    /* padding: 2rem; */
+    /* display: flex; 
+    flex-direction: column; 
+    min-height: 100vh;
+    min-height: 100svh; */
+}
+</style>

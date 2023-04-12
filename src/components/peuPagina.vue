@@ -17,15 +17,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #peuPaginaGeneral {
     color: #86dc3d;
     font-size: 20px;
     position: relative;
-    height: 28%;
+    bottom: 0px;
+    height: 50px;
     width: 100%;
+    margin-top: auto;
     /* top: 91%; */
-    left: 0%;
+    /* left: 0%; */
     background-color: #26580f;
 }
 </style>
