@@ -8,7 +8,7 @@
                 <input class="inputFirstName" id="inputFirstName" v-model="FirstName" type="text" name="FirstName">
             </div>
         </div>
-        <div id="PasswdCamp">
+        <div id="LastName">
             <div id="labelLN">
                 <label for="LastName">Last Name</label>
             </div>
@@ -61,10 +61,53 @@ export default {
             LastName: "",
             Email: "",
             Passwd1: "",
-            Passwd2: ""
+            Passwd2: "",
+            flagFN: false,
+            flagLN: false,
+            flagE: false
         }
     },
     methods: {
+        verificarCamps(){
+            this.FirstName = document.getElementById("inputFirstName").value;
+            this.LastName = document.getElementById("inputLastName").value;
+            this.Email = document.getElementById("inputEmail").value;
+
+            if(this.FirstName != ''){
+                document.getElementById("inputFirstName").style.border = " 2px solid aquamarine";
+                this.flagFN = true;
+            }
+            else{
+                document.getElementById("inputFirstName").style.border = " 2px solid red";
+                this.flagFN = false;
+            }
+
+            if(this.LastName != ''){
+                document.getElementById("inputLastName").style.border = " 2px solid aquamarine";
+                this.flagLN = true;
+            }
+            else{
+                document.getElementById("inputLastName").style.border = " 2px solid red";
+                this.flagLN = false;
+            }
+
+            if(this.Email != ''){
+                document.getElementById("inputEmail").style.border = " 2px solid aquamarine";
+                this.flagE = true;
+            }
+            else{
+                document.getElementById("inputEmail").style.border = " 2px solid red";
+                this.flagE = false;
+            }
+
+            if(this.flagFN == true && this.flagLN == true && this.flagE == true){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        },
         verificarContrassenyes() {
             this.Passwd1 = document.getElementById("inputPasswd1").value;
             this.Passwd2 = document.getElementById("inputPasswd2").value;
@@ -82,7 +125,7 @@ export default {
             }
         },
         enviarDadesRegister() {
-            if (this.verificarContrassenyes() === true) {
+            if (this.verificarCamps() === true && this.verificarContrassenyes() === true) {
                 this.FirstName = document.getElementById("inputFirstName").value;
                 this.LastName = document.getElementById("inputLastName").value;
                 this.Email = document.getElementById("inputEmail").value;
@@ -111,6 +154,10 @@ export default {
         goToLogIn() {
             router.push('/logIn')
         }
+    },
+    created(){
+        // this.verificarCamps(),
+        // this.verificarContrassenyes()
     }
 }
 </script>

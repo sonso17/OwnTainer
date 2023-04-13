@@ -1,19 +1,19 @@
 <template>
-  
-  <div  id="generalHeader">
+  <div id="generalHeader">
     <img src="@/assets/LogoFinal.png" id="capLogo" @click="GotoHome()" />
-    <img src="@/assets/lletresOntainer.png" id="capNomP" /> 
+    <img src="@/assets/lletresOntainer.png" id="capNomP" />
 
-    <div id="UserInfo">
+    <div id="UserInfo" v-if="this.posardades() == true">
       <div>
-        <div id="capNomUsuari"> {{ userID }}</div>
+        <div id="capNomUsuari" @click="this.GoToUserInfo()"> {{ userID }}</div>
         <div id="capRolUsuari">{{ apikey }}</div>
       </div>
 
       <img v-if="this.btnLogout === true" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
-      <button v-if="this.btnLogout === false" @click="GoToLogIn()" class="btLogIn">Log In / Register</button>
-      
+
     </div>
+    <button v-if="this.btnLogout === false" @click="GoToLogIn()" class="btLogIn">Log In / Register</button>
+
   </div>
 </template>
 
@@ -23,34 +23,44 @@ import router from "@/router";
 export default {
   name: "capcaleraC",
   props: ["infoUsuari", "userID", "apikey"],
-  data(){
+  data() {
     return {
       btnLogout: false
     }
   },
   methods: {
-     /*
-        Function: GotoHome
+    /*
+       Function: GotoHome
 
-            funcio que quan es crida, t'envia a la vista de llistaTasques
-        */
+           funcio que quan es crida, t'envia a la vista de llistaTasques
+       */
     GotoHome() {
       router.push("/");
     },
     GoToLogIn() {
       router.push("/logIn");
     },
-     /*
-        Function: posardades()
+    GoToUserInfo() {
+      router.push("/userInfo/" + this.userID);
 
-            funcio que mira comproba si algú ha iniciat sessió i si és que si, guarda els valors en el data()
-            
-        */
-    posardades(){
-      if (sessionStorage.UserID && sessionStorage.APIKEY)
-      {
-      this.btnLogout = true;
-      console.log(this.btnLogout)
+    },
+    /*
+       Function: posardades()
+
+           funcio que mira comproba si algú ha iniciat sessió i si és que si, guarda els valors en el data()
+           
+       */
+    posardades() {
+      console.log(this.userID)
+      if (sessionStorage.UserID && sessionStorage.APIKEY) {
+        this.btnLogout = true;
+        // document.getElementById("capNomUsuari").innerHTML = sessionStorage.UserID;
+        // console.log(this.btnLogout)
+        return true;
+      }
+      else {
+        this.btnLogout = false;
+        return false;
       }
     },
     /*
@@ -58,7 +68,7 @@ export default {
 
       funcio que borra les dades de sessio del navegador i redirigeix a l'usuari al formulari de login
     */
-    logout(){
+    logout() {
       sessionStorage.clear()
       this.$emit("userID", "")
       this.$emit("apikey", "")
@@ -66,10 +76,10 @@ export default {
       router.push("/")
     },
   },
-  created(){
+  created() {
     this.posardades()
   },
-  
+
 
 };
 </script>
@@ -90,20 +100,23 @@ export default {
 #capLogo {
   position: relative;
   height: 90px;
-  width:171px;
+  width: 171px;
   font-size: 25px;
   left: -9%;
 }
+
 #capLogo:hover {
   cursor: pointer;
 }
+
 #capNomP {
   position: relative;
   height: 100%;
   width: 250px;
   left: -20%;
 }
-.btLogIn{
+
+.btLogIn {
   position: relative;
   left: -10%;
 }
@@ -120,14 +133,16 @@ export default {
   align-content: center;
   justify-content: space-around;
 }
-.logout{
-width:30px;
-height: 30px;
+
+.logout {
+  width: 30px;
+  height: 30px;
 }
-.logout:hover{
+
+.logout:hover {
   cursor: pointer;
 }
-#capRolUsuari{
-/* margin: 10px; */
-}
-</style>
+
+#capRolUsuari {
+  /* margin: 10px; */
+}</style>

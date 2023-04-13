@@ -3,6 +3,7 @@ import paginaInici from '../views/paginaInici.vue'
 import whoAmI from '../views/whoAmI.vue'
 import logIn from '../views/logIn.vue'
 import register from '../views/registerR.vue'
+import userInfo from '../views/userInfo.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: register
+  },
+  {
+    path: '/userInfo/:id',
+    name: 'userInfo',
+    component: userInfo
   }
 ]
 
