@@ -24,7 +24,6 @@ export default {
                 console.log(resultat.data)
             });
         }
-
     },
     created() {
         this.getPublicComponents();

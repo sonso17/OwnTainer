@@ -1,22 +1,22 @@
 <template>
-    <div id="btnLogInRegister" v-if="this.comprovarSessio() == false">
-        <button @click="goToLogIn()">LogIn/Register</button>
+    <div id="btnLogInRegister" v-if="!comprovarSessio">
+        <button @click="goToLogIn">LogIn/Register</button>
     </div>
 
-    <div v-if="this.comprovarSessio() != false">
+    <div v-if="comprovarSessio">
         <div id="userInfoBox1">
-            FirstName: {{ userInfoJSON[0].FirstName }}<br>
-            LastName: {{ userInfoJSON[0].LastName }}<br>
+            FirstName: {{ userInfoJSON.FirstName }}<br>
+            LastName: {{ userInfoJSON.LastName }}<br>
         </div>
         <div id="userInfoBox2">
-            Email: {{ userInfoJSON[0].email }}<br>
-            Password: {{ userInfoJSON[0].passwd }}<br>
+            Email: {{ userInfoJSON.email }}<br>
+            Password: {{ userInfoJSON.passwd }}<br>
         </div>
     </div>
 </template>
 
 <script>
-import router from '@/router';
+// import router from '@/router';
 import axios from 'axios';
 
 export default {
@@ -26,7 +26,7 @@ export default {
         return {
             userID: "",
             apikey: "",
-            userInfoJSON: ""
+            userInfoJSON: {}
         }
     },
     methods: {
@@ -36,6 +36,7 @@ export default {
                 this.apikey = sessionStorage.APIKEY;
 
                 this.getUserInfo()
+                return true;
                 //cridar getuserInfo
             }
             else {
@@ -44,15 +45,15 @@ export default {
             }
         },
         getUserInfo() {
-            axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID).then(resultat => {
-                this.userInfoJSON = resultat.data
-                console.log(resultat.data)
-            });
+            axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
+                .then(resultat => {
+                    this.userInfoJSON = resultat.data[0]
+                    console.log(resultat.data)
+                });
         },
         goToLogIn() {
-            router.push('/login')
+            this.router.push('/login')
         }
-
     },
     created() {
         this.comprovarSessio()

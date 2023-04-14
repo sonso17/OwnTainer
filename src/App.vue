@@ -1,7 +1,7 @@
 <template>
-  <capcalera-c :userID="userID" :apikey="apikey" />
+  <capcalera-c :userID="userID" :apikey="apikey"  @logOut="notifica"/> <!--l'emit logout vé de la capçalera-->
   <div id="contenidorGeneral">
-    <router-view @userID="notifica" />
+    <router-view @logInOk="notifica"/><!--l'emit login vé de la vista log in-->
   </div>
 
   <peuPagina />
@@ -19,9 +19,9 @@ export default {
     }
   },
   methods: {
-    notifica(userID, apikey) {
-      this.userID = userID
-      this.apikey = apikey
+    notifica(logInDades) {
+      this.userID = logInDades.userID
+      this.apikey = logInDades.apikey
       console.log(this.userID)
       console.log(this.apikey)
     }

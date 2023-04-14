@@ -15,12 +15,13 @@
     </div>
 </template>
 <script>
-import router from '@/router';
 import axios from 'axios';
 // import { response } from 'express';
 
 export default {
     name: 'logIn',
+    emits: ["logInOk"],
+    
     data() {
         return {
             emailUsuari: "",
@@ -50,15 +51,15 @@ export default {
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
                 this.userID = response.data[0].UserID;
                 this.apikey = response.data[0].APIKEY;
-                this.$emit("userID", this.userID)
-                this.$emit("apikey", this.apikey)
+                this.$emit("logInOk", {userID:this.userID, apikey:this.apikey})
+                // this.$emit("apikey", this.apikey)
                 this.isLogin = true;
-                router.push('/')
+                this.$router.push('/')
             })
             // console.log(response);
         },
         goToRegister(){
-            router.push('/register')
+            this.router.push('/register')
         }
     }
 }

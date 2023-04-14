@@ -3,16 +3,16 @@
     <img src="@/assets/LogoFinal.png" id="capLogo" @click="GotoHome()" />
     <img src="@/assets/lletresOntainer.png" id="capNomP" />
 
-    <div id="UserInfo" v-if="this.posardades() == true">
+    <div id="UserInfo" v-if="posardades">
       <div>
-        <div id="capNomUsuari" @click="this.GoToUserInfo()"> {{ userID }}</div>
+        <div id="capNomUsuari" @click="GoToUserInfo"> {{ userID }}</div>
         <div id="capRolUsuari">{{ apikey }}</div>
       </div>
 
-      <img v-if="this.btnLogout === true" src="@/assets/logout.png" alt="" class="logout" @click="logout()">
+      <img v-if="btnLogout" src="@/assets/logout.png" alt="" class="logout" @click="logout">
 
     </div>
-    <button v-if="this.btnLogout === false" @click="GoToLogIn()" class="btLogIn">Log In / Register</button>
+    <button v-if="!btnLogout" @click="GoToLogIn" class="btLogIn">Log In / Register</button>
 
   </div>
 </template>
@@ -22,10 +22,16 @@ import router from "@/router";
 
 export default {
   name: "capcaleraC",
-  props: ["infoUsuari", "userID", "apikey"],
+  props: ["userID", "apikey"],
+  emits: ["logOut"],
   data() {
     return {
-      btnLogout: false
+      // btnLogout: false
+    }
+  },
+  computed: {
+    btnLogout(){
+      return (this.userID !="" && this.apikey!="")
     }
   },
   methods: {
@@ -41,7 +47,8 @@ export default {
       router.push("/logIn");
     },
     GoToUserInfo() {
-      router.push("/userInfo/" + this.userID);
+      // router.push("/userInfo/" + this.userID);
+      router.push({ name: 'userInfo', params: { id: this.userID } });
 
     },
     /*
@@ -51,8 +58,8 @@ export default {
            
        */
     posardades() {
-      console.log(this.userID)
-      if (sessionStorage.UserID && sessionStorage.APIKEY) {
+      // console.log(this.userID)
+      if (sessionStorage.UserID  && sessionStorage.APIKEY) {
         this.btnLogout = true;
         // document.getElementById("capNomUsuari").innerHTML = sessionStorage.UserID;
         // console.log(this.btnLogout)
@@ -70,14 +77,13 @@ export default {
     */
     logout() {
       sessionStorage.clear()
-      this.$emit("userID", "")
-      this.$emit("apikey", "")
-      this.btnLogout = false;
-      router.push("/")
+      this.$emit("logOut", { userID: "", apikey: "" });
+      // this.btnLogout = false;
+      // router.push("/")
     },
   },
   created() {
-    this.posardades()
+    // this.posardades()
   },
 
 
@@ -145,4 +151,5 @@ export default {
 
 #capRolUsuari {
   /* margin: 10px; */
-}</style>
+}
+</style>
