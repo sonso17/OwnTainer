@@ -21,7 +21,7 @@ import axios from 'axios';
 export default {
     name: 'logIn',
     emits: ["logInOk"],
-    
+
     data() {
         return {
             emailUsuari: "",
@@ -47,18 +47,24 @@ export default {
                 }
             ).then((response) => {
                 console.log(response.data);
-                sessionStorage.setItem('UserID', response.data[0].UserID);
-                sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
-                this.userID = response.data[0].UserID;
-                this.apikey = response.data[0].APIKEY;
-                this.$emit("logInOk", {userID:this.userID, apikey:this.apikey})
-                // this.$emit("apikey", this.apikey)
-                this.isLogin = true;
-                this.$router.push('/')
+                if (error.response) {
+                    console.log(error.response.data)
+                }
+                else {
+                    sessionStorage.setItem('UserID', response.data[0].UserID);
+                    sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
+                    this.userID = response.data[0].UserID;
+                    this.apikey = response.data[0].APIKEY;
+                    this.$emit("logInOk", { userID: this.userID, apikey: this.apikey })
+                    // this.$emit("apikey", this.apikey)
+                    this.isLogin = true;
+                    this.$router.push('/')
+                }
+
             })
             // console.log(response);
         },
-        goToRegister(){
+        goToRegister() {
             this.router.push('/register')
         }
     }
@@ -68,7 +74,7 @@ export default {
 </script>
 
 <style scoped>
-#contenirdor{
+#contenirdor {
     height: 100%;
 }
 </style>

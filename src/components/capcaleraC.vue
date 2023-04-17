@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import router from "@/router";
+// import router from "@/router";
 
 export default {
   name: "capcaleraC",
@@ -41,14 +41,14 @@ export default {
            funcio que quan es crida, t'envia a la vista de llistaTasques
        */
     GotoHome() {
-      router.push("/");
+      this.$router.push("/");
     },
     GoToLogIn() {
-      router.push("/logIn");
+      this.$router.push("/logIn");
     },
     GoToUserInfo() {
-      // router.push("/userInfo/" + this.userID);
-      router.push({ name: 'userInfo', params: { id: this.userID } });
+      // this.$router.push("/userInfo/" + this.userID);
+      this.$router.push({ name: 'userInfo', params: { id: this.userID } });
 
     },
     /*
@@ -79,7 +79,7 @@ export default {
       sessionStorage.clear()
       this.$emit("logOut", { userID: "", apikey: "" });
       // this.btnLogout = false;
-      // router.push("/")
+      this.$router.push("/")
     },
   },
   created() {

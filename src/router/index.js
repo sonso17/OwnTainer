@@ -4,6 +4,7 @@ import whoAmI from '../views/whoAmI.vue'
 import logIn from '../views/logIn.vue'
 import register from '../views/registerR.vue'
 import userInfo from '../views/userInfo.vue'
+import modifyUser from '../views/userModify.vue'
 
 const routes = [
   {
@@ -30,7 +31,13 @@ const routes = [
     path: '/userInfo/:id',
     name: 'userInfo',
     component: userInfo
-  } 
+  },
+  {
+    path: '/modifyUser/:id',
+    name: 'modifyUser',
+    component: modifyUser
+  }
+
 ]
 
 const router = createRouter({

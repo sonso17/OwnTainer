@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import router from '@/router';
+// import router from '@/router';
 import axios from 'axios';
 
 export default {
@@ -144,7 +144,7 @@ export default {
                 console.log(response.data);
                 document.getElementById("errorMessage").innerHTML = response.data;
                     
-                router.push('/');
+                this.$router.push('/');
                 })
             }
             else {
@@ -152,7 +152,7 @@ export default {
             }
         },
         goToLogIn() {
-            router.push('/logIn')
+            this.$router.push('/logIn')
         }
     },
     created(){

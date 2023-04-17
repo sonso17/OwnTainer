@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import router from '@/router';
+// import router from '@/router';
 export default {
     name: "peuPagina",
     methods: {
         whoAmIRedirect() {
-            router.push("/whoAmI");
+            this.$router.push("/whoAmI");
         }
     }
 }
