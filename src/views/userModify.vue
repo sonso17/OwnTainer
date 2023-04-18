@@ -199,8 +199,6 @@ export default {
         }
     },
     created(){
-        // this.verificarCamps(),
-        // this.verificarContrassenyes(),
         this.comprovarSessio(),
         this.rebreDadesUser()
 

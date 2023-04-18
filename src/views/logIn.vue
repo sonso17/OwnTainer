@@ -12,6 +12,7 @@
         <br>
         <button id="buttonlogin" @click="enviarDadesLogIn()" :capcalera-c="isLogin" value="Log In">Log in</button>
         <button id="buttonlogin" @click="goToRegister()">Register</button>
+        <div id="divError"></div>
     </div>
 </template>
 <script>
@@ -29,6 +30,7 @@ export default {
             isLogin: false,
             userID: "",
             apikey: ""
+
         }
     },
     methods: {
@@ -47,29 +49,24 @@ export default {
                 }
             ).then((response) => {
                 console.log(response.data);
-                if (error.response) {
-                    console.log(error.response.data)
-                }
-                else {
-                    sessionStorage.setItem('UserID', response.data[0].UserID);
-                    sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
-                    this.userID = response.data[0].UserID;
-                    this.apikey = response.data[0].APIKEY;
-                    this.$emit("logInOk", { userID: this.userID, apikey: this.apikey })
-                    // this.$emit("apikey", this.apikey)
-                    this.isLogin = true;
-                    this.$router.push('/')
-                }
-
+                sessionStorage.setItem('UserID', response.data[0].UserID);
+                sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
+                this.userID = response.data[0].UserID;
+                this.apikey = response.data[0].APIKEY;
+                this.$emit("logInOk", { userID: this.userID, apikey: this.apikey })
+                this.isLogin = true;
+                this.$router.push('/')
+            }).catch(error => {
+                const message = error.response.data;
+                document.getElementById("divError").innerHTML = message;
+                console.log(`Error message: ${message}`);
             })
-            // console.log(response);
         },
         goToRegister() {
             this.router.push('/register')
         }
     }
 }
-
 
 </script>
 
