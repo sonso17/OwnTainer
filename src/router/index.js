@@ -5,6 +5,7 @@ import logIn from '../views/logIn.vue'
 import register from '../views/registerR.vue'
 import userInfo from '../views/userInfo.vue'
 import modifyUser from '../views/userModify.vue'
+import oneComponent from '../views/oneComponent.vue'
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
     path: '/modifyUser/:id',
     name: 'modifyUser',
     component: modifyUser
+  },
+  {
+    path: '/oneComponent/:id',
+    props: true,
+    name: 'oneComponent',
+    component: oneComponent
   }
 
 ]

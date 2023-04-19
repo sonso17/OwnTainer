@@ -1,6 +1,7 @@
 <template>
-    <div class="HComponent">
+    <div class="HComponent" @click="goToComponentInfo">
         <div>{{ HComp.componentName }}</div>
+        <div>{{ HComp.componentId }}</div>
 
         <div> {{ HComp.props[0].value }}</div>
         <div> {{ HComp.props[1].value }}</div>
@@ -11,7 +12,12 @@
 <script>
 export default {
     name: "hardwareComp",
-    props: ["HComp"]
+    props: ["HComp"],
+    methods: {
+        goToComponentInfo(){
+            this.$router.push("/oneComponent/" + this.HComp.componentId);
+        }
+    }
 }
 </script>
 

@@ -6,6 +6,7 @@
         </a>
         <div id="CreditText">
             <h1>CC BY-SA By Aleix Poch</h1>
+            <div id="text">Hi Everyone my name is Aleix Poch vilà and i'm a web developer student.</div>
         </div>
     </div>
 </template>
