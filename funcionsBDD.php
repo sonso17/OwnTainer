@@ -370,8 +370,57 @@ function selectOneComponent($componentID, $UserID)
         $UserIdComponent = $resultat[0]['UserID'];
         $ComponentPrivacy = $resultat[0]['Privacy'];
 
+        //carrego dos arrays buits 
+        $arrAllComp = []; //en aquest hi guardaré tota la informació de cada component que hi vagi guardant(array general)
+        $arrComProp = []; //en aquest hi guardare totes les propietats de cada component
+        $arrIdsComps = []; //array unicament d'IDs de component
+
+        foreach ($resultat as $i) { //aquest foreach serveix unicament per a guardar els IDs de cada component
+
+            $idCom = $i['ComponentID']; //agafo l'id de component
+
+            if (!in_array($idCom, $arrIdsComps)) { //comprovo de que el id no estigui repetit, in_array ens diu si el valor passat està a dins de l'array
+                array_push($arrIdsComps, $idCom); //si no esta repetit, el guardo
+            }
+        }
+
+        $lenId = sizeof($arrIdsComps); //aquest lenID de lengthID, ens guarda la longitud de tots els IDs guardats 
+        for ($i = 0; $i < $lenId; $i++) { //iterem tots els IDs 
+
+            $privacy = ''; //resetejo tots els valors buits per no anar acumulant el seguent component
+            $componentName = '';
+            $arrayTotUnComponent = [];
+            $arrComProp = [];
+
+            foreach ($resultat as $el) { //iterem tota la consulta(ja que hi han moltes files amb el mateix componentID)
+
+                $idCom = $el['ComponentID']; //ectrec el idComponent de l'iteració del moment
+                if ($idCom == $arrIdsComps[$i]) { //si el idCom és igual al valor de la posició de l'array d'IDs
+
+                    $arrayProp = array( //guarden les propietats del ID trobat a l'array indexat
+                        "name" => $el['PropertyName'],
+                        "value" => $el['Valuee']
+                    );
+
+                    array_push($arrComProp, $arrayProp); //guardem les propietats de cada component
+                    $privacy = $el['Privacy']; //extrec la privacitat i componentNom
+                    $componentName = $el['ComponentName'];
+                }
+            }
+            $arrayTotUnComponent = array( //agafo les propietats no variables de cada component a l'array indexat i els hi aplico
+                "componentId" => $arrIdsComps[$i],
+                "componentName" => $componentName,
+                "privacy" => $privacy,
+                "props" => $arrComProp
+            );
+            array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
+        }
+
+        
+
         if ($UserIdComponent == $UserID || $ComponentPrivacy == 'false') { //si el usuari és propietari del component o el component és públic
-            return $resultat;
+            // return $resultat;
+            return $arrAllComp;
         } else {
             return false;
         }

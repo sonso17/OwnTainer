@@ -11,7 +11,7 @@ class BdD
 	{
 		$this->db_host = "localhost";
 		$this->db_user = "daw";
-		$this->db_password = "daw";
+		$this->db_password = "";
 		$this->db_name = "owntainer";
 	}
 

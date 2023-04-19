@@ -166,7 +166,7 @@ class Server
                 } else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
-                        var_dump($put);
+                        // var_dump($put);
                         $missatge = registerComponent($put, $userID);
 
                         if ($missatge == true) {
