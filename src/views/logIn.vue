@@ -29,7 +29,8 @@ export default {
             passwd: "",
             isLogin: false,
             userID: "",
-            apikey: ""
+            apikey: "",
+            emailLogged: ""
 
         }
     },
@@ -53,7 +54,8 @@ export default {
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
                 this.userID = response.data[0].UserID;
                 this.apikey = response.data[0].APIKEY;
-                this.$emit("logInOk", { userID: this.userID, apikey: this.apikey })
+                this.emailLogged = response.data[0].email;
+                this.$emit("logInOk", { userID: this.userID, apikey: this.apikey, email: this.emailLogged })
                 this.isLogin = true;
                 this.$router.push('/')
             }).catch(error => {

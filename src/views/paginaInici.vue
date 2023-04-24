@@ -3,16 +3,17 @@
         <Searcher @newSearch="updateSearch"> </Searcher>
         <div id="componentsUsuari" v-if="boolSessio">
             <div id="compUserTitol">Components Usuari</div>
-                <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
+            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
+            <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
-                </hardwareComponent>
+            </hardwareComponent>
         </div>
 
         <div id="componentsPublics">
             <div id="compPublicTitol">Components Publics</div>
-                <hardwareComponent v-for="(HComponent, i) in componentsPublicsJSON" :key="i" :HComp="HComponent">
+            <hardwareComponent v-for="(HComponent, i) in componentsPublicsJSON" :key="i" :HComp="HComponent">
 
-                </hardwareComponent>
+            </hardwareComponent>
         </div>
     </div>
 </template>
@@ -31,7 +32,7 @@ export default {
             boolSessio: false,
             userID: "",
             apikey: "",
-            searchTerm:""
+            searchTerm: ""
         }
     },
     methods: {
@@ -45,16 +46,11 @@ export default {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;
                 this.apikey = sessionStorage.APIKEY;
-
                 this.boolSessio = true;
-                // console.log("entra")
                 this.getUserComponents();
-
                 return true;
-                //cridar getuserInfo
             }
             else {
-                // console.log("entra")
                 this.boolSessio = false;
                 return false;
             }
@@ -66,17 +62,51 @@ export default {
                     console.log(resultat.data)
                 });
         },
-        updateSearch(term){
+        updateSearch(term) {
             this.searchTerm = term;
-            if(!this.comprovarSessio){
-                this.getPublicComponents
-            }
-            else{
-                this.getPublicComponents
-                this.getUserComponents
+            console.log(this.searchTerm)
+
+            axios.post('http://owntainer.daw.institutmontilivi.cat/API/selectPublicComponentsByValue',
+                {
+                    "data": [
+                        {
+                            "SearchWord": this.searchTerm
+
+                        }
+                    ]
+                }
+            ).then((response) => {
+                this.componentsPublicsJSON = response.data;
+                console.log(response.data);
+            }).catch(error => {
+                const message = error.response.data;
+                console.log(`Error message: ${message}`);
+            })
+
+            if (this.comprovarSessio) {//si no hi ha seesió, cridar la funcio selectPublicComponentsByValue
+
+                axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/selectUserComponentsByValue/",
+                    {
+                        "data": [
+                            {
+                                "SearchWord": this.searchTerm
+
+                            }
+                        ]
+                    }
+                ).then((response) => {
+                    this.componentsUserJSON = response.data;
+                    console.log(response.data);
+                }).catch(error => {
+                    const message = error.response.data;
+                    console.log(`Error message: ${message}`);
+                })
+
             }
 
-
+        },
+        goToRegisterComponent(){
+            this.$router.push("/registerComponent");
         }
     },
     created() {

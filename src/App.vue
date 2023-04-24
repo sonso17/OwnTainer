@@ -1,5 +1,5 @@
 <template>
-  <capcalera-c :userID="userID" :apikey="apikey"  @logOut="notifica"/> <!--l'emit logout vé de la capçalera-->
+  <capcalera-c :userID="userID" :apikey="apikey" :email="userEmail"  @logOut="notifica"/> <!--l'emit logout vé de la capçalera-->
   <div id="contenidorGeneral">
     <router-view @logInOk="notifica"/><!--l'emit login vé de la vista log in-->
   </div>
@@ -15,15 +15,18 @@ export default {
   data() {
     return {
       userID: "",
-      apikey: ""
+      apikey: "",
+      userEmail:""
     }
   },
   methods: {
     notifica(logInDades) {
       this.userID = logInDades.userID
       this.apikey = logInDades.apikey
+      this.userEmail = logInDades.email
       console.log(this.userID)
       console.log(this.apikey)
+      console.log(this.userEmail)
     }
   }
 }

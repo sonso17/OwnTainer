@@ -5,8 +5,8 @@
 
     <div id="UserInfo" v-if="posardades">
       <div>
-        <div id="capNomUsuari" @click="GoToUserInfo"> {{ userID }}</div>
-        <div id="capRolUsuari">{{ apikey }}</div>
+        <div id="capNomUsuari" @click="GoToUserInfo"> {{ email }}</div>
+        <!-- <div id="capRolUsuari">{{ apikey }}</div> -->
       </div>
 
       <img v-if="btnLogout" src="@/assets/logout.png" alt="" class="logout" @click="logout">
@@ -22,7 +22,7 @@
 
 export default {
   name: "capcaleraC",
-  props: ["userID", "apikey"],
+  props: ["userID", "apikey", "email"],
   emits: ["logOut"],
   data() {
     return {

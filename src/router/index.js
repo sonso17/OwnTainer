@@ -6,6 +6,8 @@ import register from '../views/registerR.vue'
 import userInfo from '../views/userInfo.vue'
 import modifyUser from '../views/userModify.vue'
 import oneComponent from '../views/oneComponent.vue'
+import registerComponent from '../views/registerComponent.vue'
+import modifyComponent from '../views/modifyComponent.vue'
 
 const routes = [
   {
@@ -43,8 +45,18 @@ const routes = [
     props: true,
     name: 'oneComponent',
     component: oneComponent
+  },
+  {
+    path: '/registerComponent',
+    name: 'registerComponent',
+    component: registerComponent
+  },
+  {
+    path: '/modifyComponent/:id',
+    props: true,
+    name: 'modifyComponent',
+    component: modifyComponent
   }
-
 ]
 
 const router = createRouter({
