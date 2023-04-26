@@ -83,7 +83,7 @@ export default {
     },
   },
   created() {
-    // this.posardades()
+    this.posardades()
   },
 
 
