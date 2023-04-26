@@ -26,12 +26,10 @@ class Server
         // part privada ex. http://owntainer.daw.institutmontilivi.cat/API/API-KEY/modifyUser/1
         //                                                               //recurs1  recurs2   identificador
 
-        if($method == 'OPTIONS'){
+        if ($method == 'OPTIONS') {
             header('HTTP/1.1 200 OK');
             exit;
         }
-
-
         //aqui anar posant endpoints publics
 
         if ($recurs1 == "register") {
@@ -56,7 +54,8 @@ class Server
             } else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } else if ($recurs1 == "LogIn") {
+        } 
+        else if ($recurs1 == "LogIn") {
             if ($method == 'POST') // validem que sigui per GET
             {
                 $put = json_decode(file_get_contents('php://input'), true);
@@ -76,20 +75,31 @@ class Server
             } else { //si el mètode es qualsevol altre cosa que POST
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } else if ($recurs1 == "getComponentProperties") {
-            if($recurs2 != ""){
+        } 
+        else if ($recurs1 == "getAllComponentType") {
+            if ($method == "GET") {
+                $resultat = getAllComponentType();
+                // echo "hola";
+                echo json_encode($resultat);
+                header('HTTP/1.1 200 OK');
+            } else {
+                header('HTTP/1.1 405 Method Not Allowed');
+            }
+        } 
+        else if ($recurs1 == "getComponentProperties") {
+            if ($recurs2 != "") {
                 if ($method == "GET") {
                     echo json_encode(getComponentProperties($recurs2));
                     header('HTTP/1.1 200 OK');
                 } else {
                     header('HTTP/1.1 405 Method Not Allowed');
                 }
-            }
-            else{
+            } else {
                 echo "Component property ID needed";
                 header('HTTP/1.1 417 EXPECTATION FAILED');
             }
-        } else if ($recurs1 == "selectOneComponent") {
+        } 
+        else if ($recurs1 == "selectOneComponent") {
             if ($method == "GET") { //fer condicio de verificar que hi ha component id i userID
                 if ($recurs2 != "") { //si hi ha component id i userID
                     $resultatComponent = selectOneComponent($recurs2, $identificador);
@@ -109,25 +119,21 @@ class Server
             }
         } else if ($recurs1 == "selectPublicComponents") {
             if ($method == "GET") {
-
                 $resultatCOMPonent = json_encode(selectPublicComponents());
                 echo $resultatCOMPonent;
                 header('HTTP/1.1 200 OK');
             } else {
                 header('HTTP/1.1 405 Method Not Allowed');
             }
-        } 
-        else if($recurs1 == "selectPublicComponentsByValue"){
-            if($method == "POST"){
+        } else if ($recurs1 == "selectPublicComponentsByValue") {
+            if ($method == "POST") {
                 $put = json_decode(file_get_contents('php://input'), true);
                 $searchWord = $put["data"][0]["SearchWord"];
                 echo json_encode(selectPublicComponentsByValue($searchWord));
-            }
-            else{
+            } else {
                 header('HTTP/1.1 405 Method Not Allowed');
-
             }
-        }
+        } 
         else { //Ficar endpoints privades de l'API
 
             $id = explode('.', $recurs1); //divideixo el valor passat del recurs1(apikey + userID)
@@ -270,16 +276,14 @@ class Server
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
-                }
-                else if($recurs2 == "selectUserComponentsByValue") {
-                    if($method == "POST"){
+                } else if ($recurs2 == "selectUserComponentsByValue") {
+                    if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
                         $searchWord = $put["data"][0]["SearchWord"];
                         // echo $userID;
                         // echo $searchWord;
                         echo json_encode(selectUserComponentsByValue($userID, $searchWord));
-                    }
-                    else {
+                    } else {
                         header('HTTP/1.1 405 Method Not Allowed');
                     }
                 }

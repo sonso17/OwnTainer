@@ -1261,3 +1261,30 @@ function selectUserComponentsByValue($userID, $searchWord)
         return false;
     }
 }
+
+function getAllComponentType(){
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $senteciSQL = "SELECT ComponentTypeID, ComponentType FROM componenttype;";
+
+        $bdd = $conn->prepare($senteciSQL);
+        // $bdd->bindParam("APIKEY", $UserApiKey); //aplico els parametres necessaris
+        // $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultat = $bdd->fetchAll(); //guardo els resultats
+
+        if ($resultat) { // si ha trobat un usuari
+            return $resultat;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
