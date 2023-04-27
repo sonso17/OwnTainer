@@ -3,7 +3,7 @@
         <Searcher @newSearch="updateSearch"> </Searcher>
         <div id="componentsUsuari" v-if="boolSessio">
             <div id="compUserTitol">Components Usuari</div>
-            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
+            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button><br>
             <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>

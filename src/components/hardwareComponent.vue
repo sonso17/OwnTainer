@@ -35,7 +35,7 @@ export default {
     border-radius: 20px;
     display: inline-block;
     background: rgb(2, 0, 36);
-    background: linear-gradient(90deg, rgb(108, 209, 124) 0%, rgb(161, 26, 87) 51%, rgba(0, 212, 255, 1) 100%);
+    background: linear-gradient(90deg, #26580f 0%, rgb(108, 209, 124) 51%, #26580f 100%);
     cursor: pointer;
     transition: all 250ms;
 }
