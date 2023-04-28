@@ -4,24 +4,23 @@
         <select v-model="componentTypeSelect" @change="getComponentProperties" id="componentTypeSelect">
             <compTypeList v-for="(compType, i) in compTypesJSON" :key="i" :compType="compType"></compTypeList>
         </select>
-        <br>
-        <!-- {{ compPropsJSON }}<br> -->
+         <br>
+        <!--{{ compPropsJSON.componentTypeId }}<br> -->
         <label class="labelLogin" for="compName">Component Name</label>
         <br>
         <input class="inputlogin" id="compNameinput" v-model="compName" type="email" name="compName">
         <br>
         <p>Do you want your component to be <b>Public</b> or <b>Private</b>:</p>
         <select id="compPrivacy">
-            <option value="true">Public</option>
-            <option value="false">Private</option>
+            <option value="false">Public</option>
+            <option value="true">Private</option>
         </select>
         <br>
         <div>Component Info:</div><br>
         <div id="RegisterCompForm" v-for="(compProp, a) in compPropsJSON.props" :key="a" :compProp="compProp">
-            <label class="labelLogin" for="{{ compProp['PropertyName'] }}">{{ compProp['PropertyName'] }}</label>
+            <label class="labelProps" :for="compProp['PropertyName']">{{ compProp['PropertyName'] }}</label>
             <br>
-            <input class="inputlogin" id="{{ compProp['PropertyName'] }}Input" type="email"
-                name="{{ compProp['PropertyName'] }}">
+            <input class="inputProps" :id="compProp['propertyID']" type="email" :name="compProp['PropertyName']">
             <br>
         </div>
         <br>
@@ -49,7 +48,7 @@ export default {
             compPropsJSON: {},
             compName: "",
             privacy: false,
-            arrDadesForm: []
+
         }
     },
     methods: {
@@ -69,21 +68,40 @@ export default {
                 });
         },
         enviarDadesComponent() {
+            var totsInputPropsId = [];
+            var totsInputPropsValue = [];
+            var arrayPropsJSON = [];
+
+            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {//extrec els IDs de les propietsts i els values i els guardo en arrays separats
+                totsInputPropsId.push(document.getElementsByClassName("inputProps")[i].id);
+                totsInputPropsValue.push(document.getElementsByClassName("inputProps")[i].value);
+            }
+
+            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {//aig generant un objecte per cada iteracio amb la seva informacio
+                arrayPropsJSON.push(
+                    {
+                        prop_id: totsInputPropsId[i],
+                        prop_val: totsInputPropsValue[i]
+                    }
+                );
+            }
+
+            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {
+                console.log(arrayPropsJSON[i])
+                // console.log(this.compPropsJSON.componentTypeID)
+            }
+
+
             this.compName = document.getElementById("compNameinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
-            axios.post("http://owntainer.daw.institutmontilivi.cat/API/ " + this.apikey + "." + this.userID + "/RegisterComponent",
+            axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/RegisterComponent/",
                 {
                     "data":
                     {
                         "ComponentName": this.compName,
-                        "ComponentType": this.compPropsJSON.componentTypeID,
+                        "ComponentType": this.compPropsJSON.componentTypeId,
                         "privacy": this.privacy,
-                        "props": [
-
-                        //  for(i =0; i< this.compPropsJSON.props; i++){
-
-                        //  }
-                        ]
+                        "props": arrayPropsJSON
                     }
                 }
             ).then((response) => {
@@ -96,6 +114,7 @@ export default {
             })
         },
         comprovarSessio() {
+            // console.log(this.compTypesJSON)
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;
                 this.apikey = sessionStorage.APIKEY;
