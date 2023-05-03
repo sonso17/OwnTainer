@@ -9,8 +9,8 @@
         <br>
         <p>Do you want your component to be <b>Public</b> or <b>Private</b>:</p>
         <select id="compPrivacy" :value="compPrivacy">
-            <option value="true">Public</option>
-            <option value="false">Private</option>
+            <option value="true">Private</option>
+            <option value="false">Public</option>
         </select>
         <br>
         <div>Component Info:</div><br>
@@ -23,7 +23,7 @@
         </div>
         <br>
         <button @click="enviarDadesComponent">Update Component</button>
-        <button>Delete Component</button>
+        <button @click="deleteComponent">Delete Component</button>
         <div id="divError"></div>
     </div>
     <button @click="goToInici">Go to the main page</button>
@@ -130,6 +130,23 @@ export default {
                 document.getElementById("divError").innerHTML = message;
                 console.log(`Error message: ${message}`);
             })
+        },
+        deleteComponent() {
+            if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
+                axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
+                    .then(resultat => {
+                        console.log(resultat.data)
+                        this.$router.push("/");
+                    })
+                    .catch(error => {
+                        const message = error.response.data;
+                        document.getElementById("divError").innerHTML = message;
+                        console.log(`Error message: ${message}`);
+                    })
+            }
+            else {
+                document.getElementById("divError").innerHTML = "component cannot be deleted";
+            }
         },
         comprovarSessio() {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {

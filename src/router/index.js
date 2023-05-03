@@ -8,6 +8,7 @@ import modifyUser from '../views/userModify.vue'
 import oneComponent from '../views/oneComponent.vue'
 import registerComponent from '../views/registerComponent.vue'
 import modifyComponent from '../views/modifyComponent.vue'
+import newComponentType from '../views/newComponentType.vue'
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     props: true,
     name: 'modifyComponent',
     component: modifyComponent
+  },
+  {
+    path: '/newComponentType',
+    name: 'newComponentType',
+    component: newComponentType
   }
 ]
 

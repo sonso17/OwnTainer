@@ -9,7 +9,7 @@
     </div>
     <div v-if="userID == compInfoJSON.userID"><!-- -->
         <button @click="goToModifyComponent">ModifyComponent</button>
-        <button>Delete component</button>
+        <button @click="deleteComponent">Delete component</button>
     </div>
     <div id="divError"></div>
 </template>
@@ -24,7 +24,8 @@ export default {
             boolSessio: false,
             apikey: "",
             userID: "",
-            compInfoJSON: ""
+            compInfoJSON: "",
+            componentID: ""
         }
     },
 
@@ -48,8 +49,10 @@ export default {
             if (this.boolSessio) {//si hi ha sessio
                 axios.get("http://owntainer.daw.institutmontilivi.cat/API/selectOneComponent/" + this.id + "/" + this.userID)
                     .then(resultat => {
-                        this.compInfoJSON = resultat.data[0]
-                        console.log(resultat.data)
+                        this.compInfoJSON = resultat.data[0];
+                        this.componentID = this.compInfoJSON.componentId;
+                        // console.log(resultat.data)
+                        // console.log(this.componentID)
                     })
                     .catch(error => {
                         const message = error.response.data;
@@ -60,14 +63,33 @@ export default {
             else {
                 axios.get("http://owntainer.daw.institutmontilivi.cat/API/selectOneComponent/" + this.id)
                     .then(resultat => {
-                        this.compInfoJSON = resultat.data[0]
-                        console.log(resultat.data)
+                        this.compInfoJSON = resultat.data[0];
+                        this.componentID = this.compInfoJSON.componentId;
+                        // console.log(resultat.data)
+                        // console.log(this.componentID)
                     })
                     .catch(error => {
                         const message = error.response.data;
                         document.getElementById("divError").innerHTML = message;
                         console.log(`Error message: ${message}`);
                     })
+            }
+        },
+        deleteComponent() {
+            if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
+                axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
+                    .then(resultat => {
+                        console.log(resultat.data)
+                        this.$router.push("/");
+                    })
+                    .catch(error => {
+                        const message = error.response.data;
+                        document.getElementById("divError").innerHTML = message;
+                        console.log(`Error message: ${message}`);
+                    })
+            }
+            else {
+                document.getElementById("divError").innerHTML = "component cannot be deleted";
             }
         },
         goToModifyComponent() {

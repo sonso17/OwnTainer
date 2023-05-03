@@ -11,11 +11,13 @@
         <div id="userInfoBox2">
             Email: {{ userInfoJSON.email }}<br>
             Password: {{ userInfoJSON.passwd }}<br>
+            <!-- {{ userInfoJSON.UserID }} -->
         </div>
         <div id="buttonsModificarEliminar">
-            <button>Delete User</button>
+            <button @click="deleteUser">Delete User</button>
             <button @click="goToModifyUser">Modify User</button>
         </div>
+        <div id="divError"></div>
     </div>
 </template>
 
@@ -56,7 +58,25 @@ export default {
                 .then(resultat => {
                     this.userInfoJSON = resultat.data[0]
                     console.log(resultat.data)
+                    // console.log(this.userInfoJSON.UserID)
                 });
+        },
+        deleteUser() {
+            if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
+                axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
+                    .then(resultat => {
+                        console.log(resultat.data)
+                        this.$router.push("/");
+                    })
+                    .catch(error => {
+                        const message = error.response.data;
+                        document.getElementById("divError").innerHTML = message;
+                        console.log(`Error message: ${message}`);
+                    })
+            }
+            else {
+                document.getElementById("divError").innerHTML = "user cannot be deleted";
+            }
         },
         goToLogIn() {
             this.$router.push('/login')

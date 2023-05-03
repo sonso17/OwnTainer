@@ -12,8 +12,8 @@
         <br>
         <p>Do you want your component to be <b>Public</b> or <b>Private</b>:</p>
         <select id="compPrivacy">
-            <option value="false">Public</option>
             <option value="true">Private</option>
+            <option value="false">Public</option>
         </select>
         <br>
         <div>Component Info:</div><br>

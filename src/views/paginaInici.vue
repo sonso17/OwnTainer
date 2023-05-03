@@ -3,7 +3,8 @@
         <Searcher @newSearch="updateSearch"> </Searcher>
         <div id="componentsUsuari" v-if="boolSessio">
             <div id="compUserTitol">Components Usuari</div>
-            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button><br>
+            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
+            <button @click="goToNewCompType">New Component Type</button><br>
             <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>
@@ -107,6 +108,9 @@ export default {
         },
         goToRegisterComponent(){
             this.$router.push("/registerComponent");
+        },
+        goToNewCompType(){
+            this.$router.push("/newComponentType");
         }
     },
     created() {
