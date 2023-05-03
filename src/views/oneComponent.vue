@@ -7,9 +7,9 @@
         <div v-if="compInfoJSON.privacy == 'true'"> Private</div>
         <div v-if="compInfoJSON.privacy == 'false'"> Public</div>
     </div>
-    <div v-if="userID == compInfoJSON.userID">
-    <button @click="goToModifyComponent">ModifyComponent</button>
-    <button>Delete component</button>
+    <div v-if="userID == compInfoJSON.userID"><!-- -->
+        <button @click="goToModifyComponent">ModifyComponent</button>
+        <button>Delete component</button>
     </div>
     <div id="divError"></div>
 </template>
@@ -70,7 +70,7 @@ export default {
                     })
             }
         },
-        goToModifyComponent(){
+        goToModifyComponent() {
             this.$router.push('/modifyComponent/' + this.id)
         }
     },

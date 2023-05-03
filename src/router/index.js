@@ -52,7 +52,7 @@ const routes = [
     component: registerComponent
   },
   {
-    path: '/modifyComponent/:id',
+    path: '/modifyComponent/:compID',
     props: true,
     name: 'modifyComponent',
     component: modifyComponent

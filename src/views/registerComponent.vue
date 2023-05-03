@@ -86,12 +86,6 @@ export default {
                 );
             }
 
-            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {
-                console.log(arrayPropsJSON[i])
-                // console.log(this.compPropsJSON.componentTypeID)
-            }
-
-
             this.compName = document.getElementById("compNameinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
             axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/RegisterComponent/",

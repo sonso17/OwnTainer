@@ -49,9 +49,6 @@
         <button @click="enviarDadesModifyUser">Update  User</button>
         <button>Delete User</button>
     </div>
-
-    
-
 </template>
 
 <script>
