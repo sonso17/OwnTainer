@@ -4,7 +4,7 @@
         <select v-model="componentTypeSelect" @change="getComponentProperties" id="componentTypeSelect">
             <compTypeList v-for="(compType, i) in compTypesJSON" :key="i" :compType="compType"></compTypeList>
         </select>
-         <br>
+        <br>
         <!--{{ compPropsJSON.componentTypeId }}<br> -->
         <label class="labelLogin" for="compName">Component Name</label>
         <br>
@@ -24,7 +24,7 @@
             <br>
         </div>
         <br>
-        <button @click="enviarDadesComponent">Submit</button>
+        <button @click="comprobarCamps">Submit</button>
         <div id="divError"></div>
     </div>
     <button @click="goToInici">Go to the main page</button>
@@ -52,11 +52,24 @@ export default {
         }
     },
     methods: {
+        comprobarCamps() {
+            var selectCompType = document.getElementById("componentTypeSelect").value;
+            var compName = document.getElementById("compNameinput").value;
+            if (selectCompType != "" && compName != "") {
+                this.enviarDadesComponent()
+            }
+            else {
+                document.getElementById("divError").innerHTML = 'please select a component type and then put a name on it ;)'
+                document.getElementById("componentTypeSelect").style.border = " 2px solid red";
+                document.getElementById("compNameinput").style.border = " 2px solid red";
+
+
+            }
+        },
         getAllComponentType() {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/getAllComponentType")
                 .then(resultat => {
                     this.compTypesJSON = resultat.data
-                    console.log(resultat.data)
                 });
         },
         getComponentProperties() {
@@ -64,7 +77,6 @@ export default {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/getComponentProperties/" + this.componentTypeSelect)
                 .then(resultat => {
                     this.compPropsJSON = resultat.data
-                    console.log(resultat.data)
                 });
         },
         enviarDadesComponent() {
@@ -108,16 +120,13 @@ export default {
             })
         },
         comprovarSessio() {
-            // console.log(this.compTypesJSON)
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;
                 this.apikey = sessionStorage.APIKEY;
                 this.boolSessio = true;
                 return true;
-                //cridar getuserInfo
             }
             else {
-                console.log("entra")
                 this.boolSessio = false;
                 return false;
             }

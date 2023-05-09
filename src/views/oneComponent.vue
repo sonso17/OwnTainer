@@ -1,21 +1,27 @@
 <template>
     <div id="divGeneral">
         <div id="infoComponent">
-            <div id="compTitle"> Component Name: {{ compInfoJSON.componentName }}</div>
-            <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
-                {{ prop.name }} : {{ prop.value }}
+            <div id="compTitle">
+                <div id="compName">Component Name:</div>
+                <div class="compInfo">{{ compInfoJSON.componentName }}</div>
             </div>
-            <div id="compPrivacy">Component privacy:
-                <div v-if="compInfoJSON.privacy == 'true'"> Private</div>
-                <div v-if="compInfoJSON.privacy == 'false'"> Public</div>
+            <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
+                <div class="compProp">{{ prop.name }} :</div>
+                <div class="compInfo">{{ prop.value }}</div>
+            </div>
+            <div id="compPrivacy">
+                <div class="compProp">Component privacy:</div>
+                <div class="compInfo" v-if="compInfoJSON.privacy == 'true'"> Private</div>
+                <div class="compInfo" v-if="compInfoJSON.privacy == 'false'"> Public</div>
             </div>
 
         </div>
         <img id="compImage" src="../assets/toddyDaddy.png">
-        <div id="grupButtonsModifyDeleteComp" v-if="userID == compInfoJSON.userID"><!-- -->
-            <button id="updateCompBTN" @click="goToModifyComponent">ModifyComponent</button>
-            <button id="deleteCompBTN" @click="deleteComponent">Delete component</button>
-        </div>
+
+    </div>
+    <div id="grupButtonsModifyDeleteComp" v-if="userID == compInfoJSON.userID"><!-- -->
+        <button id="updateCompBTN" @click="goToModifyComponent">ModifyComponent</button>
+        <button id="deleteCompBTN" @click="deleteComponent">Delete component</button>
     </div>
 
     <div id="divError"></div>
@@ -112,11 +118,24 @@ export default {
 </script>
 
 <style scoped>
-#divGeneral{
+#divGeneral {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    
 }
+
+#compName {
+    font-size: 50px;
+}
+
+.compInfo {
+    font-size: 25px;
+}
+
+.compProp {
+    font-size: 30px;
+}
+
 #infoComponent {
     padding: 80px;
 }
@@ -126,20 +145,21 @@ export default {
     width: auto;
 }
 
-#deleteCompBTN{
+#deleteCompBTN {
     background-color: #ff0000;
 }
 
-#deleteCompBTN:hover{
-    background-color: #ff000042;
+#deleteCompBTN:hover {
+    background-color: #960018;
 }
 
-#updateCompBTN{
+/* #updateCompBTN {
     background-color: cyan;
 }
-#updateCompBTN:hover{
+
+#updateCompBTN:hover {
     background-color: blue;
-}
+} */
 
 
 #grupButtonsModifyDeleteComp {}

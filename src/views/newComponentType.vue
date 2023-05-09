@@ -5,7 +5,7 @@
         <input type="text" name="CompTypeName" id="CompTypeName"><br>
         <div id="contenidorProps"></div>
         <button @click="AddNewPropAndUnit">New Property</button>
-        <button @click="enviarDadesNewCompType">Submit</button>
+        <button @click="comprobarCamps">Submit</button>
     </div>
     <div id="divError"></div>
     <button @click="goToMainPage">Go back</button>
@@ -26,6 +26,16 @@ export default {
         }
     },
     methods: {
+        comprobarCamps() {
+            var compName = document.getElementById("CompTypeName").value;
+            if (compName != "") {
+                this.enviarDadesNewCompType()
+            }
+            else {
+                document.getElementById("divError").innerHTML = 'please name the new component type ;)'
+                document.getElementById("CompTypeName").style.border = " 2px solid red";
+            }
+        },
         comprovarSessio() {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;

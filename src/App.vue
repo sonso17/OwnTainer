@@ -90,6 +90,19 @@ input::placeholder{
   transform: translateY(-4rem);
 }
 
+select{
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  width: 200px;
+  border: 2px solid black;
+  font-size: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+}
+
 #contenidorGeneral {
   /* height: 100%; */
   /* min-height: 100%;

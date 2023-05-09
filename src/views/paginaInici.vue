@@ -105,9 +105,7 @@ export default {
                     const message = error.response.data;
                     console.log(`Error message: ${message}`);
                 })
-
             }
-
         },
         goToRegisterComponent() {
             this.$router.push("/registerComponent");
@@ -124,8 +122,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #searcher {}
+
+#compUserTitol{
+    font-size: 60px;
+}
+
+#compPublicTitol{
+    font-size: 60px;
+
+}
 
 #grupBotons{
     position: relative;

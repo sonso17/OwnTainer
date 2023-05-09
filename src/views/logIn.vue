@@ -12,7 +12,7 @@
         <br>
         <br>
         <button id="buttonlogin" @click="enviarDadesLogIn()" :capcalera-c="isLogin" value="Log In">Log in</button>
-        <button id="buttonlogin" @click="goToRegister()">Register</button>
+        <button id="buttonregister" @click="goToRegister()">Register</button>
         <div id="divError"></div>
     </div>
 </template>
@@ -76,5 +76,18 @@ export default {
 <style scoped>
 #contenirdor {
     height: 100%;
+}
+
+#buttonlogin {
+    background-color: #00ff4c;
+    color: black;
+}
+
+#buttonlogin:hover {
+    background-color: #00964b;
+}
+
+#buttonregister{
+    color: black;
 }
 </style>
