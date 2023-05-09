@@ -77,7 +77,7 @@ export default {
                 totsInputPropsValue.push(document.getElementsByClassName("inputProps")[i].value);
             }
 
-            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {//aig generant un objecte per cada iteracio amb la seva informacio
+            for (let i = 0; i < (this.compPropsJSON.props).length; i++) {//vaig generant un objecte per cada iteracio amb la seva informacio
                 arrayPropsJSON.push(
                     {
                         prop_id: totsInputPropsId[i],

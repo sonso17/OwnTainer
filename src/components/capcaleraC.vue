@@ -30,8 +30,8 @@ export default {
     }
   },
   computed: {
-    btnLogout(){
-      return (this.userID !="" && this.apikey!="")
+    btnLogout() {
+      return (this.userID != "" && this.apikey != "")
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
        */
     posardades() {
       // console.log(this.userID)
-      if (sessionStorage.UserID  && sessionStorage.APIKEY) {
+      if (sessionStorage.UserID && sessionStorage.APIKEY) {
         this.btnLogout = true;
         // document.getElementById("capNomUsuari").innerHTML = sessionStorage.UserID;
         // console.log(this.btnLogout)
@@ -79,14 +79,13 @@ export default {
       sessionStorage.clear()
       this.$emit("logOut", { userID: "", apikey: "" });
       // this.btnLogout = false;
+      window.location.reload();
       this.$router.push("/")
     },
   },
   created() {
     this.posardades()
   },
-
-
 };
 </script>
 
@@ -95,6 +94,7 @@ export default {
   position: relative;
   display: flex;
   /* padding: 22px; */
+  flex-direction: row;
   justify-content: space-around;
   background: #26580f;
   color: white;
@@ -108,7 +108,7 @@ export default {
   height: 90px;
   width: 171px;
   font-size: 25px;
-  left: -9%;
+  /* left: -9%; */
 }
 
 #capLogo:hover {
@@ -119,12 +119,12 @@ export default {
   position: relative;
   height: 100%;
   width: 250px;
-  left: -20%;
+  left: 15%;
 }
 
 .btLogIn {
   position: relative;
-  left: -10%;
+  /* left: -10%; */
 }
 
 #UserInfo {
@@ -151,5 +151,14 @@ export default {
 
 #capRolUsuari {
   /* margin: 10px; */
+}
+
+@media only screen and (max-width: 500px) {
+  #capNomP {
+    position: relative;
+    height: 100%;
+    width: 250px;
+    left: 0%;
+  }
 }
 </style>

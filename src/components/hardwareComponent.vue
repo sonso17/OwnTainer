@@ -1,11 +1,11 @@
 <template>
     <div class="HComponent" @click="goToComponentInfo">
-        <div>{{ HComp.componentName }}</div>
+        <div>Component Name: {{ HComp.componentName }}</div>
         <!-- <div>{{ HComp.componentId }}</div> -->
 
-        <div> {{ HComp.props[0].value }}</div>
-        <div> {{ HComp.props[1].value }}</div>
-
+        <div> {{ HComp.props[0].name }}: {{ HComp.props[0].value }}</div>
+        <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div>
+            <img  id="imatgeTodd" @click="goToEasterEgg" src="../assets/shrekmeme.jpg" alt="toddyDaddy">
     </div>
 </template>
 
@@ -16,6 +16,9 @@ export default {
     methods: {
         goToComponentInfo(){
             this.$router.push("/oneComponent/" + this.HComp.componentId);
+        },
+        goToEasterEgg() {
+
         }
     }
 }
@@ -44,5 +47,9 @@ export default {
     top: -10px;
     left: -10px;
     box-shadow: 15px 15px 15px lightgrey;
+}
+#imatgeTodd{
+    height: 159px;
+    width: 261px;
 }
 </style>

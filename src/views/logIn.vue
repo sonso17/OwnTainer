@@ -1,11 +1,12 @@
 <template>
     <div id="contenidor">
         <h1>Log In</h1>
-        <label class="labelLogin" for="emailUsuari">Correu</label>
+        <label class="labelLogin" for="emailUsuari">Email</label>
+        <br>
         <input class="inputlogin" id="emailUsuariinput" v-model="emailUsuari" type="email" name="emailUsuari">
         <br>
         <br>
-        <label class="labelLogin" for="passwd">Contrassenya</label>
+        <label class="labelLogin" for="passwd">Password</label>
         <br>
         <input class="inputlogin" type="password" id="passwdinput" v-model="passwd" name="passwd">
         <br>

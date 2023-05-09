@@ -34,6 +34,21 @@ export default {
 </script>
 
 <style>
+button {
+  background-color: #4CAF50; /* Green */
+  border: 2px solid black;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+button:hover{
+  background-color: #26580f;
+}
+
 html {
   /* min-height: 100%; */
 }
@@ -42,6 +57,37 @@ body {
   /* background-color: #86dc3d; */
   margin: 0;
   height: 100%;
+}
+
+label{
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  margin-left: 2rem;
+  margin-top: 0.7rem;
+  display: block;
+  transition: all 0.3s;
+  transform: translateY(0rem);
+}
+
+input{
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  font-size: 1.2rem;
+	margin: 0 auto;
+  padding: 1.5rem 2rem;
+  border-radius: 0.2rem;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid black;
+  width: 70%;
+  display: block;
+  border-bottom: 0.3rem solid transparent;
+  transition: all 0.3s;
+}
+input::placeholder{
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: translateY(-4rem);
+  transform: translateY(-4rem);
 }
 
 #contenidorGeneral {

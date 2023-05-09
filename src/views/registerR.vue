@@ -145,7 +145,8 @@ export default {
                 document.getElementById("errorMessage").innerHTML = response.data;
                     
                 this.$router.push('/');
-                })
+                }) 
+                
             }
             else {
                 document.getElementById("errorMessage").innerHTML = "Something went wrong :("

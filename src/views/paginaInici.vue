@@ -1,10 +1,13 @@
 <template>
     <div id="componentsHardware">
-        <Searcher @newSearch="updateSearch"> </Searcher>
+        <Searcher id="searcher" @newSearch="updateSearch"> </Searcher>
         <div id="componentsUsuari" v-if="boolSessio">
+            
+            <div id="grupBotons">
+                <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
+                <button @click="goToNewCompType">New Component Type</button><br>
+            </div>
             <div id="compUserTitol">Components Usuari</div>
-            <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
-            <button @click="goToNewCompType">New Component Type</button><br>
             <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>
@@ -106,10 +109,10 @@ export default {
             }
 
         },
-        goToRegisterComponent(){
+        goToRegisterComponent() {
             this.$router.push("/registerComponent");
         },
-        goToNewCompType(){
+        goToNewCompType() {
             this.$router.push("/newComponentType");
         }
     },
@@ -121,12 +124,21 @@ export default {
 }
 </script>
 
-<style scoped>
-div {
-    /* padding: 2rem; */
-    /* display: flex; 
-    flex-direction: column; 
-    min-height: 100vh;
-    min-height: 100svh; */
+<style>
+#searcher {}
+
+#grupBotons{
+    position: relative;
+    align-items: center;
+    padding: 30px;
+}
+#btnGoToRegisterComponent{
+    
+}
+
+@media only screen and (max-width: 500px) {
+  #grupBotons {
+    
+  }
 }
 </style>

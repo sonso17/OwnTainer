@@ -1,16 +1,23 @@
 <template>
-    <div id="compTitle"> Component Name: {{ compInfoJSON.componentName }}</div>
-    <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
-        {{ prop.name }} : {{ prop.value }}
+    <div id="divGeneral">
+        <div id="infoComponent">
+            <div id="compTitle"> Component Name: {{ compInfoJSON.componentName }}</div>
+            <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
+                {{ prop.name }} : {{ prop.value }}
+            </div>
+            <div id="compPrivacy">Component privacy:
+                <div v-if="compInfoJSON.privacy == 'true'"> Private</div>
+                <div v-if="compInfoJSON.privacy == 'false'"> Public</div>
+            </div>
+
+        </div>
+        <img id="compImage" src="../assets/toddyDaddy.png">
+        <div id="grupButtonsModifyDeleteComp" v-if="userID == compInfoJSON.userID"><!-- -->
+            <button id="updateCompBTN" @click="goToModifyComponent">ModifyComponent</button>
+            <button id="deleteCompBTN" @click="deleteComponent">Delete component</button>
+        </div>
     </div>
-    <div id="compPrivacy">Component privacy:
-        <div v-if="compInfoJSON.privacy == 'true'"> Private</div>
-        <div v-if="compInfoJSON.privacy == 'false'"> Public</div>
-    </div>
-    <div v-if="userID == compInfoJSON.userID"><!-- -->
-        <button @click="goToModifyComponent">ModifyComponent</button>
-        <button @click="deleteComponent">Delete component</button>
-    </div>
+
     <div id="divError"></div>
 </template>
 <script>
@@ -103,3 +110,37 @@ export default {
 
 }
 </script>
+
+<style scoped>
+#divGeneral{
+    display: flex;
+    align-items: center;
+    
+}
+#infoComponent {
+    padding: 80px;
+}
+
+#compImage {
+    height: 450px;
+    width: auto;
+}
+
+#deleteCompBTN{
+    background-color: #ff0000;
+}
+
+#deleteCompBTN:hover{
+    background-color: #ff000042;
+}
+
+#updateCompBTN{
+    background-color: cyan;
+}
+#updateCompBTN:hover{
+    background-color: blue;
+}
+
+
+#grupButtonsModifyDeleteComp {}
+</style>

@@ -22,8 +22,8 @@
             <br>
         </div>
         <br>
-        <button @click="enviarDadesComponent">Update Component</button>
-        <button @click="deleteComponent">Delete Component</button>
+        <button id="updateCompBTN" @click="enviarDadesComponent">Update Component</button>
+        <button id="deleteCompBTN" @click="deleteComponent">Delete Component</button>
         <div id="divError"></div>
     </div>
     <button @click="goToInici">Go to the main page</button>
@@ -172,4 +172,20 @@ export default {
     }
 }
 </script>
-<style></style>
+<style scoped>
+
+#deleteCompBTN{
+    background-color: #ff0000;
+}
+
+#deleteCompBTN:hover{
+    background-color: #ff000042;
+}
+
+#updateCompBTN{
+    background-color: cyan;
+}
+#updateCompBTN:hover{
+    background-color: blue;
+}
+</style>

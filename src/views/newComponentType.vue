@@ -3,6 +3,7 @@
     <div v-if="boolSessio" id="fromGeneral">
         <label for="CompTypeName">Property Name</label><br>
         <input type="text" name="CompTypeName" id="CompTypeName"><br>
+        <div id="contenidorProps"></div>
         <button @click="AddNewPropAndUnit">New Property</button>
         <button @click="enviarDadesNewCompType">Submit</button>
     </div>
@@ -41,7 +42,7 @@ export default {
             const inputNou = document.createElement("input");
             // inputNou.innerHTML += "<br>"
             inputNou.className = "inputProp";
-            document.getElementById("fromGeneral").appendChild(inputNou);
+            document.getElementById("contenidorProps").appendChild(inputNou);
             // let saltLinia = document.createElement("br")
             // inputNou.appendChild(saltLinia.lastChild);
         },
@@ -93,3 +94,15 @@ export default {
 }
 
 </script>
+
+<style scoped>
+#contenidorProps{
+    display: flex;
+    flex-direction: column;
+}
+.inputProp{
+    position: relative;
+    padding: 15px;
+    height: 10%;
+}
+</style>

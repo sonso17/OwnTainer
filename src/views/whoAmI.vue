@@ -6,7 +6,7 @@
         </a>
         <div id="CreditText">
             <h1>CC BY-SA By Aleix Poch</h1>
-            <div id="text">Hi Everyone my name is Aleix Poch vilà and i'm a web developer student. <br>
+            <div id="text">Hi Everyone my name is Aleix Poch Vilà and i'm a web developer student. <br>
                 Working with hardware was one of my favorites hobbyes since i was 8 that was when i did my first teardown of
                 a broken windows 98 lapotop, <br>
                 since that day working with hardware was my passion, 4 years ago i started working on building my own sort
