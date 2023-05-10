@@ -14,7 +14,7 @@
             <!-- {{ userInfoJSON.UserID }} -->
         </div>
         <div id="buttonsModificarEliminar">
-            <button @click="deleteUser">Delete User</button>
+            <button id="deleteUserBTN" @click="deleteUser">Delete User</button>
             <button @click="goToModifyUser">Modify User</button>
         </div>
         <div id="divError"></div>
@@ -90,4 +90,12 @@ export default {
     }
 }
 </script>
-<style scoped></style>
+<style scoped>
+#deleteUserBTN{
+    background-color: red;
+}
+#deleteUserBTN:hover{
+    background-color: #960018;
+
+}
+</style>

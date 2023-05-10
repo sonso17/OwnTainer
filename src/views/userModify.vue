@@ -48,7 +48,8 @@
         </div>
         <div id="errorMessage"></div>
         <button @click="enviarDadesModifyUser">Update User</button>
-        <button>Delete User</button>
+        <button id="deleteUserBTN" @click="deleteUser">Delete User</button>
+        <div id="divError"></div>
     </div>
 </template>
 
@@ -70,7 +71,6 @@ export default {
             apikey: "",
             boolSessio: false,
             userInfoJSON: "",
-
         }
     },
     methods: {
@@ -153,24 +153,20 @@ export default {
                     .then(resultat => {
                         this.userInfoJSON = resultat.data[0]
                         console.log(resultat.data)
-                        document.getElementById("inputFirstName").value = this.userInfoJSON.FirstName;
-                        document.getElementById("inputLastName").value = this.userInfoJSON.LastName;
-                        document.getElementById("inputEmail").value = this.userInfoJSON.email;
-                        document.getElementById("inputPasswd1").value = this.passwd;
+                        this.FirstName = this.userInfoJSON.FirstName;
+                        this.LastName = this.userInfoJSON.LastName;
+                        this.Email = this.userInfoJSON.email;
+                        this.Passwd1 = this.userInfoJSON.passwd;
+                        this.Passwd2 = this.userInfoJSON.passwd;
                         document.getElementById("inputPasswd2").value = this.passwd;
-                        // this.userID = this.userInfoJSON
                     });
             }
             else {
                 this.boolSessio = false;
             }
-
         },
         enviarDadesModifyUser() {
             if (this.verificarCamps() === true && this.verificarContrassenyes() === true) {
-                this.FirstName = document.getElementById("inputFirstName").value;
-                this.LastName = document.getElementById("inputLastName").value;
-                this.Email = document.getElementById("inputEmail").value;
                 axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/ModifyUser/" + this.userID,
                     {
                         "data": [
@@ -194,12 +190,11 @@ export default {
             }
         },
         deleteUser() {
-            if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
+            if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
                 axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
                     .then(resultat => {
                         console.log(resultat.data);
                         sessionStorage.clear();
-                        // this.$emit("logOut", { userID: "", apikey: "" });
 
                         this.$router.push("/");
                     })
@@ -210,7 +205,7 @@ export default {
                     })
             }
             else {
-                document.getElementById("divError").innerHTML = "component cannot be deleted";
+                document.getElementById("divError").innerHTML = "User cannot be deleted";
             }
         },
         goToLogIn() {
@@ -225,3 +220,13 @@ export default {
 }
 
 </script>
+
+<style scoped>
+#deleteUserBTN{
+    background-color: #ff0000;
+}
+
+#deleteUserBTN:hover{
+    background-color: #ff000042;
+}
+</style>
