@@ -22,7 +22,8 @@ export default {
         },
         randomImage() {
             var arrayMemes = ['shrekmeme.jpg'
-                , 'meme2.jpg', 'meme3.jpg', 'meme4.jpg', 'meme5.jpg', 'meme6.jpg', 'meme7.jpg']
+                , 'meme2.jpg', 'meme3.jpg', 'meme4.jpg', 'meme5.jpg', 'meme6.jpg', 'meme7.jpg', 'meme8.jpeg', 'meme9.jpeg', 'meme10.jpg', 
+                'meme11.jpg', 'meme12.jpg', 'meme13.jpg', 'meme14.jpg', 'meme15.jpg']
             var memeRNd = arrayMemes[Math.floor(Math.random() * arrayMemes.length)];
             console.log(memeRNd)
             var memeRND1 = require("@/assets/memes/" + memeRNd);

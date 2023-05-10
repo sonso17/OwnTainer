@@ -182,11 +182,11 @@ export default {
     background-color: #ff000042;
 }
 
-#updateCompBTN{
+/* #updateCompBTN{
     background-color: cyan;
 }
 
 #updateCompBTN:hover{
     background-color: blue;
-}
+} */
 </style>

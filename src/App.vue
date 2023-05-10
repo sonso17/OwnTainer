@@ -16,18 +16,39 @@ export default {
     return {
       userID: "",
       apikey: "",
-      userEmail:""
+      userEmail:"",
+      boolSessio: false
     }
   },
   methods: {
     notifica(logInDades) {
+      // console.log(logInDades)
       this.userID = logInDades.userID
       this.apikey = logInDades.apikey
       this.userEmail = logInDades.email
       console.log(this.userID)
       console.log(this.apikey)
       console.log(this.userEmail)
-    }
+    },
+    
+      comprovarSessio() {
+            if (sessionStorage.UserID && sessionStorage.APIKEY && sessionStorage.userEmail) {
+                this.userID = sessionStorage.UserID;
+                this.apikey = sessionStorage.APIKEY;
+                this.userEmail = sessionStorage.userEmail;
+                this.boolSessio = true;
+                var logInDades = { userID: this.userID, apikey: this.apikey, email: this.userEmail }
+                this.notifica(logInDades)
+            }
+            else {
+                console.log("entra")
+                this.boolSessio = false;
+                
+            }
+        }
+  },
+  created(){
+    this.comprovarSessio()
   }
 }
 

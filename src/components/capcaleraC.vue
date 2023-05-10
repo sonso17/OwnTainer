@@ -18,8 +18,6 @@
 </template>
 
 <script>
-// import router from "@/router";
-
 export default {
   name: "capcaleraC",
   props: ["userID", "apikey", "email"],

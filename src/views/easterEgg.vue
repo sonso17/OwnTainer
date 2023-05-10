@@ -7,10 +7,19 @@
         </a>
         
         <div id="t3">EASTER EGG!!</div>
-    </div>
-    
-</template>
 
+        <button @click="GotoHome"> Go back</button>
+    </div>
+</template>
+<script>
+export default {
+    name: "easterEgg",
+    methods: {
+        GotoHome() {
+            this.$router.push("/");
+        }
+    }}
+</script>
 <style scoped>
 #easterGeneral {
     display: flex;

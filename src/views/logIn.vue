@@ -53,6 +53,7 @@ export default {
                 console.log(response.data);
                 sessionStorage.setItem('UserID', response.data[0].UserID);
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
+                sessionStorage.setItem('userEmail', response.data[0].email)
                 this.userID = response.data[0].UserID;
                 this.apikey = response.data[0].APIKEY;
                 this.emailLogged = response.data[0].email;
