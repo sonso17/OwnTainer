@@ -356,7 +356,7 @@ function selectOneComponent($componentID, $UserID)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //faig una sentencia on selecciono per cada propietat el id de tipus, nom tipus component, idPropietat, nomPropietat i propietat tipus fent 2 joins, un a cada taula on haig d'extreure la informacio
         $sentencia = "
-            SELECT components.UserID, components.Privacy, components.dependsOn, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
+            SELECT components.UserID, components.Privacy, components.dependsOn, components.ComponentTypeID, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
             FROM propertiesxcomponents
             RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
             LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
@@ -372,6 +372,8 @@ function selectOneComponent($componentID, $UserID)
         $UserIdComponent = $resultat[0]['UserID'];
         $ComponentPrivacy = $resultat[0]['Privacy'];
         $compoDependency = $resultat[0]['dependsOn'];
+        $compoTypeID = $resultat[0]['ComponentTypeID'];
+        // echo $compoTypeID;
 
         //carrego dos arrays buits 
         $arrAllComp = []; //en aquest hi guardaré tota la informació de cada component que hi vagi guardant(array general)
@@ -413,6 +415,7 @@ function selectOneComponent($componentID, $UserID)
             }
             $arrayTotUnComponent = array( //agafo les propietats no variables de cada component a l'array indexat i els hi aplico
                 "componentId" => $arrIdsComps[$i],
+                "componentTypeID" => $compoTypeID,
                 "componentName" => $componentName,
                 "userID" => $UserIdComponent,
                 "privacy" => $privacy,
@@ -422,10 +425,7 @@ function selectOneComponent($componentID, $UserID)
             array_push($arrAllComp, $arrayTotUnComponent); //aquest array.push representa un push de tot un component
         }
 
-
-
         if ($UserIdComponent == $UserID || $ComponentPrivacy == 'false') { //si el usuari és propietari del component o el component és públic
-            // return $resultat;
             return $arrAllComp;
         } else {
             return false;
@@ -519,7 +519,6 @@ function selectPublicComponents()
         return $arrAllComp;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
@@ -613,7 +612,6 @@ function selectUserComponents($userID)
         return $arrAllComp;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-
         return false;
     }
 }
@@ -828,7 +826,6 @@ function modifyComponent($componentDades, $componentID, $userID)
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
@@ -1099,10 +1096,24 @@ function addComponentType($dadesPost)
     }
 }
 
+
+/*
+        Function: selectPublicComponentsByValue()
+
+            Funcio que a partir de la paraula passada, busca els components públics que siguin relacionats amb aquesta.
+
+        Parameters:
+
+            $searchWord -paraula a buscar
+
+        Returns:
+
+            Retorna tots els components que tenen relació amb la paruala passada
+ 
+    */
 function selectPublicComponentsByValue($searchWord)
 {
     $searchValue = "%" . $searchWord . "%";
-    // echo $searchValue;
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
@@ -1119,7 +1130,6 @@ function selectPublicComponentsByValue($searchWord)
             ";
 
         $bdd = $conn->prepare($sentencia);
-        // $bdd->bindParam("SearchValue", $searchValue); //aplico els parametres necessaris
         $bdd->bindParam("SearchValue2", $searchValue); //aplico els parametres necessaris
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
@@ -1174,15 +1184,28 @@ function selectPublicComponentsByValue($searchWord)
         return $arrAllComp;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        // echo "error insercio 1";
         return false;
     }
 }
 
+/*
+        Function: selectUserComponentsByValue()
+
+            Funcio que a partir de la paraula passada, busca els components de l'usuari que siguin relacionats amb aquesta
+
+        Parameters:
+
+            $searchWord -paraula a buscar
+
+        Returns:
+
+            Retorna tots els components d'aquell usuari que tenen relació amb la paruala passada
+ 
+    */
+
 function selectUserComponentsByValue($userID, $searchWord)
 {
     $searchValue = "%" . $searchWord . "%";
-    // echo $searchValue;
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
@@ -1200,7 +1223,6 @@ function selectUserComponentsByValue($userID, $searchWord)
 
         $bdd = $conn->prepare($sentencia);
         $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
-        // $bdd->bindParam("SearchValue", $searchValue); //aplico els parametres necessaris
         $bdd->bindParam("SearchValue2", $searchValue); //aplico els parametres necessaris
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
@@ -1262,6 +1284,17 @@ function selectUserComponentsByValue($userID, $searchWord)
     }
 }
 
+/*
+        Function: getAllComponentType()
+
+            Funcio que retorna tots els diferents tipus de components registrats
+
+        Returns:
+
+            Retorna tots els tipus de components registrats amb el seu identificador
+ 
+    */
+
 function getAllComponentType(){
     $baseDades = new BdD; //creo nova classe BDD
 
@@ -1272,8 +1305,6 @@ function getAllComponentType(){
         $senteciSQL = "SELECT ComponentTypeID, ComponentType FROM componenttype;";
 
         $bdd = $conn->prepare($senteciSQL);
-        // $bdd->bindParam("APIKEY", $UserApiKey); //aplico els parametres necessaris
-        // $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
         $bdd->execute(); //executola sentencia
         $bdd->setFetchMode(PDO::FETCH_ASSOC);
         $resultat = $bdd->fetchAll(); //guardo els resultats

@@ -1,5 +1,14 @@
 <?php
+/*
+        Function: classBdD()
 
+            Classe que s'encarrega de fer la connexió amb la base de dades
+
+        Returns:
+
+            Retorna l'error si algo ha fallat o la connexió si s'ha connectat correctament
+ 
+    */
 class BdD
 {
 	public $db_host;

@@ -79,7 +79,7 @@ class Server
         else if ($recurs1 == "getAllComponentType") {
             if ($method == "GET") {
                 $resultat = getAllComponentType();
-                // echo "hola";
+                
                 echo json_encode($resultat);
                 header('HTTP/1.1 200 OK');
             } else {
@@ -183,7 +183,7 @@ class Server
                 } else if ($recurs2 == "RegisterComponent") {
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
-                        // var_dump($put);
+                        var_dump($put);
                         $missatge = registerComponent($put, $userID);
 
                         if ($missatge == true) {
@@ -280,8 +280,6 @@ class Server
                     if ($method == "POST") {
                         $put = json_decode(file_get_contents('php://input'), true);
                         $searchWord = $put["data"][0]["SearchWord"];
-                        // echo $userID;
-                        // echo $searchWord;
                         echo json_encode(selectUserComponentsByValue($userID, $searchWord));
                     } else {
                         header('HTTP/1.1 405 Method Not Allowed');
