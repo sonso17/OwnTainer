@@ -18,14 +18,14 @@
                 <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
                 <button @click="goToNewCompType">New Component Type</button><br>
             </div>
-            <div id="compUserTitol">Components Usuari</div>
+            <div id="compUserTitol">User Components</div>
             <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>
         </div>
 
         <div id="componentsPublics">
-            <div id="compPublicTitol">Components Publics</div>
+            <div id="compPublicTitol">Public Components</div>
             <hardwareComponent v-for="(HComponent, i) in componentsPublicsJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>

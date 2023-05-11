@@ -10,18 +10,19 @@
 -->
 
 <template>
+    <div id="titol"> User Info </div>
     <div id="btnLogInRegister" v-if="!boolSessio">
         <button @click="goToLogIn">LogIn/Register</button>
     </div>
 
-    <div v-if="boolSessio">
+    <div id="userInfoGeneral" v-if="boolSessio">
         <div id="userInfoBox1">
-            FirstName: {{ userInfoJSON.FirstName }}<br>
-            LastName: {{ userInfoJSON.LastName }}<br>
+            First Name: <b>{{ userInfoJSON.FirstName }}</b><br>
+            Last Name: <b>{{ userInfoJSON.LastName }}</b><br>
         </div>
         <div id="userInfoBox2">
-            Email: {{ userInfoJSON.email }}<br>
-            Password: {{ userInfoJSON.passwd }}<br>
+            Email: <b>{{ userInfoJSON.email }}</b><br>
+            Password: <b>{{ userInfoJSON.passwd }}</b><br>
         </div>
         <div id="buttonsModificarEliminar">
             <button id="deleteUserBTN" @click="deleteUser">Delete User</button>
@@ -107,5 +108,9 @@ export default {
 #deleteUserBTN:hover{
     background-color: #960018;
 
+}
+
+#userInfoGeneral{
+    font-size: 30px;
 }
 </style>

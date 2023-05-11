@@ -34,7 +34,25 @@
                 I love memes so maybe you fins some while exploring thorough the page XD.
             </div>
         </div>
+        <button @click="goToMainPage">Go Back to the main page</button>
     </div>
 </template>
+<script>
+export default{
+    name: "WhoAmI",
+    methods:{
+        goToMainPage(){
+            this.$router.push("/");
+        }
+    }
+}
+</script>
 
-<style></style>
+<style>
+#text {
+    position: relative;
+    left: 13%;
+    height: 250px;
+    width: 1006px;
+}
+</style>
