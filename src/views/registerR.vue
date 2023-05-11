@@ -1,3 +1,11 @@
+<!-- 
+      --Vista RegisterR--
+
+      Funcionalitat del component:
+      - Envia a l'api les dades per donar d'alta a un nou usuari
+
+-->
+
 <template>
     <div id="registerFormGeneral">
         <div id="FirstNameCamp">
@@ -68,6 +76,7 @@ export default {
         }
     },
     methods: {
+        //Funció que verifica que tots els camps estiguin plens 
         verificarCamps(){
             this.FirstName = document.getElementById("inputFirstName").value;
             this.LastName = document.getElementById("inputLastName").value;
@@ -108,6 +117,7 @@ export default {
             }
 
         },
+        //funció que verifica que les contrassenyes siguin iguals
         verificarContrassenyes() {
             this.Passwd1 = document.getElementById("inputPasswd1").value;
             this.Passwd2 = document.getElementById("inputPasswd2").value;
@@ -124,6 +134,7 @@ export default {
                 return true;
             }
         },
+        // funció que envia les dades a l'api
         enviarDadesRegister() {
             if (this.verificarCamps() === true && this.verificarContrassenyes() === true) {
                 this.FirstName = document.getElementById("inputFirstName").value;
@@ -157,8 +168,6 @@ export default {
         }
     },
     created(){
-        // this.verificarCamps(),
-        // this.verificarContrassenyes()
     }
 }
 </script>

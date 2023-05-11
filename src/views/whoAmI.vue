@@ -1,3 +1,10 @@
+<!-- 
+      --Vista WhoAmI--
+
+      Funcionalitat del component:
+      - Fa una breu presentació de qui soc
+
+-->
 <template>
     <div id="generalBoxWhoAmI">
         <div id="creditTitle">Who Am I?</div>

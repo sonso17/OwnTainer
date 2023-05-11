@@ -1,3 +1,13 @@
+<!-- 
+      --Vista easterEgg--
+
+      Propietats que rep:
+
+      Funcionalitat del component:
+      - Fer maco i alegrar el dia a l'usuari que l'hagi aconseguit trobar :)
+
+-->
+
 <template>
     <div id="easterGeneral">
         <div id="t1">Congratulations!!</div>

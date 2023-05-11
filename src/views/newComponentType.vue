@@ -1,5 +1,14 @@
+<!-- 
+      --Vista newComponentType--
+
+      Propietats que rep:
+
+      Funcionalitat del component:
+      - A pratir d'un formulari, l'usuari pot decidir ficar tantes propietats com vulgui i aixi es registrarà un nou tipus de component
+
+-->
 <template>
-    register new component Type
+    <div id="titol">register new component Type</div>
     <div v-if="boolSessio" id="fromGeneral">
         <label for="CompTypeName">Property Name</label><br>
         <input type="text" name="CompTypeName" id="CompTypeName"><br>
@@ -14,7 +23,6 @@
 <script>
 import axios from 'axios';
 
-// import axios from 'axios';
 export default {
     name: "registerComponentType",
     data() {
@@ -26,6 +34,7 @@ export default {
         }
     },
     methods: {
+        // funció que verifica que com a minim hi hagi el nom emplenat
         comprobarCamps() {
             var compName = document.getElementById("CompTypeName").value;
             if (compName != "") {
@@ -48,14 +57,14 @@ export default {
                 return false;
             }
         },
+        //funció que genera un camp de propietat nou
         AddNewPropAndUnit() {
             const inputNou = document.createElement("input");
-            // inputNou.innerHTML += "<br>"
             inputNou.className = "inputProp";
             document.getElementById("contenidorProps").appendChild(inputNou);
-            // let saltLinia = document.createElement("br")
-            // inputNou.appendChild(saltLinia.lastChild);
+            
         },
+        // funció que envia les dades del nou tipus de component a l'api
         enviarDadesNewCompType() {
             this.compTypeName = document.getElementById("CompTypeName").value;
             var PropsArray = [];
@@ -114,5 +123,9 @@ export default {
     position: relative;
     padding: 15px;
     height: 10%;
+}
+
+#titol{
+    font-size: 50px;
 }
 </style>

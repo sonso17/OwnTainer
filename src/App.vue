@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     notifica(logInDades) {
-      // console.log(logInDades)
       this.userID = logInDades.userID
       this.apikey = logInDades.apikey
       this.userEmail = logInDades.email
@@ -43,7 +42,6 @@ export default {
             else {
                 console.log("entra")
                 this.boolSessio = false;
-                
             }
         }
   },

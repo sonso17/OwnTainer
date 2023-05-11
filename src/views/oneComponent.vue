@@ -1,3 +1,14 @@
+<!-- 
+      --Vista oneComponent--
+
+      Propietats que rep:
+      - id -identificador de component
+
+      Funcionalitat del component:
+      - A partir de l'ID passat, fa una petició GET al backend del component que tingui aquell ID
+
+-->
+
 <template>
     <div id="divGeneral">
         <div id="infoComponent">
@@ -50,7 +61,6 @@ export default {
 
                 this.boolSessio = true;
                 return true;
-                //cridar getuserInfo
             }
             else {
                 console.log("entra")
@@ -64,8 +74,6 @@ export default {
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
-                        // console.log(resultat.data)
-                        // console.log(this.componentID)
                     })
                     .catch(error => {
                         const message = error.response.data;
@@ -78,8 +86,6 @@ export default {
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
-                        // console.log(resultat.data)
-                        // console.log(this.componentID)
                     })
                     .catch(error => {
                         const message = error.response.data;
@@ -153,13 +159,7 @@ export default {
     background-color: #960018;
 }
 
-/* #updateCompBTN {
-    background-color: cyan;
-}
 
-#updateCompBTN:hover {
-    background-color: blue;
-} */
 
 
 #grupButtonsModifyDeleteComp {}

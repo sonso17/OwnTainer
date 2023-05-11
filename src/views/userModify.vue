@@ -1,4 +1,14 @@
+<!-- 
+      --Vista userModify--
+
+
+      Funcionalitat del component:
+      - Genera un formulari amb les dades de l'usuari i a partir d'aqui l'usuari pot canviar el que desitji i un cop estigui, fa una petició POST cap al backend i s'actualitzen a la BDD
+
+-->
+
 <template>
+    <div id="titol">Modify User</div>
     <div id="btnLogInRegister" v-if="!boolSessio">
         <button @click="goToLogIn">LogIn/Register</button>
     </div>
@@ -73,6 +83,7 @@ export default {
             userInfoJSON: "",
         }
     },
+    //Funció que comproba si hi ha una sessió activa
     methods: {
         comprovarSessio() {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
@@ -89,6 +100,7 @@ export default {
                 return false;
             }
         },
+        //Funció que verifica que tots els camps estiguin plens
         verificarCamps() {
             this.FirstName = document.getElementById("inputFirstName").value;
             this.LastName = document.getElementById("inputLastName").value;
@@ -129,24 +141,23 @@ export default {
             }
 
         },
+        //funció que verifica que les contrassenyes coincideixin
         verificarContrassenyes() {
             this.Passwd1 = document.getElementById("inputPasswd1").value;
             this.Passwd2 = document.getElementById("inputPasswd2").value;
             if (this.Passwd1 == '' && this.Passwd2 == '' || this.Passwd1 != this.Passwd2) {
                 document.getElementById("inputPasswd1").style.border = " 2px solid red";
                 document.getElementById("inputPasswd2").style.border = "2px solid red";
-                // console.log("false");
                 return false;
             }
             else {
                 document.getElementById("inputPasswd1").style.border = " 2px solid aquamarine";
                 document.getElementById("inputPasswd2").style.border = "2px solid aquamarine";
-                // console.log("true");
                 return true;
             }
         },
+        // funció que a partir de l'ID usuari fa una petició a l'api i mostra la informació al formulari
         rebreDadesUser() {
-            // this.comprovarSessio();
 
             if (this.boolSessio) {
                 axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
@@ -165,6 +176,7 @@ export default {
                 this.boolSessio = false;
             }
         },
+        // Funció que envia les dades actualitzades a l'api 
         enviarDadesModifyUser() {
             if (this.verificarCamps() === true && this.verificarContrassenyes() === true) {
                 axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/ModifyUser/" + this.userID,
@@ -189,6 +201,7 @@ export default {
                 document.getElementById("errorMessage").innerHTML = "Something went wrong :("
             }
         },
+        // funció que elimina l'usuari, si ell ho desitja
         deleteUser() {
             if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
                 axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)

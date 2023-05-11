@@ -1,11 +1,19 @@
+<!-- 
+      --Vista registerComponent--
+
+      Funcionalitat del component:
+      - fa una petició de un tipus de component(l'usuari pot escollir) i rep les seves propietats i a partir d'aqui es genera el formulari. 
+      un cop els camps omplerts, es fa una petició POSt a L'api
+
+-->
+
 <template>
-    register Component
+    <div id="titol">register Component</div>
     <div v-if="boolSessio">
         <select v-model="componentTypeSelect" @change="getComponentProperties" id="componentTypeSelect">
             <compTypeList v-for="(compType, i) in compTypesJSON" :key="i" :compType="compType"></compTypeList>
         </select>
         <br>
-        <!--{{ compPropsJSON.componentTypeId }}<br> -->
         <label class="labelLogin" for="compName">Component Name</label>
         <br>
         <input class="inputlogin" id="compNameinput" v-model="compName" type="email" name="compName">
@@ -52,6 +60,7 @@ export default {
         }
     },
     methods: {
+        //funció que comproba que coma minim hi hagi uel nom i un tipus de component plè
         comprobarCamps() {
             var selectCompType = document.getElementById("componentTypeSelect").value;
             var compName = document.getElementById("compNameinput").value;
@@ -62,16 +71,16 @@ export default {
                 document.getElementById("divError").innerHTML = 'please select a component type and then put a name on it ;)'
                 document.getElementById("componentTypeSelect").style.border = " 2px solid red";
                 document.getElementById("compNameinput").style.border = " 2px solid red";
-
-
             }
         },
+        //funció que agafa els diferents tipus de components
         getAllComponentType() {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/getAllComponentType")
                 .then(resultat => {
                     this.compTypesJSON = resultat.data
                 });
         },
+        //funció que a partir del tipus sel.leccionat, agafa les seves propietats
         getComponentProperties() {
 
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/getComponentProperties/" + this.componentTypeSelect)
@@ -79,6 +88,7 @@ export default {
                     this.compPropsJSON = resultat.data
                 });
         },
+        //funció que agafa les dades del formulari i les envia a l'api
         enviarDadesComponent() {
             var totsInputPropsId = [];
             var totsInputPropsValue = [];
@@ -141,3 +151,9 @@ export default {
     }
 }
 </script>
+
+<style>
+#titol{
+    font-size: 50px;
+}
+</style>

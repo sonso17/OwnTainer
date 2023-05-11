@@ -1,3 +1,13 @@
+<!-- 
+      --Component Searcher o cercador--
+
+      Propietats que rep:
+
+      Funcionalitat del component:
+      - Per cada caràcter que l'usuari va afegint o treient, aquest component va fent un emit a la vista on està posat amb el nom de "newSearch"
+
+-->
+
 <template>
     <div>
         <input type="text" id="search" v-model="search">

@@ -1,3 +1,16 @@
+<!-- 
+      --Vista LogIn--
+
+      Propietats que rep:
+
+      Emits que fa:
+      - LogInOk objecte amb les variables de log in que ha retornat l'api
+
+      Funcionalitat del component:
+      - Fa una petició post amb el correu i contrassenya de l'usuari que desitja iniciar sessió i retorna si ha trobat o no l'usuari al backend
+
+-->
+
 <template>
     <div id="contenidor">
         <h1>Log In</h1>
@@ -18,7 +31,6 @@
 </template>
 <script>
 import axios from 'axios';
-// import { response } from 'express';
 
 export default {
     name: 'logIn',
@@ -36,6 +48,7 @@ export default {
         }
     },
     methods: {
+        // funció que s'encarrega d'enviar les dades POST a l'API
         enviarDadesLogIn() {
             this.emailUsuari = document.getElementById("emailUsuariinput").value;
             this.passwd = document.getElementById("passwdinput").value;
@@ -50,7 +63,6 @@ export default {
                     ]
                 }
             ).then((response) => {
-                console.log(response.data);
                 sessionStorage.setItem('UserID', response.data[0].UserID);
                 sessionStorage.setItem('APIKEY', response.data[0].APIKEY);
                 sessionStorage.setItem('userEmail', response.data[0].email)

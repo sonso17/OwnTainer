@@ -1,3 +1,17 @@
+<!-- 
+      --Component Capçalera--
+
+      Propietats que rep:
+      - userID 
+      - user APIKEY
+      - user Email
+
+      Funcionalitat del component:
+      - Aquest component comprova de si ha rebut les dades de sessió d'un usuari mitjançant emits i, si les ha rebut, 
+      Mostrarà el correu de l'usuari i el botó de log out i si no en té, mostrarà un botó per a iniciar sessió
+
+-->
+
 <template>
   <div id="generalHeader">
     <img src="@/assets/LogoFinal.png" id="capLogo" @click="GotoHome()" />
@@ -6,7 +20,6 @@
     <div id="UserInfo" v-if="posardades">
       <div>
         <div id="capNomUsuari" @click="GoToUserInfo"> {{ email }}</div>
-        <!-- <div id="capRolUsuari">{{ apikey }}</div> -->
       </div>
 
       <img v-if="btnLogout" src="@/assets/logout.png" alt="" class="logout" @click="logout">
@@ -24,7 +37,6 @@ export default {
   emits: ["logOut"],
   data() {
     return {
-      // btnLogout: false
     }
   },
   computed: {
@@ -36,7 +48,7 @@ export default {
     /*
        Function: GotoHome
 
-           funcio que quan es crida, t'envia a la vista de llistaTasques
+           funcio que quan es crida, t'envia a la vista principal
        */
     GotoHome() {
       this.$router.push("/");
@@ -45,7 +57,7 @@ export default {
       this.$router.push("/logIn");
     },
     GoToUserInfo() {
-      // this.$router.push("/userInfo/" + this.userID);
+      // funció que t'envia a la pàgina de user info amb els paràmetres de l'usuari
       this.$router.push({ name: 'userInfo', params: { id: this.userID } });
 
     },
@@ -56,11 +68,9 @@ export default {
            
        */
     posardades() {
-      // console.log(this.userID)
+      
       if (sessionStorage.UserID && sessionStorage.APIKEY) {
         this.btnLogout = true;
-        // document.getElementById("capNomUsuari").innerHTML = sessionStorage.UserID;
-        // console.log(this.btnLogout)
         return true;
       }
       else {
@@ -69,9 +79,9 @@ export default {
       }
     },
     /*
-    Function:
+    Function: logOut()
 
-      funcio que borra les dades de sessio del navegador i redirigeix a l'usuari al formulari de login
+      funció que deixa buides les variables de sessió i notifica amb un emit de que ja no hi ha cap sessió activa
     */
     logout() {
       sessionStorage.clear()
@@ -91,7 +101,6 @@ export default {
 #generalHeader {
   position: relative;
   display: flex;
-  /* padding: 22px; */
   flex-direction: row;
   justify-content: space-around;
   background: #26580f;
@@ -106,7 +115,6 @@ export default {
   height: 90px;
   width: 171px;
   font-size: 25px;
-  /* left: -9%; */
 }
 
 #capLogo:hover {
@@ -122,7 +130,6 @@ export default {
 
 .btLogIn {
   position: relative;
-  /* left: -10%; */
 }
 
 #UserInfo {
@@ -148,7 +155,6 @@ export default {
 }
 
 #capRolUsuari {
-  /* margin: 10px; */
 }
 
 @media only screen and (max-width: 500px) {

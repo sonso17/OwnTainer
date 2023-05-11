@@ -1,3 +1,13 @@
+<!-- 
+      --Component peuPàgina--
+
+      Propietats que rep:
+
+      Funcionalitat del component:
+      - És el peu de pàgina i la seva funció és fer maco
+
+-->
+
 <template>
     <div id="peuPaginaGeneral">
         <div id="peuPaginaC"><a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a>  OwnTainer</div>
@@ -6,7 +16,6 @@
 </template>
 
 <script>
-// import router from '@/router';
 export default {
     name: "peuPagina",
     methods: {
@@ -26,8 +35,6 @@ export default {
     height: 50px;
     width: 100%;
     margin-top: auto;
-    /* top: 91%; */
-    /* left: 0%; */
     background-color: #26580f;
 }
 </style>

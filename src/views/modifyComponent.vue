@@ -1,5 +1,19 @@
+<!-- 
+      --Vista modifyComponent--
+
+      Propietats que rep:
+      - CompID 
+
+      Funcionalitat del component:
+      - Fa un Get de la info de component que és i del tipus de component, després mostra les dades al formulari i a partir d'aquei l'usuari pot decidir que canviar.
+      Un cop canviades les dades, aquestes s'envien cap al backend i es guarden a la BDD
+
+-->
+
 <template>
-    modify Component
+
+    <div id="titol">Modify Component</div>
+    
 
     <div v-if="potModificar">
         <br>
@@ -51,6 +65,7 @@ export default {
         }
     },
     methods: {
+        // funció que fa un GET de l'ID de component Passat
         getUserComponent() {
             if (this.boolSessio) {
                 console.log(this.compID)
@@ -83,14 +98,15 @@ export default {
                     })
             }
         },
+        //Funció que fa un GET de les propietats del component a partir del seu tipus
         getComponentProperties() {
-            // console.log(this.compTypeID)
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/getComponentProperties/" + this.compTypeID)
                 .then(resultat => {
                     this.compPropsJSON = resultat.data
                     console.log(resultat.data)
                 });
         },
+        // Funció que envia les dades actualitzades del component al backend
         enviarDadesComponent() {
             var totsInputPropsId = [];
             var totsInputPropsValue = [];
@@ -131,6 +147,7 @@ export default {
                 console.log(`Error message: ${message}`);
             })
         },
+        // funció que elimina el component s l'usuari ho decideix
         deleteComponent() {
             if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
                 axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
@@ -167,7 +184,6 @@ export default {
     created() {
         this.comprovarSessio()
         this.getUserComponent()
-        // this.getComponentProperties()
 
     }
 }
@@ -182,11 +198,8 @@ export default {
     background-color: #ff000042;
 }
 
-/* #updateCompBTN{
-    background-color: cyan;
+#titol {
+    font-size: 50px;
 }
 
-#updateCompBTN:hover{
-    background-color: blue;
-} */
 </style>

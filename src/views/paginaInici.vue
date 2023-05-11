@@ -1,8 +1,19 @@
+<!-- 
+      --Vista Principal--
+
+      Propietats que rep:
+
+      Emits que fa:
+
+      Funcionalitat del component:
+      - Fa una petició post dels components públic i els de l'usuari(si hi ha una sessió activa) i els mostra un per un en format fitxa
+
+-->
 <template>
     <div id="componentsHardware">
         <Searcher id="searcher" @newSearch="updateSearch"> </Searcher>
         <div id="componentsUsuari" v-if="boolSessio">
-            
+
             <div id="grupBotons">
                 <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
                 <button @click="goToNewCompType">New Component Type</button><br>
@@ -40,12 +51,14 @@ export default {
         }
     },
     methods: {
+        //Funció que fa agafa la informació dels components públics
         getPublicComponents() {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/selectPublicComponents").then(resultat => {
                 this.componentsPublicsJSON = resultat.data
                 console.log(resultat.data)
             });
         },
+        //funció que comproba si hi ha una sessió activa
         comprovarSessio() {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;
@@ -59,6 +72,7 @@ export default {
                 return false;
             }
         },
+        //funció que fa una petició GET dels components d'aquell usuari
         getUserComponents() {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/SelectUserComponents/" + this.userID)
                 .then(resultat => {
@@ -66,6 +80,7 @@ export default {
                     console.log(resultat.data)
                 });
         },
+        // funció que rep la cerca del component searcher i fa la petició de la combinacio de caràcters que hi hagi al cercador
         updateSearch(term) {
             this.searchTerm = term;
             console.log(this.searchTerm)
@@ -125,27 +140,24 @@ export default {
 <style scoped>
 #searcher {}
 
-#compUserTitol{
+#compUserTitol {
     font-size: 60px;
 }
 
-#compPublicTitol{
+#compPublicTitol {
     font-size: 60px;
 
 }
 
-#grupBotons{
+#grupBotons {
     position: relative;
     align-items: center;
     padding: 30px;
 }
-#btnGoToRegisterComponent{
-    
-}
+
+#btnGoToRegisterComponent {}
 
 @media only screen and (max-width: 500px) {
-  #grupBotons {
-    
-  }
+    #grupBotons {}
 }
 </style>

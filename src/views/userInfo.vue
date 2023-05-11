@@ -1,3 +1,14 @@
+<!-- 
+      --Vista UserInfo--
+
+      Propietats que rep:
+        - userInfo
+
+      Funcionalitat del component:
+      - A partir d'un user id, fa una petició GET a l'api i mostra la seva informació
+
+-->
+
 <template>
     <div id="btnLogInRegister" v-if="!boolSessio">
         <button @click="goToLogIn">LogIn/Register</button>
@@ -11,7 +22,6 @@
         <div id="userInfoBox2">
             Email: {{ userInfoJSON.email }}<br>
             Password: {{ userInfoJSON.passwd }}<br>
-            <!-- {{ userInfoJSON.UserID }} -->
         </div>
         <div id="buttonsModificarEliminar">
             <button id="deleteUserBTN" @click="deleteUser">Delete User</button>
@@ -22,7 +32,7 @@
 </template>
 
 <script>
-// import router from '@/router';
+
 import axios from 'axios';
 
 export default {
@@ -37,6 +47,7 @@ export default {
         }
     },
     methods: {
+        //Funció que comprova la sessió de l'usuari
         comprovarSessio() {
             if (sessionStorage.UserID && sessionStorage.APIKEY) {
                 this.userID = sessionStorage.UserID;
@@ -45,7 +56,6 @@ export default {
                 this.getUserInfo()
                 this.boolSessio = true;
                 return true;
-                //cridar getuserInfo
             }
             else {
                 console.log("entra")
@@ -53,14 +63,14 @@ export default {
                 return false;
             }
         },
+        //Funció que fa una peticióa l'api i rep la informació d'aquell usuari
         getUserInfo() {
             axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
                 .then(resultat => {
                     this.userInfoJSON = resultat.data[0]
-                    console.log(resultat.data)
-                    // console.log(this.userInfoJSON.UserID)
                 });
         },
+        //Funció que elimina un usuari i tots els seus components
         deleteUser() {
             if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
                 axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
