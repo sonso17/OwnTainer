@@ -51,8 +51,13 @@ export default{
 <style>
 #text {
     position: relative;
-    left: 13%;
-    height: 250px;
-    width: 1006px;
+    left: 0%;
+    height: 346px;
+    width: 1452px;
+    font-size: 20px;
+}
+
+#creditTitle{
+    font-size: 50px;
 }
 </style>
