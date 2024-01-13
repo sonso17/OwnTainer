@@ -69,7 +69,7 @@ export default {
         getUserComponent() {
             if (this.boolSessio) {
                 console.log(this.compID)
-                axios.get("http://localhost/API/selectOneComponent/" + this.compID + "/" + this.userID)
+                axios.get("https://localhost/API/selectOneComponent/" + this.compID + "/" + this.userID)
                     .then(resultat => {
                         //fer condicional per veure si el user del component és el mateix que el de la session
                         this.compInfoJSON = resultat.data[0]
@@ -100,7 +100,7 @@ export default {
         },
         //Funció que fa un GET de les propietats del component a partir del seu tipus
         getComponentProperties() {
-            axios.get("http://localhost/API/getComponentProperties/" + this.compTypeID)
+            axios.get("https://localhost/API/getComponentProperties/" + this.compTypeID)
                 .then(resultat => {
                     this.compPropsJSON = resultat.data
                     console.log(resultat.data)
@@ -128,7 +128,7 @@ export default {
 
             this.compName = document.getElementById("compNameinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
-            axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/ModifyComponent/" + this.componentID,
+            axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/ModifyComponent/" + this.componentID,
                 {
                     "data":
                     {
@@ -150,7 +150,7 @@ export default {
         // funció que elimina el component s l'usuari ho decideix
         deleteComponent() {
             if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
-                axios.delete("http://localhost/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
+                axios.delete("https://localhost/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
                     .then(resultat => {
                         console.log(resultat.data)
                         this.$router.push("/");

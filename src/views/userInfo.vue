@@ -66,7 +66,7 @@ export default {
         },
         //Funció que fa una peticióa l'api i rep la informació d'aquell usuari
         getUserInfo() {
-            axios.get("http://localhost/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
+            axios.get("https://localhost/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
                 .then(resultat => {
                     this.userInfoJSON = resultat.data[0]
                 });
@@ -74,7 +74,7 @@ export default {
         //Funció que elimina un usuari i tots els seus components
         deleteUser() {
             if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
-                axios.get("http://localhost/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
+                axios.get("https://localhost/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
                     .then(resultat => {
                         console.log(resultat.data)
                         this.$router.push("/");

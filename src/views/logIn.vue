@@ -53,7 +53,7 @@ export default {
             this.emailUsuari = document.getElementById("emailUsuariinput").value;
             this.passwd = document.getElementById("passwdinput").value;
 
-            axios.post('http://localhost/API/LogIn',
+            axios.post('https://localhost/API/LogIn',
                 {
                     data: [
                         {

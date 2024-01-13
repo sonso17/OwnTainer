@@ -75,7 +75,7 @@ export default {
         },
         //funció que agafa els diferents tipus de components
         getAllComponentType() {
-            axios.get("http://localhost/API/getAllComponentType")
+            axios.get("https://localhost/API/getAllComponentType")
                 .then(resultat => {
                     this.compTypesJSON = resultat.data
                 });
@@ -83,7 +83,7 @@ export default {
         //funció que a partir del tipus sel.leccionat, agafa les seves propietats
         getComponentProperties() {
 
-            axios.get("http://localhost/API/getComponentProperties/" + this.componentTypeSelect)
+            axios.get("https://localhost/API/getComponentProperties/" + this.componentTypeSelect)
                 .then(resultat => {
                     this.compPropsJSON = resultat.data
                 });
@@ -110,7 +110,7 @@ export default {
 
             this.compName = document.getElementById("compNameinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
-            axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/RegisterComponent/",
+            axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/RegisterComponent/",
                 {
                     "data":
                     {

@@ -84,7 +84,7 @@ export default {
                 );
             }
 
-            axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/AddComponentType/",
+            axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/AddComponentType/",
                 {
                     "data":
                     {

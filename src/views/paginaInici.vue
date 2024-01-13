@@ -53,7 +53,7 @@ export default {
     methods: {
         //Funció que fa agafa la informació dels components públics
         getPublicComponents() {
-            axios.get("http://localhost/API/selectPublicComponents").then(resultat => {
+            axios.get("https://localhost/API/selectPublicComponents").then(resultat => {
                 this.componentsPublicsJSON = resultat.data
                 console.log(resultat.data)
             });
@@ -74,7 +74,7 @@ export default {
         },
         //funció que fa una petició GET dels components d'aquell usuari
         getUserComponents() {
-            axios.get("http://localhost/API/" + this.apikey + "." + this.userID + "/SelectUserComponents/" + this.userID)
+            axios.get("https://localhost/API/" + this.apikey + "." + this.userID + "/SelectUserComponents/" + this.userID)
                 .then(resultat => {
                     this.componentsUserJSON = resultat.data
                     console.log(resultat.data)
@@ -85,7 +85,7 @@ export default {
             this.searchTerm = term;
             console.log(this.searchTerm)
 
-            axios.post('http://localhost/API/selectPublicComponentsByValue',
+            axios.post('https://localhost/API/selectPublicComponentsByValue',
                 {
                     "data": [
                         {
@@ -104,7 +104,7 @@ export default {
 
             if (this.comprovarSessio) {//si no hi ha seesió, cridar la funcio selectPublicComponentsByValue
 
-                axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/selectUserComponentsByValue/",
+                axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/selectUserComponentsByValue/",
                     {
                         "data": [
                             {
