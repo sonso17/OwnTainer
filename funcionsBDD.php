@@ -632,8 +632,12 @@ function selectUserComponents($userID)
     */
 function registerComponent($componentDades, $userID)
 {
+    var_dump($componentDades);
     //separo les dades a inserir a la taula Components
     $componentName = $componentDades['data']['ComponentName'];
+    $componentCompany = $componentDades['data']['ComponentCompany'];
+    $componentModel = $componentDades['data']['ComponentModel'];
+    $componentImage = $componentDades['data']['ComponentImage'];
     $componentType = $componentDades['data']['ComponentType'];
     $componentPrivacy = $componentDades['data']['privacy'];
     $dependsOn = $componentDades['data']['dependsOn'];
@@ -657,13 +661,16 @@ function registerComponent($componentDades, $userID)
 
         $sentenciaTComponent =
             "
-        INSERT INTO components (UserID, ComponentName, ComponentTypeID, privacy, dependsOn)
-        VALUES (:UserID, :ComponentName, :ComponentTypeID, :privacy, :dependsOn);
+        INSERT INTO components (UserID, ComponentName, ComponentCompany, ComponentModel, ComponentImage, ComponentTypeID, privacy, dependsOn)
+        VALUES (:UserID, :ComponentName, :ComponentCompany, :ComponentModel, :ComponentImage, :ComponentTypeID, :privacy, :dependsOn);
         ";
 
         $bdd = $conn->prepare($sentenciaTComponent);
         $bdd->bindParam("UserID", $userID); //aplico els parametres necessaris
         $bdd->bindParam("ComponentName", $componentName);
+        $bdd->bindParam("ComponentCompany", $componentCompany);
+        $bdd->bindParam("ComponentModel", $componentModel);
+        $bdd->bindParam("ComponentImage", $componentImage);
         $bdd->bindParam("ComponentTypeID", $componentType);
         $bdd->bindParam("privacy", $componentPrivacy);
         $bdd->bindParam("dependsOn", $dependsOn);
@@ -751,8 +758,12 @@ function modifyComponent($componentDades, $componentID, $userID)
         if ($userID == $UserCompIDBaseDades) {
             //extreiem la informació que actualitzarem a la taula de components
             $componentName = $componentDades['data']['ComponentName'];
+            $componentCompany = $componentDades['data']['ComponentCompany'];
+            $componentModel = $componentDades['data']['ComponentModel'];
+            $componentImage = $componentDades['data']['ComponentImage'];
             $componentPrivacy = $componentDades['data']['privacy'];
             $dependsOn = $componentDades['data']['dependsOn'];
+            
 
             //tornem a separar la informació, el valor de les propietats en un array(componentProps) i els IDs de les propietats en un altre(componentPropsNumber)
             $componentProps = []; //array on vaig guardant els valors de les propietats dels components
@@ -788,12 +799,15 @@ function modifyComponent($componentDades, $componentID, $userID)
             $sentenciaUpdateTComponent =
                 "
                 UPDATE `components` 
-                SET ComponentName = :ComponentName, Privacy = :privacy, dependsOn = :dependsOn
+                SET ComponentName = :ComponentName, ComponentCompany = :ComponentCompany, ComponentModel = :ComponentModel, ComponentImage = :ComponentImage, Privacy = :privacy, dependsOn = :dependsOn
                 WHERE ComponentID = :ComponentID AND UserID = :UserID;
             ";
 
             $bdd = $conn->prepare($sentenciaUpdateTComponent);
             $bdd->bindParam("ComponentName", $componentName);
+            $bdd->bindParam("ComponentCompany", $componentCompany);
+            $bdd->bindParam("ComponentModel", $componentModel);
+            $bdd->bindParam("ComponentImage", $componentImage);
             $bdd->bindParam("privacy", $componentPrivacy);
             $bdd->bindParam("dependsOn", $dependsOn);
             $bdd->bindParam("ComponentID", $componentID);

@@ -19,7 +19,7 @@ class BdD
 	public function __construct()
 	{
 		$this->db_host = "localhost";
-		$this->db_user = "daw";
+		$this->db_user = "root";
 		$this->db_password = "";
 		$this->db_name = "owntainer";
 	}
