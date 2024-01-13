@@ -70,7 +70,7 @@ export default {
         },
         getComponentInfo() {
             if (this.boolSessio) {//si hi ha sessio
-                axios.get("http://owntainer.daw.institutmontilivi.cat/API/selectOneComponent/" + this.id + "/" + this.userID)
+                axios.get("http://localhost/API/selectOneComponent/" + this.id + "/" + this.userID)
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
@@ -82,7 +82,7 @@ export default {
                     })
             }
             else {
-                axios.get("http://owntainer.daw.institutmontilivi.cat/API/selectOneComponent/" + this.id)
+                axios.get("http://localhost/API/selectOneComponent/" + this.id)
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
@@ -96,7 +96,7 @@ export default {
         },
         deleteComponent() {
             if (this.boolSessio && this.userID == this.compInfoJSON.userID) {
-                axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
+                axios.delete("http://localhost/API/" + this.apikey + "." + this.userID + "/DeleteComponent/" + this.componentID)
                     .then(resultat => {
                         console.log(resultat.data)
                         this.$router.push("/");

@@ -140,7 +140,7 @@ export default {
                 this.FirstName = document.getElementById("inputFirstName").value;
                 this.LastName = document.getElementById("inputLastName").value;
                 this.Email = document.getElementById("inputEmail").value;
-                axios.post('http://owntainer.daw.institutmontilivi.cat/API/register',
+                axios.post('http://localhost/API/register',
                     {
                         "data": [
                             {

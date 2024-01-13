@@ -160,7 +160,7 @@ export default {
         rebreDadesUser() {
 
             if (this.boolSessio) {
-                axios.get("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
+                axios.get("http://localhost/API/" + this.apikey + "." + this.userID + "/UserInfo/" + this.userID)
                     .then(resultat => {
                         this.userInfoJSON = resultat.data[0]
                         console.log(resultat.data)
@@ -179,7 +179,7 @@ export default {
         // Funció que envia les dades actualitzades a l'api 
         enviarDadesModifyUser() {
             if (this.verificarCamps() === true && this.verificarContrassenyes() === true) {
-                axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/ModifyUser/" + this.userID,
+                axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/ModifyUser/" + this.userID,
                     {
                         "data": [
                             {
@@ -204,7 +204,7 @@ export default {
         // funció que elimina l'usuari, si ell ho desitja
         deleteUser() {
             if (this.boolSessio && this.userID == this.userInfoJSON.UserID) {
-                axios.delete("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
+                axios.delete("http://localhost/API/" + this.apikey + "." + this.userID + "/DeleteUser/" + this.userID)
                     .then(resultat => {
                         console.log(resultat.data);
                         sessionStorage.clear();

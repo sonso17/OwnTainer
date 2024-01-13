@@ -84,7 +84,7 @@ export default {
                 );
             }
 
-            axios.post("http://owntainer.daw.institutmontilivi.cat/API/" + this.apikey + "." + this.userID + "/AddComponentType/",
+            axios.post("http://localhost/API/" + this.apikey + "." + this.userID + "/AddComponentType/",
                 {
                     "data":
                     {
