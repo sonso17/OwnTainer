@@ -53,7 +53,7 @@ export default {
             this.emailUsuari = document.getElementById("emailUsuariinput").value;
             this.passwd = document.getElementById("passwdinput").value;
 
-            axios.post('http://owntainer.daw.institutmontilivi.cat/API/LogIn',
+            axios.post('http://localhost/API/LogIn',
                 {
                     data: [
                         {
