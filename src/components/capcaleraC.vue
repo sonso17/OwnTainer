@@ -19,7 +19,12 @@
 
     <div id="UserInfo" v-if="posardades">
       <div>
-        <div id="capNomUsuari" @click="GoToUserInfo"> {{ email }}</div>
+        <button id="capNomUsuari" @click="mostrarMenuu"> {{ email }}</button>
+      </div>
+
+      <div v-if="mostrarMenu" id="myDropdown" class="dropdown-content">
+        <a @click="GoToUserInfo">Profile</a>
+        <a href="#about">About</a><!--go to mycomponents-->
       </div>
 
       <img v-if="btnLogout" src="@/assets/logout.png" alt="" class="logout" @click="logout">
@@ -37,6 +42,7 @@ export default {
   emits: ["logOut"],
   data() {
     return {
+      mostrarMenu: false
     }
   },
   computed: {
@@ -68,7 +74,7 @@ export default {
            
        */
     posardades() {
-      
+
       if (sessionStorage.UserID && sessionStorage.APIKEY) {
         this.btnLogout = true;
         return true;
@@ -89,6 +95,11 @@ export default {
       // this.btnLogout = false;
       window.location.reload();
       this.$router.push("/")
+    },
+
+    mostrarMenuu() {
+      // Cambiar el estado para mostrar u ocultar el menú
+      this.mostrarMenu = !this.mostrarMenu;
     },
   },
   created() {
@@ -152,9 +163,6 @@ export default {
 
 .logout:hover {
   cursor: pointer;
-}
-
-#capRolUsuari {
 }
 
 @media only screen and (max-width: 500px) {

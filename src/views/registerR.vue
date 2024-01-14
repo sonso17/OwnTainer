@@ -155,7 +155,7 @@ export default {
                 console.log(response.data);
                 document.getElementById("errorMessage").innerHTML = response.data;
                     
-                this.$router.push('/');
+                this.$router.push('/logIn');
                 }) 
                 
             }
