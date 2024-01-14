@@ -14,7 +14,17 @@
         <div id="infoComponent">
             <div id="compTitle">
                 <div id="compName">Component Name:</div>
-                <div class="compInfo">{{ compInfoJSON.componentName }}</div>
+                <div class="compInfo">{{ compInfoJSON.componentName }}
+                </div>
+                <div id="compName">Component Company:</div>
+                <div class="compInfo">{{ compInfoJSON.componentCompany }}
+                </div>
+                <div id="compName">Component Model:</div>
+                <div class="compInfo">{{ compInfoJSON.componentModel }}
+                </div>
+                <div id="compName">Component Image:</div>
+                <div class="compInfo">{{ compInfoJSON.componentImage }}
+                </div>
             </div>
             <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
                 <div class="compProp">{{ prop.name }} :</div>
@@ -74,6 +84,7 @@ export default {
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
+                        console.log(this.compInfoJSON)
                     })
                     .catch(error => {
                         const message = error.response.data;
@@ -86,6 +97,8 @@ export default {
                     .then(resultat => {
                         this.compInfoJSON = resultat.data[0];
                         this.componentID = this.compInfoJSON.componentId;
+                        console.log(this.compInfoJSON)
+
                     })
                     .catch(error => {
                         const message = error.response.data;

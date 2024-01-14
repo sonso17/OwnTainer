@@ -18,6 +18,22 @@
         <br>
         <input class="inputlogin" id="compNameinput" v-model="compName" type="email" name="compName">
         <br>
+
+        <label class="labelLogin" for="compCompany">Component Company</label>
+        <br>
+        <input class="inputlogin" id="compCompanyinput" v-model="compCompany" type="email" name="compCompany">
+        <br>
+
+        <label class="labelLogin" for="compModel">Component Model</label>
+        <br>
+        <input class="inputlogin" id="compModelinput" v-model="compModel" type="email" name="compModel">
+        <br>
+
+        <label class="labelLogin" for="compImage">Component Image(URL)</label>
+        <br>
+        <input class="inputlogin" id="compImageinput" v-model="compImage" type="email" name="compImage">
+        <br>
+        
         <p>Do you want your component to be <b>Public</b> or <b>Private</b>:</p>
         <select id="compPrivacy">
             <option value="true">Private</option>
@@ -55,6 +71,9 @@ export default {
             compTypesJSON: {},
             compPropsJSON: {},
             compName: "",
+            compCompany:"",
+            compModel:"",
+            compImage:"",
             privacy: false,
 
         }
@@ -64,13 +83,16 @@ export default {
         comprobarCamps() {
             var selectCompType = document.getElementById("componentTypeSelect").value;
             var compName = document.getElementById("compNameinput").value;
-            if (selectCompType != "" && compName != "") {
+            if (selectCompType != "" && compName != "" && this.compCompany!="" && this.compModel!="") {
                 this.enviarDadesComponent()
             }
             else {
                 document.getElementById("divError").innerHTML = 'please select a component type and then put a name on it ;)'
                 document.getElementById("componentTypeSelect").style.border = " 2px solid red";
                 document.getElementById("compNameinput").style.border = " 2px solid red";
+                document.getElementById("compNameinput").style.border = " 2px solid red";
+                document.getElementById("compCompanyinput").style.border = " 2px solid red";
+                document.getElementById("compModelinput").style.border = " 2px solid red";
             }
         },
         //funció que agafa els diferents tipus de components
@@ -82,7 +104,6 @@ export default {
         },
         //funció que a partir del tipus sel.leccionat, agafa les seves propietats
         getComponentProperties() {
-
             axios.get("https://localhost/API/getComponentProperties/" + this.componentTypeSelect)
                 .then(resultat => {
                     this.compPropsJSON = resultat.data
@@ -109,12 +130,18 @@ export default {
             }
 
             this.compName = document.getElementById("compNameinput").value;
+            this.compCompany=document.getElementById("compCompanyinput").value;
+            this.compModel = document.getElementById("compModelinput").value;
+            this.compImage = document.getElementById("compImageinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
             axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/RegisterComponent/",
                 {
                     "data":
                     {
                         "ComponentName": this.compName,
+                        "ComponentCompany": this.compCompany,
+                        "ComponentModel": this.compModel,
+                        "ComponentImage": this.compImage,
                         "ComponentType": this.compPropsJSON.componentTypeId,
                         "privacy": this.privacy,
                         "props": arrayPropsJSON

@@ -12,8 +12,8 @@
     <div class="HComponent" @click="goToComponentInfo">
         <div>Component Name: {{ HComp.componentName }}</div>
 
-        <div> {{ HComp.props[0].name }}: {{ HComp.props[0].value }}</div>
-        <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div>
+        <!-- <div> {{ HComp.props[0].name }}: {{ HComp.props[0].value }}</div>
+        <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div> -->
         <img id="imatgeTodd" @click.stop="goToEasterEgg" :src="randomImage()" alt="imatge">
     </div>
 </template>

@@ -21,6 +21,23 @@
         <br>
         <input class="inputlogin" id="compNameinput" :value="compName" name="compName">
         <br>
+
+        <br>
+        <label class="labelLogin" for="compCompany">Component Company</label>
+        <br>
+        <input class="inputlogin" id="compCompanyinput" :value="compCompany" name="compCompany">
+        <br>
+        
+        <label class="labelLogin" for="compModel">Component Model</label>
+        <br>
+        <input class="inputlogin" id="compModelinput" v-model="compModel" name="compModel">
+        <br>
+
+        <label class="labelLogin" for="compImage">Component Image(URL)</label>
+        <br>
+        <input class="inputlogin" id="compImageinput" v-model="compImage" name="compImage">
+        <br>
+
         <p>Do you want your component to be <b>Public</b> or <b>Private</b>:</p>
         <select id="compPrivacy" :value="compPrivacy">
             <option value="true">Private</option>
@@ -56,6 +73,9 @@ export default {
             compInfoJSON: {},
             compPropsJSON: {},
             compName: "",
+            compCompany:"",
+            compModel:"",
+            compImage:"",
             privacy: false,
             componentID : "",
             arrDadesForm: [],
@@ -80,6 +100,9 @@ export default {
                             this.compName = this.compInfoJSON.componentName;
                             this.compPrivacy = this.compInfoJSON.privacy;
                             this.componentID = this.compInfoJSON.componentId;
+                            this.compCompany = this.compInfoJSON.componentCompany;
+                            this.compModel = this.compInfoJSON.componentModel;
+                            this.compImage = this.compInfoJSON.componentImage;
 
                             for (let i = 0; i < (this.compInfoJSON.props).length; i++) {//vaig guardant les propietats en un array per despres mostrar-loal formulari
                                 this.compProps.push(this.compInfoJSON.props[i].value);
@@ -127,12 +150,18 @@ export default {
             }
 
             this.compName = document.getElementById("compNameinput").value;
+            this.compCompany=document.getElementById("compCompanyinput").value;
+            this.compModel = document.getElementById("compModelinput").value;
+            this.compImage = document.getElementById("compImageinput").value;
             this.privacy = document.getElementById("compPrivacy").value;
             axios.post("https://localhost/API/" + this.apikey + "." + this.userID + "/ModifyComponent/" + this.componentID,
                 {
                     "data":
                     {
                         "ComponentName": this.compName,
+                        "ComponentCompany": this.compCompany,
+                        "ComponentModel": this.compModel,
+                        "ComponentImage": this.compImage,
                         "ComponentType": this.compPropsJSON.componentTypeId,
                         "privacy": this.privacy,
                         "props": arrayPropsJSON
