@@ -22,9 +22,9 @@
                 <div id="compName">Component Model:</div>
                 <div class="compInfo">{{ compInfoJSON.componentModel }}
                 </div>
-                <div id="compName">Component Image:</div>
+                <!-- <div id="compName">Component Image:</div>
                 <div class="compInfo">{{ compInfoJSON.componentImage }}
-                </div>
+                </div> -->
             </div>
             <div id="componentInfo" v-for="(prop, p) in compInfoJSON.props" :key="p" :item="prop">
                 <div class="compProp">{{ prop.name }} :</div>
@@ -37,7 +37,7 @@
             </div>
 
         </div>
-        <img id="compImage" src="../assets/toddyDaddy.png">
+        <img id="compImage" :src="compInfoJSON.componentImage">
 
     </div>
     <div id="grupButtonsModifyDeleteComp" v-if="userID == compInfoJSON.userID"><!-- -->

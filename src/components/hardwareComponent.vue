@@ -14,10 +14,10 @@
         
 
         <!-- <div> {{ HComp.props[0].name }}: {{ HComp.props[0].value }}</div>
-        <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div> -->
-        <img id="imatgeTodd" @click.stop="goToEasterEgg" :src="randomImage()" alt="imatge">
-        <div>Component Name: {{ HComp.ComponentCompany }}</div>
-        <div>Component Name: {{ HComp.ComponentModel }}</div>
+        <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div>  :src="randomImage()" -->
+        <img id="imatgeTodd" @click.stop="goToEasterEgg" :src="HComp.ComponentImage" alt="Component Image">
+        <div>Component Company: {{ HComp.ComponentCompany }}</div>
+        <div>Component Model: {{ HComp.ComponentModel }}</div>
     </div>
 </template>
 
