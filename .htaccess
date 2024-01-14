@@ -1,6 +1,10 @@
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"
 RewriteEngine On
 RewriteBase /API
 options +FollowSymLinks
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* server.php/$0 [L]
-Header add Access-Control-Allow-Origin "*"
+
+

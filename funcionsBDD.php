@@ -356,7 +356,7 @@ function selectOneComponent($componentID, $UserID)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //faig una sentencia on selecciono per cada propietat el id de tipus, nom tipus component, idPropietat, nomPropietat i propietat tipus fent 2 joins, un a cada taula on haig d'extreure la informacio
         $sentencia = "
-            SELECT components.UserID, components.Privacy, components.dependsOn, components.ComponentTypeID, components.ComponentName, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
+            SELECT components.UserID, components.Privacy, components.dependsOn, components.ComponentTypeID, components.ComponentName, components.ComponentCompany, components.ComponentModel, components.ComponentImage, components.ComponentID, properties.PropertyID,properties.PropertyName, propertiesxcomponents.Valuee
             FROM propertiesxcomponents
             RIGHT JOIN components ON propertiesxcomponents.ComponentID =  components.ComponentID
             LEFT JOIN properties ON propertiesxcomponents.PropertyID = properties.PropertyID
@@ -411,12 +411,18 @@ function selectOneComponent($componentID, $UserID)
                     array_push($arrComProp, $arrayProp); //guardem les propietats de cada component
                     $privacy = $el['Privacy']; //extrec la privacitat i componentNom
                     $componentName = $el['ComponentName'];
+                    $componentCompany = $el['ComponentCompany'];
+                    $componentModel = $el['ComponentModel'];
+                    $componentImage = $el['ComponentImage'];
                 }
             }
             $arrayTotUnComponent = array( //agafo les propietats no variables de cada component a l'array indexat i els hi aplico
                 "componentId" => $arrIdsComps[$i],
                 "componentTypeID" => $compoTypeID,
                 "componentName" => $componentName,
+                "componentCompany" => $componentCompany,
+                "componentModel" => $componentModel,
+                "componentImage" => $componentImage,
                 "userID" => $UserIdComponent,
                 "privacy" => $privacy,
                 "dependsOn" => $compoDependency,
@@ -447,7 +453,7 @@ function selectOneComponent($componentID, $UserID)
             Retorna tots els components públics en format JSON ordenat i estructurat
  
     */
-function selectPublicComponents()
+/*function selectPublicComponents()
 {
 
     $baseDades = new BdD; //creo nova classe BDD
@@ -522,6 +528,34 @@ function selectPublicComponents()
         return false;
     }
 }
+*/
+function selectPublicComponents()
+{
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sentencia = "
+        SELECT UserID, Privacy, ComponentName, ComponentID, ComponentModel, ComponentCompany, ComponentImage
+        FROM components
+        WHERE components.Privacy = 'false'
+        ORDER BY components.ComponentID ASC;
+        ";
+
+        $bdd = $conn->prepare($sentencia);
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultat = $bdd->fetchAll(); //guardo els resultats
+
+        return $resultat;
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 /*
         Function: selectUserComponents()
@@ -537,7 +571,7 @@ function selectPublicComponents()
             Retorna tots els components d'aquell usuari
  
     */
-function selectUserComponents($userID)
+/*function selectUserComponents($userID)
 {
     $baseDades = new BdD; //creo nova classe BDD
 
@@ -610,6 +644,35 @@ function selectUserComponents($userID)
         }
 
         return $arrAllComp;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}*/
+
+function selectUserComponents($userID)
+{
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sentencia = "
+        SELECT UserID, Privacy, ComponentName, ComponentID, ComponentModel, ComponentCompany, ComponentImage
+        FROM components
+        WHERE UserID = :UserID
+        ORDER BY ComponentID ASC;
+        ";
+
+        $bdd = $conn->prepare($sentencia);
+        $bdd->bindParam("UserID", $userID);
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultat = $bdd->fetchAll(); //guardo els resultats
+
+        return $resultat;
+
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         return false;
@@ -763,7 +826,7 @@ function modifyComponent($componentDades, $componentID, $userID)
             $componentImage = $componentDades['data']['ComponentImage'];
             $componentPrivacy = $componentDades['data']['privacy'];
             $dependsOn = $componentDades['data']['dependsOn'];
-            
+
 
             //tornem a separar la informació, el valor de les propietats en un array(componentProps) i els IDs de les propietats en un altre(componentPropsNumber)
             $componentProps = []; //array on vaig guardant els valors de les propietats dels components
@@ -1125,7 +1188,7 @@ function addComponentType($dadesPost)
             Retorna tots els components que tenen relació amb la paruala passada
  
     */
-function selectPublicComponentsByValue($searchWord)
+/*function selectPublicComponentsByValue($searchWord)
 {
     $searchValue = "%" . $searchWord . "%";
     $baseDades = new BdD; //creo nova classe BDD
@@ -1201,6 +1264,39 @@ function selectPublicComponentsByValue($searchWord)
         return false;
     }
 }
+*/
+
+function selectPublicComponentsByValue($searchWord)
+{
+    $searchValue = "%" . $searchWord . "%";
+
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sentencia = "
+        SELECT UserID, Privacy, ComponentName, ComponentID, ComponentModel, ComponentCompany, ComponentImage
+        FROM components
+        WHERE components.Privacy = 'false' AND components.ComponentName LIKE :SearchValue2 
+        ORDER BY ComponentID ASC;
+        ";
+
+        $bdd = $conn->prepare($sentencia);
+        $bdd->bindParam("SearchValue2", $searchValue);
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultat = $bdd->fetchAll(); //guardo els resultats
+
+        return $resultat;
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
 /*
         Function: selectUserComponentsByValue()
@@ -1217,7 +1313,7 @@ function selectPublicComponentsByValue($searchWord)
  
     */
 
-function selectUserComponentsByValue($userID, $searchWord)
+/*function selectUserComponentsByValue($userID, $searchWord)
 {
     $searchValue = "%" . $searchWord . "%";
     $baseDades = new BdD; //creo nova classe BDD
@@ -1297,6 +1393,39 @@ function selectUserComponentsByValue($userID, $searchWord)
         return false;
     }
 }
+*/
+
+function selectUserComponentsByValue($userID, $searchWord)
+{
+    $searchValue = "%" . $searchWord . "%";
+
+    $baseDades = new BdD; //creo nova classe BDD
+
+    try {
+        $conn = new PDO("mysql:host=$baseDades->db_host;dbname=$baseDades->db_name", $baseDades->db_user, $baseDades->db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sentencia = "
+        SELECT UserID, Privacy, ComponentName, ComponentID, ComponentModel, ComponentCompany, ComponentImage
+        FROM components
+        WHERE components.UserID = :UserID AND components.ComponentName LIKE :SearchValue2
+        ORDER BY ComponentID ASC;
+        ";
+
+        $bdd = $conn->prepare($sentencia);
+        $bdd->bindParam("UserID", $userID);
+        $bdd->bindParam("SearchValue2", $searchValue);
+        $bdd->execute(); //executola sentencia
+        $bdd->setFetchMode(PDO::FETCH_ASSOC);
+        $resultat = $bdd->fetchAll(); //guardo els resultats
+
+        return $resultat;
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 /*
         Function: getAllComponentType()
@@ -1309,7 +1438,8 @@ function selectUserComponentsByValue($userID, $searchWord)
  
     */
 
-function getAllComponentType(){
+function getAllComponentType()
+{
     $baseDades = new BdD; //creo nova classe BDD
 
     try {
