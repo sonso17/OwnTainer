@@ -10,11 +10,14 @@
 -->
 <template>
     <div class="HComponent" @click="goToComponentInfo">
-        <div>Component Name: {{ HComp.componentName }}</div>
+        <div>Component Name: {{ HComp.ComponentName }}</div>
+        
 
         <!-- <div> {{ HComp.props[0].name }}: {{ HComp.props[0].value }}</div>
         <div> {{ HComp.props[1].name }}: {{ HComp.props[1].value }}</div> -->
         <img id="imatgeTodd" @click.stop="goToEasterEgg" :src="randomImage()" alt="imatge">
+        <div>Component Name: {{ HComp.ComponentCompany }}</div>
+        <div>Component Name: {{ HComp.ComponentModel }}</div>
     </div>
 </template>
 
@@ -24,7 +27,7 @@ export default {
     props: ["HComp"],
     methods: {
         goToComponentInfo() {
-            this.$router.push("/oneComponent/" + this.HComp.componentId);
+            this.$router.push("/oneComponent/" + this.HComp.ComponentID);
         },
         goToEasterEgg() {
             this.$router.push("/easterEgg");
@@ -36,7 +39,10 @@ export default {
                 'meme11.jpg', 'meme12.jpg', 'meme13.jpg', 'meme14.jpg', 'meme15.jpg']
             var memeRNd = arrayMemes[Math.floor(Math.random() * arrayMemes.length)];
             var memeRND1 = require("@/assets/memes/" + memeRNd);
+            console.log(this.HComp)
             return memeRND1;
+
+            
         }
     }
 }

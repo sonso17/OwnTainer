@@ -77,13 +77,13 @@ export default {
             axios.get("https://localhost/API/" + this.apikey + "." + this.userID + "/SelectUserComponents/" + this.userID)
                 .then(resultat => {
                     this.componentsUserJSON = resultat.data
-                    console.log(resultat.data)
+                    // console.log(resultat.data)
                 });
         },
         // funció que rep la cerca del component searcher i fa la petició de la combinacio de caràcters que hi hagi al cercador
         updateSearch(term) {
             this.searchTerm = term;
-            console.log(this.searchTerm)
+            // console.log(this.searchTerm)
 
             axios.post('https://localhost/API/selectPublicComponentsByValue',
                 {
@@ -96,7 +96,7 @@ export default {
                 }
             ).then((response) => {
                 this.componentsPublicsJSON = response.data;
-                console.log(response.data);
+                // console.log(response.data);
             }).catch(error => {
                 const message = error.response.data;
                 console.log(`Error message: ${message}`);
@@ -115,7 +115,7 @@ export default {
                     }
                 ).then((response) => {
                     this.componentsUserJSON = response.data;
-                    console.log(response.data);
+                    // console.log(response.data);
                 }).catch(error => {
                     const message = error.response.data;
                     console.log(`Error message: ${message}`);
