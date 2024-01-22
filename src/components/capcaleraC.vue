@@ -19,13 +19,10 @@
 
     <div id="UserInfo" v-if="posardades">
       <div>
-        <button id="capNomUsuari" @click="mostrarMenuu"> {{ email }}</button>
+        <button id="capNomUsuari" @click="GoToUserInfo"> {{ email }}</button>
       </div>
 
-      <div v-if="mostrarMenu" id="myDropdown" class="dropdown-content">
-        <a @click="GoToUserInfo">Profile</a>
-        <a href="#about">About</a><!--go to mycomponents-->
-      </div>
+     
 
       <img v-if="btnLogout" src="@/assets/logout.png" alt="" class="logout" @click="logout">
 
@@ -74,7 +71,6 @@ export default {
            
        */
     posardades() {
-
       if (sessionStorage.UserID && sessionStorage.APIKEY) {
         this.btnLogout = true;
         return true;

@@ -10,6 +10,7 @@ import registerComponent from '../views/registerComponent.vue'
 import modifyComponent from '../views/modifyComponent.vue'
 import newComponentType from '../views/newComponentType.vue'
 import easterEgg from '../views/easterEgg.vue'
+import userComponents from '../views/userComponents.vue'
 
 const routes = [
   {
@@ -58,6 +59,11 @@ const routes = [
     props: true,
     name: 'modifyComponent',
     component: modifyComponent
+  },
+  {
+    path: '/userComponents/',
+    name: 'userComponents',
+    component: userComponents
   },
   {
     path: '/newComponentType',

@@ -17,15 +17,16 @@
             <div id="grupBotons">
                 <button id="btnGoToRegisterComponent" @click="goToRegisterComponent"> Register A new Component</button>
                 <button @click="goToNewCompType">New Component Type</button><br>
+                <button @click="goToMyComponents">My Components</button><br>
             </div>
-            <div id="compUserTitol">User Components</div>
+            
             <hardwareComponent v-for="(HComponent, i) in componentsUserJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>
         </div>
 
         <div id="componentsPublics">
-            <div id="compPublicTitol">Public Components</div>
+            
             <hardwareComponent v-for="(HComponent, i) in componentsPublicsJSON" :key="i" :HComp="HComponent">
 
             </hardwareComponent>
@@ -127,6 +128,9 @@ export default {
         },
         goToNewCompType() {
             this.$router.push("/newComponentType");
+        },
+        goToMyComponents(){
+            this.$router.push({ name: 'userComponents' });
         }
     },
     created() {
